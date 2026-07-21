@@ -1,0 +1,40 @@
+# Render blueprint for the StayLens Hybrid Search API.
+#
+# Deploy:
+#   1. Render dashboard → New → Blueprint → connect this repo
+#   2. Render reads this file and creates the service
+#   3. Set the secret env vars below (marked sync:false) in the dashboard
+#   4. Copy the resulting URL into Vercel as HYBRID_SEARCH_URL
+#
+# The Next.js frontend stays on Vercel; only this API lives here.
+services:
+  - type: web
+    name: staylens-search-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    plan: free
+    region: singapore # match the Supabase project region (ap-southeast-1)
+    healthCheckPath: /api/search/health
+    autoDeploy: true
+    envVars:
+      # ---- secrets: set these in the Render dashboard ----
+      - key: SUPABASE_DB_URL # Supabase → Settings → Database → Connection string (session pooler, port 5432)
+        sync: false
+      - key: GEMINI_API_KEY # only needed for semantic search
+        sync: false
+      - key: CORS_ORIGINS # e.g. https://your-app.vercel.app
+        sync: false
+
+      # ---- non-secret config ----
+      - key: EMBEDDING_PROVIDER
+        value: gemini
+      - key: GEMINI_EMBEDDING_MODEL
+        value: gemini-embedding-001
+      - key: EMBEDDING_DIMS
+        value: "512"
+      - key: LOG_DIR
+        value: /tmp/staylens-logs
+      # Free tier gives limited RAM/connections — keep the pool small.
+      - key: SEARCH_POOL_MAX
+        value: "4"

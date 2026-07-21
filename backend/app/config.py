@@ -82,8 +82,19 @@ class Settings:
     reviews_cap: int = 500
     popularity_cap: float = 10.0  # reviews_per_month
 
-    cors_origins: tuple[str, ...] = ("http://localhost:3000", "http://127.0.0.1:3000")
-    log_dir: Path = ROOT / "backend" / "logs"
+    #: Browser origins allowed to call the API. Server-to-server calls (the
+    #: Next.js server calling this API) are unaffected by CORS; this matters
+    #: only if you ever fetch from the browser. Set CORS_ORIGINS to a
+    #: comma-separated list in production, e.g.
+    #:   CORS_ORIGINS=https://staylens.vercel.app,https://staylens.com
+    cors_origins: tuple[str, ...] = tuple(
+        o.strip()
+        for o in os.environ.get(
+            "CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000"
+        ).split(",")
+        if o.strip()
+    )
+    log_dir: Path = Path(os.environ.get("LOG_DIR", str(ROOT / "backend" / "logs")))
 
 
 settings = Settings()

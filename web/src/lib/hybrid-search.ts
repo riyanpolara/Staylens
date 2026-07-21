@@ -13,7 +13,12 @@ import type { StaySearchParams } from "@/lib/stay-filters";
  */
 
 const BASE = process.env.HYBRID_SEARCH_URL ?? "http://127.0.0.1:8000";
-const TIMEOUT_MS = 8000;
+/**
+ * Give up and fall back to direct Supabase after this long. Raise it via
+ * HYBRID_SEARCH_TIMEOUT_MS when the API is on a free tier that cold-starts
+ * (Render free sleeps after ~15 min and takes ~50s to wake).
+ */
+const TIMEOUT_MS = Number(process.env.HYBRID_SEARCH_TIMEOUT_MS ?? 8000);
 
 type HybridProperty = {
   id: string;

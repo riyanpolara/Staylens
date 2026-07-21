@@ -109,6 +109,62 @@ python scripts/generate_embeddings_gemini.py
 
 Check status any time at `GET /api/search/health`.
 
+## Deployment
+
+The two halves deploy separately: **Next.js → Vercel**, **FastAPI → any container
+host** (Render blueprint included). The frontend falls back to direct Supabase
+queries whenever the search API is unreachable, so it is never hard-blocked.
+
+### 1. Frontend → Vercel
+
+Set these in **Vercel → Settings → Environment Variables**, then **redeploy**
+(`NEXT_PUBLIC_*` values are inlined at build time, so changing them requires a
+new build):
+
+| Variable | Value |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | your Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase anon/publishable key |
+| `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | Google Maps JS API key |
+| `NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID` | `DEMO_MAP_ID` |
+| `HYBRID_SEARCH_URL` | the search API URL from step 2 |
+| `HYBRID_SEARCH_TIMEOUT_MS` | optional; raise to `20000` if the API is on a cold-starting free tier |
+
+> **Google Maps referrer restrictions:** if the key is restricted to
+> `localhost:3000/*`, it will fail on Vercel with `RefererNotAllowedMapError`.
+> Add `https://<your-app>.vercel.app/*` (and any custom domain) in Google Cloud
+> Console → Credentials.
+
+### 2. Hybrid Search API → Render (or any Docker host)
+
+`render.yaml` is a ready blueprint; `backend/Dockerfile` works on Railway, Fly.io
+or Cloud Run too (build context must be the **repo root**).
+
+```bash
+docker build -f backend/Dockerfile -t staylens-search .
+docker run -p 8000:8000 --env-file .env staylens-search
+```
+
+On Render: **New → Blueprint → connect this repo**, then set the secret env vars:
+
+| Variable | Notes |
+|---|---|
+| `SUPABASE_DB_URL` | session pooler connection string (port 5432) |
+| `GEMINI_API_KEY` | only for semantic search |
+| `CORS_ORIGINS` | `https://<your-app>.vercel.app` |
+
+Non-secret config (`EMBEDDING_PROVIDER`, `EMBEDDING_DIMS`, `LOG_DIR`,
+`SEARCH_POOL_MAX`) is already declared in the blueprint. Health check:
+`GET /api/search/health` — it reports database and semantic-provider status.
+
+> **Free-tier caveat:** Render's free plan sleeps after ~15 min idle and takes
+> ~50 s to wake. During a cold start the frontend's timeout trips and the page
+> silently serves Supabase results instead. Use a paid instance, or a keep-alive
+> ping, or raise `HYBRID_SEARCH_TIMEOUT_MS`.
+
+Host the API in the **same region as Supabase** (`ap-southeast-1` / Singapore) —
+cross-region round trips dominate query latency.
+
 ## Documentation
 
 | Doc | Contents |
