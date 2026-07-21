@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ethereal Glass Villa | Staylens</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#0e5138",
+                    "primary-container": "#2d6a4f",
+                    "surface": "#f8f9ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#eff4ff",
+                    "tertiary-fixed-dim": "#d6c695",
+                    "on-surface-variant": "#404943",
+                    "surface-container-high": "#dee9fc",
+                    "primary-fixed-dim": "#95d4b3",
+                    "on-tertiary-fixed-variant": "#514620",
+                    "background": "#f8f9ff",
+                    "on-secondary-fixed": "#001c39",
+                    "on-primary-container": "#a8e7c5",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed": "#f3e2af",
+                    "surface-container": "#e6eeff",
+                    "on-background": "#121c2a",
+                    "secondary-fixed": "#d4e3ff",
+                    "inverse-surface": "#27313f",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#121c2a",
+                    "on-tertiary-container": "#493f1a",
+                    "primary-fixed": "#b1f0ce",
+                    "secondary": "#0060ac",
+                    "surface-container-highest": "#d9e3f6",
+                    "tertiary-container": "#baaa7c",
+                    "secondary-fixed-dim": "#a4c9ff",
+                    "secondary-container": "#64a8fe",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#231b00",
+                    "outline": "#707973",
+                    "on-primary-fixed": "#002114",
+                    "primary": "#0f5238",
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#f8f9ff",
+                    "surface-tint": "#2c694e",
+                    "inverse-primary": "#95d4b3",
+                    "on-secondary-fixed-variant": "#004883",
+                    "on-error": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "surface-variant": "#d9e3f6",
+                    "on-secondary-container": "#003c70",
+                    "surface-dim": "#d0dbed",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#eaf1ff",
+                    "outline-variant": "#bfc9c1",
+                    "tertiary": "#6a5e36"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "24px",
+                    "base": "4px",
+                    "xs": "8px",
+                    "lg": "40px",
+                    "margin-mobile": "16px",
+                    "sm": "16px",
+                    "container-max": "1280px",
+                    "xl": "64px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .nav-glass {
+            background: rgba(248, 249, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .shadow-nature {
+            box-shadow: 0 8px 30px rgba(45, 106, 79, 0.08);
+        }
+        .shadow-nature-hover {
+            box-shadow: 0 12px 40px rgba(45, 106, 79, 0.12);
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #0f5238 0%, #2d6a4f 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            filter: brightness(1.1);
+        }
+        /* Custom scrollbar for premium feel */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f8f9ff; }
+        ::-webkit-scrollbar-thumb { background: #bfc9c1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0f5238; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top Navigation Bar (Shared Component: TopAppBar) -->
+<header class="fixed top-0 left-0 w-full z-50 nav-glass border-b border-outline-variant/30">
+<nav class="flex justify-between items-center w-full px-margin-mobile md:px-xl h-20 max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-low transition-all active:scale-95">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-2xl">nature_people</span>
+<span class="font-display-lg text-headline-md font-bold text-primary tracking-tight">Staylens</span>
+</div>
+</div>
+<div class="hidden md:flex items-center gap-xs">
+<button class="px-4 py-2 text-on-surface-variant font-label-md hover:text-primary transition-colors">Help</button>
+<button class="px-4 py-2 text-on-surface-variant font-label-md hover:text-primary transition-colors">Share</button>
+<div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center ml-2 border border-outline-variant/30 overflow-hidden cursor-pointer active:scale-90 transition-transform">
+<img class="w-full h-full object-cover" data-alt="A professional and friendly user profile avatar for a high-end luxury travel platform. The portrait features a smiling person with a minimalist, clean aesthetic, set against a soft, neutral-toned background that emphasizes a premium, reliable service-oriented personality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6NwOmnd3UehDsIZmT90RKwcgR5Lv1zy1fG3RUGM2sQ3Z9TEWqIuhj6q9xLblktms20kgphZH-veal4-ivFtMHKKlHgg-F70CvNveTlaXcstsFF1s7-S9V17tjBUfZxZ8dWSSD8S-am7fJqkCeXz8LAo-WzpZ1yMoOQL5EGGyU7aSvXsBhrp2-0TGgua5VRjaMNkX31oWtRbwIRlLc0QsfW6TdJiFWM6v2yptwfx8i4xex4YdIsMmSEg"/>
+</div>
+</div>
+</nav>
+</header>
+<main class="pt-20 pb-xl">
+<!-- Hero Section -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-xl mt-xs md:mt-md">
+<div class="relative rounded-[20px] overflow-hidden aspect-video md:aspect-[21/9] shadow-nature">
+<img alt="Ethereal Glass Villa" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLuIBNf9qFneO1cv2-52fqabfkRzspKo0CStqztyBySFcino2hvk1w8ZHk0bR1KrmNURUMocLJyt6Y6ugn50uPfnks_k3wjfB_04f6nZWn0B24hBcA6qBSTljqg96nnif5t9miXyVGuhd-i16Qs8U8tPVZm5S5oVq1eZZV69W8Rla5NiOLafknVYUVsPuYyW44rzAf3Usca06AqbhuFobgWniuoviiwSXPAkgukrLSCQkzdH4Tx0QhqZ2sHR"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-6 md:bottom-10 md:left-10 text-white">
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-label-sm font-bold backdrop-blur-md">Rare Find</span>
+<div class="flex items-center gap-1 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.98</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Content Grid -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-xl mt-md md:mt-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl">
+<!-- Left Column: Details -->
+<div class="lg:col-span-8">
+<div class="mb-xl">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-2">Ethereal Glass Villa</h1>
+<div class="flex flex-wrap items-center gap-4 text-on-surface-variant font-label-md mb-xl">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<span>Oia, Santorini, Greece</span>
+</div>
+<span class="hidden md:inline text-outline-variant">•</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary">verified_user</span>
+<span>Superhost</span>
+</div>
+</div>
+<!-- Highlights Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter mb-xl">
+<div class="p-md bg-surface-container-low rounded-xl border border-outline-variant/20 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-primary-container text-3xl mb-2">bed</span>
+<span class="font-label-md text-primary">4 Bedrooms</span>
+</div>
+<div class="p-md bg-surface-container-low rounded-xl border border-outline-variant/20 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-primary-container text-3xl mb-2">bathtub</span>
+<span class="font-label-md text-primary">3.5 Baths</span>
+</div>
+<div class="p-md bg-surface-container-low rounded-xl border border-outline-variant/20 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-primary-container text-3xl mb-2">pool</span>
+<span class="font-label-md text-primary">Infinity Pool</span>
+</div>
+<div class="p-md bg-surface-container-low rounded-xl border border-outline-variant/20 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-primary-container text-3xl mb-2">wifi</span>
+<span class="font-label-md text-primary">Ultra-Fast Wifi</span>
+</div>
+</div>
+<hr class="border-outline-variant/30 mb-xl"/>
+<!-- Description Section -->
+<div class="mb-xl">
+<h2 class="font-headline-md text-primary mb-4">About this villa</h2>
+<p class="font-body-lg text-on-surface-variant leading-relaxed">
+                                Experience the pinnacle of Aegean luxury. The Ethereal Glass Villa is a masterpiece of contemporary architecture, blending seamless floor-to-ceiling glass walls with the raw, volcanic beauty of Santorini's cliffs. Designed for the discerning traveler, this sanctuary offers panoramic views of the caldera that shift from azure to gold as the sun dips below the horizon.
+                            </p>
+<button class="mt-4 text-primary font-label-md border-b-2 border-primary hover:border-primary-container transition-colors">Show more</button>
+</div>
+<hr class="border-outline-variant/30 mb-xl"/>
+<!-- Amenities Section -->
+<div class="mb-xl">
+<h2 class="font-headline-md text-primary mb-6">What this place offers</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-12">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">landscape</span>
+<span class="font-body-md">Unobstructed Caldera view</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">chef_hat</span>
+<span class="font-body-md">Gourmet kitchen with island</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">local_parking</span>
+<span class="font-body-md">Private garage for 2 cars</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">ac_unit</span>
+<span class="font-body-md">Central climate control</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">local_laundry_service</span>
+<span class="font-body-md">In-unit washer & dryer</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">outdoor_garden</span>
+<span class="font-body-md">Private tiered gardens</span>
+</div>
+</div>
+<button class="mt-8 px-6 py-3 rounded-lg border-1.5 border-primary text-primary font-label-md hover:bg-surface-container-low transition-all">Show all 48 amenities</button>
+</div>
+<hr class="border-outline-variant/30 mb-xl"/>
+<!-- Map Section -->
+<div>
+<h2 class="font-headline-md text-primary mb-6">Where you'll be</h2>
+<div class="relative w-full h-[400px] rounded-[20px] overflow-hidden shadow-nature border border-outline-variant/20">
+<img class="w-full h-full object-cover" data-alt="A stylized, clean map view of Santorini, Greece, highlighting the village of Oia and the coastal cliffs. The map style is minimalist and high-end, using a palette of soft whites, pale blues for the water, and delicate gray lines for roads, fitting a luxury travel application's aesthetic." data-location="Santorini" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6sTphpUiiRHk2nnc8XS65bicW_fc9kIDhwMJJ7aEF66bC7wvpVL4frYzyhwi3eij3z-tlfagZzzzfEDtPk2sSMqlE7BMTcHokQX2_kL55V50f2jlVopNrZeSpvCDcr0GI0QwD6B37zwt9h-ansfiP4a0dtxxbCXnsXgfRYp_8BIBa5yFYnGYrS1ywZvfqIQo2a62dCnhOFUfPRpfJQkrkH09byIe7RfVF5pDSjOtYKdhKFK-Yc_hfsQ"/>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+<div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white shadow-xl animate-pulse">
+<span class="material-symbols-outlined">home</span>
+</div>
+<div class="mt-2 bg-white px-3 py-1 rounded-full shadow-lg font-label-sm text-primary">Ethereal Glass Villa</div>
+</div>
+</div>
+<p class="mt-4 font-body-md text-on-surface-variant">Oia, South Aegean, Greece</p>
+</div>
+</div>
+</div>
+<!-- Right Column: Booking Card -->
+<div class="lg:col-span-4">
+<div class="sticky top-28 bg-surface-container-lowest rounded-[20px] border border-outline-variant/30 p-xl shadow-nature">
+<div class="flex justify-between items-end mb-xl">
+<div>
+<span class="font-display-lg text-headline-lg text-primary">$1,250</span>
+<span class="text-on-surface-variant font-body-md">/ night</span>
+</div>
+<div class="flex items-center gap-1 text-label-sm font-bold">
+<span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.98</span>
+</div>
+</div>
+<!-- Date/Guest Selectors -->
+<div class="space-y-4 mb-xl">
+<div class="grid grid-cols-2 border border-outline-variant rounded-xl overflow-hidden">
+<div class="p-3 border-r border-outline-variant bg-surface hover:bg-surface-container-low transition-colors cursor-pointer">
+<label class="block text-[10px] font-bold text-primary uppercase tracking-wider mb-1">Check-in</label>
+<span class="text-on-surface font-label-md">Oct 24, 2024</span>
+</div>
+<div class="p-3 bg-surface hover:bg-surface-container-low transition-colors cursor-pointer">
+<label class="block text-[10px] font-bold text-primary uppercase tracking-wider mb-1">Check-out</label>
+<span class="text-on-surface font-label-md">Oct 29, 2024</span>
+</div>
+</div>
+<div class="p-3 border border-outline-variant rounded-xl bg-surface hover:bg-surface-container-low transition-colors cursor-pointer">
+<label class="block text-[10px] font-bold text-primary uppercase tracking-wider mb-1">Guests</label>
+<div class="flex justify-between items-center">
+<span class="text-on-surface font-label-md">2 adults, 1 child</span>
+<span class="material-symbols-outlined text-primary">expand_more</span>
+</div>
+</div>
+</div>
+<button class="w-full py-4 rounded-xl btn-gradient text-white font-label-md shadow-lg mb-xl active:scale-95 transition-transform">
+                            Reserve Villa
+                        </button>
+<p class="text-center text-label-sm text-on-surface-variant mb-xl">You won't be charged yet</p>
+<!-- Price Breakdown -->
+<div class="space-y-4">
+<div class="flex justify-between font-body-md text-on-surface-variant">
+<span class="underline">$1,250 x 5 nights</span>
+<span>$6,250</span>
+</div>
+<div class="flex justify-between font-body-md text-on-surface-variant">
+<span class="underline">Cleaning fee</span>
+<span>$250</span>
+</div>
+<div class="flex justify-between font-body-md text-on-surface-variant">
+<span class="underline">Staylens service fee</span>
+<span>$912</span>
+</div>
+<hr class="border-outline-variant/30 my-2"/>
+<div class="flex justify-between font-headline-md text-primary pt-2">
+<span>Total</span>
+<span>$7,412</span>
+</div>
+</div>
+<div class="mt-xl p-4 bg-tertiary-container/10 rounded-xl border border-tertiary-container/20 flex gap-3">
+<span class="material-symbols-outlined text-tertiary">diamond</span>
+<p class="text-label-sm text-tertiary font-medium">This is a premium property with curated experiences available upon request.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Host Section / Footer Content (Shared Component: Footer) -->
+<footer class="bg-surface-container-low border-t border-outline-variant/30 mt-xl">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-xl py-xl">
+<!-- Host Profile Area -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter items-start mb-xl">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-4">
+<div class="w-20 h-20 rounded-full border-2 border-primary p-1">
+<img class="w-full h-full object-cover rounded-full" data-alt="A portrait of a sophisticated luxury villa host in their 40s, exuding warmth and professional hospitality. They are dressed in smart-casual Mediterranean attire, set against a blurred background of a sunny coastal terrace. The image style is bright, airy, and high-end travel photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTG20-hOlQDztJS5AnVSQqzdaGBD0xEclva18PNze0bt2E0b93zDnyyGIslL_2pqPDeAq2kwRjt4smlRRntvD3tTMjkLDH_0H0NtRbEtgEOUUTkEpLtPcZ9G9naJ1FN4N19fS2Rp9HuL-PNIO_-3jQ0zdlk01DdVZmEo3poNY7WS2w-xcOdQcoC1UKRj3GEWed5oZxoFmb8KhtFgqBOm5owFreE3IT9QGGeCgbaeZeeJlZw5wE5psTwQ"/>
+</div>
+<div>
+<h3 class="font-headline-md text-primary">Hosted by Elena</h3>
+<p class="text-label-sm text-on-surface-variant">Joined in May 2018</p>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-md">Identity Verified</span>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<p class="font-body-md text-on-surface-variant">Elena is dedicated to providing an unparalleled experience. As a local expert, she can arrange private yacht tours, in-villa massages, and personal chef services.</p>
+<div class="space-y-1">
+<p class="font-label-md text-primary">Co-hosts:</p>
+<div class="flex gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-white">
+<img class="w-full h-full object-cover" data-alt="Close up avatar of a young professional property manager, clean look, smiling, neutral background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-yAYa5vovJXv1O0jCSijLvImK6x921ooD8teQoVm62bZW2tOK0g1LkVceS50E5-uxkWAbw-36yLgC2XcWtZqq_W5TxiDXzHu4n0SBz3vaz8lOs0ejVZ0Bk1yhLLYAuqQJUm44IfM6dQB8N5gd4eLvay-i7tz23Gbh4Jy9NsV9qV3kw6O_MEHNrLQw52NTrC15LD-95Mpul9ALHS8Egq1v3JrY8KbUbZ5ScxAjs3M6RK1NqJL9FC62XQ"/>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-white">
+<img class="w-full h-full object-cover" data-alt="Close up avatar of a concierge service member, friendly expression, professional attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsuBo3jw6bRLaJmqWrJDLXuyrJlfHABkdWR_TnnDxnqFc7jUfcRi1DtKFEAI_Pbw-T99owiXHHrWXaGhmwL8Bj-elAOCJSYoJ2qPCMQISfqtttBA0jrZRtp0Z7Tnj-c2p9fQ68IFO1W1uISA5MXgjC3ZLbDmknqsGEdRniOHD-H2-ONNyBmL1IvvjRmJQa9Lnl3yKJRd-aaNGCx07lz_HoqaFollx-_z9dIL5SAeU17Nk6towL2qgnRA"/>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4 items-start md:items-end">
+<button class="px-8 py-3 rounded-xl border-1.5 border-primary text-primary font-label-md hover:bg-primary hover:text-white transition-all duration-300 w-full md:w-auto">
+                        Message Host
+                    </button>
+<p class="text-label-sm text-on-surface-variant text-left md:text-right">Response rate: 100%<br/>Response time: within an hour</p>
+</div>
+</div>
+<hr class="border-outline-variant/20 mb-xl"/>
+<!-- Global Footer Bottom -->
+<div class="flex flex-col md:flex-row justify-between items-center gap-md">
+<div class="order-2 md:order-1">
+<p class="font-label-md text-on-surface-variant">© 2024 Staylens Global Marketplace. All rights reserved.</p>
+</div>
+<div class="order-1 md:order-2 flex flex-wrap justify-center gap-gutter">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">Support</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">Hosting</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">Staylens</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">Terms</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">Sitemap</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Bottom Navigation (Mobile Only) - Shared Component -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface dark:bg-surface-container-lowest z-50 rounded-t-xl shadow-[0_-8px_30px_rgba(45,106,79,0.08)] border-t border-outline-variant/20 pt-3 pb-safe px-4 flex justify-around items-center">
+<div class="flex flex-col items-center text-on-surface-variant dark:text-surface-variant hover:text-primary-container transition-colors active:scale-95 duration-150 cursor-pointer">
+<span class="material-symbols-outlined">search</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</div>
+<div class="flex flex-col items-center text-on-surface-variant dark:text-surface-variant hover:text-primary-container transition-colors active:scale-95 duration-150 cursor-pointer">
+<span class="material-symbols-outlined">favorite</span>
+<span class="font-label-sm text-label-sm">Wishlist</span>
+</div>
+<div class="flex flex-col items-center text-primary dark:text-primary-fixed-dim font-bold active:scale-95 duration-150 cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">travel_explore</span>
+<span class="font-label-sm text-label-sm">Trips</span>
+</div>
+<div class="flex flex-col items-center text-on-surface-variant dark:text-surface-variant hover:text-primary-container transition-colors active:scale-95 duration-150 cursor-pointer">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</div>
+</nav>
+<script>
+        // Simple scroll effect for Header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shadow-nature');
+            } else {
+                header.classList.remove('shadow-nature');
+            }
+        });
+
+        // Hover effects for booking card
+        const bookingCard = document.querySelector('.lg:col-span-4 > div');
+        if (bookingCard) {
+            bookingCard.addEventListener('mouseenter', () => {
+                bookingCard.classList.remove('shadow-nature');
+                bookingCard.classList.add('shadow-nature-hover');
+            });
+            bookingCard.addEventListener('mouseleave', () => {
+                bookingCard.classList.remove('shadow-nature-hover');
+                bookingCard.classList.add('shadow-nature');
+            });
+        }
+    </script>
+</body></html>

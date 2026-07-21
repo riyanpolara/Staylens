@@ -1,0 +1,6 @@
+# StayLens data-engineering pipeline
+pandas>=2.2
+numpy>=1.26
+psycopg2-binary>=2.9      # bulk COPY import + embedding upserts
+openai>=1.30             # text-embedding-3-small (Phase 6)
+python-dotenv>=1.0       # optional: load .env for local runs

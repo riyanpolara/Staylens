@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Staylens | Explore Luxury Nature Stays</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#0e5138",
+                    "primary-container": "#2d6a4f",
+                    "surface": "#f8f9ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#eff4ff",
+                    "tertiary-fixed-dim": "#d6c695",
+                    "on-surface-variant": "#404943",
+                    "surface-container-high": "#dee9fc",
+                    "primary-fixed-dim": "#95d4b3",
+                    "on-tertiary-fixed-variant": "#514620",
+                    "background": "#f8f9ff",
+                    "on-secondary-fixed": "#001c39",
+                    "on-primary-container": "#a8e7c5",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed": "#f3e2af",
+                    "surface-container": "#e6eeff",
+                    "on-background": "#121c2a",
+                    "secondary-fixed": "#d4e3ff",
+                    "inverse-surface": "#27313f",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#121c2a",
+                    "on-tertiary-container": "#493f1a",
+                    "primary-fixed": "#b1f0ce",
+                    "secondary": "#0060ac",
+                    "surface-container-highest": "#d9e3f6",
+                    "tertiary-container": "#baaa7c",
+                    "secondary-fixed-dim": "#a4c9ff",
+                    "secondary-container": "#64a8fe",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#231b00",
+                    "outline": "#707973",
+                    "on-primary-fixed": "#002114",
+                    "primary": "#0f5238",
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#f8f9ff",
+                    "surface-tint": "#2c694e",
+                    "inverse-primary": "#95d4b3",
+                    "on-secondary-fixed-variant": "#004883",
+                    "on-error": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "surface-variant": "#d9e3f6",
+                    "on-secondary-container": "#003c70",
+                    "surface-dim": "#d0dbed",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#eaf1ff",
+                    "outline-variant": "#bfc9c1",
+                    "tertiary": "#6a5e36"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "24px",
+                    "base": "4px",
+                    "xs": "8px",
+                    "lg": "40px",
+                    "margin-mobile": "16px",
+                    "sm": "16px",
+                    "container-max": "1280px",
+                    "xl": "64px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f8f9ff;
+            color: #121c2a;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .tinted-shadow {
+            box-shadow: 0 8px 30px rgba(45, 106, 79, 0.08);
+        }
+        .tinted-shadow-hover:hover {
+            box-shadow: 0 12px 40px rgba(45, 106, 79, 0.12);
+        }
+        .hero-gradient {
+            background: linear-gradient(180deg, #e0f2fe 0%, #f8f9ff 60%, #f5f5dc 100%);
+        }
+        .cta-gradient {
+            background: linear-gradient(135deg, #0f5238 0%, #2d6a4f 100%);
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md text-on-surface">
+<!-- Top AppBar Component -->
+<header class="fixed top-0 left-0 right-0 z-[60] glass-header bg-surface/80 border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-xl h-20 max-w-container-max mx-auto">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="nature_people">nature_people</span>
+<h1 class="font-display-lg text-headline-md font-bold text-primary tracking-tight">Staylens</h1>
+</div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-primary font-label-md border-b-2 border-primary py-2 px-1" href="#">Explore</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors py-2 px-1" href="#">Wishlist</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors py-2 px-1" href="#">Trips</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors py-2 px-1" href="#">Host</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="language">language</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 cursor-pointer hover:scale-105 transition-transform">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBy_g1q_fTNVUhzMug39ID9n9KpadX1ghOCwqNYDMDtJ6AV3XXNxH-b5LSEZyd77EUE_UD6bgld7nICoZAXoSgeXL0Jz32f3kZv_oH3jz_FfAnAYybryK_A16FfDkgdHYultIa1BMV3G-MstWh9_XDw93vggRgdv6qY8KNHQFKmyfBOVP3G9XP9_ql2bSo0dIjJYyELrtQHX829o4r6OVCz2djvgWbVqMYSjdyBxSRFyYnxIeEJF2Qxw"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-20">
+<!-- Hero & Search Section -->
+<section class="hero-gradient relative pt-xl pb-32 overflow-hidden">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-xl grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+<!-- Text Content -->
+<div class="lg:col-span-6 z-10">
+<span class="inline-block px-4 py-1.5 bg-primary-fixed text-on-primary-fixed-variant rounded-full font-label-sm mb-md tracking-wider">NATURE LUXE COLLECTION</span>
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface leading-tight mb-md">
+                        Find Sanctuary in the <span class="text-primary">Wilderness.</span>
+</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mb-xl">
+                        Curated architectural wonders settled in Earth's most breathtaking landscapes. High-end hospitality meets environmental serenity.
+                    </p>
+<!-- Search Bar Section -->
+<div class="bg-surface-container-lowest tinted-shadow p-2 md:p-3 rounded-2xl flex flex-col md:flex-row items-stretch md:items-center gap-2 max-w-3xl">
+<div class="flex-1 px-4 py-2 border-b md:border-b-0 md:border-r border-outline-variant/30 flex flex-col">
+<span class="font-label-sm text-primary uppercase tracking-tighter mb-1">Where</span>
+<input class="border-none p-0 focus:ring-0 text-on-surface font-semibold placeholder:text-outline-variant bg-transparent w-full" placeholder="Search destinations" type="text"/>
+</div>
+<div class="flex-1 px-4 py-2 border-b md:border-b-0 md:border-r border-outline-variant/30 flex flex-col">
+<span class="font-label-sm text-primary uppercase tracking-tighter mb-1">When</span>
+<input class="border-none p-0 focus:ring-0 text-on-surface font-semibold placeholder:text-outline-variant bg-transparent w-full" placeholder="Add dates" type="text"/>
+</div>
+<div class="flex-1 px-4 py-2 flex flex-col">
+<span class="font-label-sm text-primary uppercase tracking-tighter mb-1">Who</span>
+<input class="border-none p-0 focus:ring-0 text-on-surface font-semibold placeholder:text-outline-variant bg-transparent w-full" placeholder="Add guests" type="text"/>
+</div>
+<button class="cta-gradient text-white h-12 w-full md:w-12 rounded-xl flex items-center justify-center hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</div>
+</div>
+<!-- Hero Image Grid -->
+<div class="lg:col-span-6 relative h-[500px] hidden md:block">
+<div class="absolute top-0 right-0 w-3/4 h-3/4 rounded-3xl overflow-hidden tinted-shadow rotate-3 z-0">
+<img class="w-full h-full object-cover" data-alt="A cinematic, sun-drenched photograph of a luxury Balinese villa overlooking a misty tropical valley at dawn. The architecture is a blend of traditional tiered pagodas and modern glass elements, surrounded by lush green jungle palm trees. The lighting is soft and golden, creating a sense of spiritual tranquility and premium environmental luxury." src="https://lh3.googleusercontent.com/aida/AP1WRLuIBNf9qFneO1cv2-52fqabfkRzspKo0CStqztyBySFcino2hvk1w8ZHk0bR1KrmNURUMocLJyt6Y6ugn50uPfnks_k3wjfB_04f6nZWn0B24hBcA6qBSTljqg96nnif5t9miXyVGuhd-i16Qs8U8tPVZm5S5oVq1eZZV69W8Rla5NiOLafknVYUVsPuYyW44rzAf3Usca06AqbhuFobgWniuoviiwSXPAkgukrLSCQkzdH4Tx0QhqZ2sHR"/>
+</div>
+<div class="absolute bottom-0 left-0 w-3/4 h-3/4 rounded-3xl overflow-hidden tinted-shadow -rotate-3 z-10 border-4 border-surface">
+<img class="w-full h-full object-cover" data-alt="An ultra-modern architectural cabin design featuring clean lines and large glass windows reflecting a serene mountain landscape. The structure sits elegantly on a grassy knoll, illustrating the core Staylens value of nature-integrated luxury. The image uses a crisp, high-key lighting style to emphasize the clean, minimalist aesthetic and high-end materials." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeoWlAw6MoPxcwF5Xql1VUMEe-IGr5Ew7kkfcem3riFYyAsJWc3Kn9EoR_Ol-8p6qkoUuyzBgmBCvqSNSKUAFeMIG1tKiLbD9-uzXaDthVZNH3WMBMhlYb44Tir4lafASuoENtwoqdCNs2t1rlLRKoFtgCLKh12mqywStutBY4K088pZWvyADCQ43RI3iHjaKJT5GOe-pGc2PZpiXZ_k8n5mGUwffc3K3ef725WAPeLmQAbjY_hBPZxGLNDAwMtJCtTZg"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Stays (Bento Grid) -->
+<section class="py-xl max-w-container-max mx-auto px-margin-mobile md:px-xl">
+<div class="flex justify-between items-end mb-xl">
+<div>
+<h3 class="font-display-lg text-headline-lg text-on-surface">Curated Collections</h3>
+<p class="text-on-surface-variant">Exceptional homes, vetted for comfort and design.</p>
+</div>
+<button class="hidden md:flex items-center gap-xs text-primary font-semibold hover:gap-md transition-all">
+                    View all stays <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Stay Card 1 -->
+<div class="lg:col-span-2 group cursor-pointer">
+<div class="relative aspect-[16/9] rounded-[20px] overflow-hidden mb-sm tinted-shadow tinted-shadow-hover transition-all">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A sprawling, historic stone villa in Tuscany surrounded by golden rolling vineyards at sunset. The warm light bathes the landscape in a rich orange and yellow glow, highlighting the texture of the old stone walls and the orderly rows of grapevines. This cinematic landscape captures the essence of luxury rural travel and timeless architectural heritage." src="https://lh3.googleusercontent.com/aida/AP1WRLv9DTC1VwHru6lbJZcOD9-8awv5YYiSnFR7k9SH3Foa_3C1yjZ3Mu03t8NvgM_caNX5OQQ-t29Dg-qWo0xWswkXXznoXdz5bnhzlCP7hFiwHp7cPJpw6uEucfl-brZlMSraRUGB09nk7ITQHbL59JXxCQfClRDLNgelXOKJOhtOMnC-_ghAMRwuwIoq-7tr4lTrqJuuMgnXWlVVue-1ZGdE5HBZtoXSNWLWS4b-EZQx_UdGLcjKDLH0cYhk"/>
+<div class="absolute top-4 right-4 bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="star" data-weight="fill">star</span>
+<span class="font-label-sm font-bold">4.98</span>
+</div>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface">Tuscany Vineyard Villa</h4>
+<p class="text-on-surface-variant">Chianti Region, Italy</p>
+</div>
+<p class="text-right"><span class="font-bold text-primary">$850</span><span class="text-on-surface-variant font-label-sm"> / night</span></p>
+</div>
+</div>
+<!-- Stay Card 2 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-[5/4] rounded-[20px] overflow-hidden mb-sm tinted-shadow tinted-shadow-hover transition-all">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A sophisticated street view in Paris at sunset, capturing the classic Haussmann-style architecture with its ornate balconies and gray roofs. The Eiffel Tower is visible in the distance under a soft peach sky. Cobblestone streets and a warm streetlamp glow create a romantic, high-end atmosphere perfect for an urban luxury retreat." src="https://lh3.googleusercontent.com/aida/AP1WRLtWy4ld1aRXa5OPI25Kz9hhPsMFkw6imetIwFFurUvpE92fRnjdYYjA9xFOweXYw1VUvlVjKfX9HrqUBs0Lg-xxumLagzTTRwHc_bYzbtpDbyhiywoFIf3oWhX8_zp4quceqbWOxYb1621L3TISmialQjU1TAvAB8VpmgaS0pUyXVy_f5f1vTLxNoaHFBjklFN795w1M61V_lahN5iWnkcXl-qHZKNXO2EiHc7kdK_Bu0Qi8Q05DCNvoXrt"/>
+<div class="absolute top-4 right-4 bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="star" data-weight="fill">star</span>
+<span class="font-label-sm font-bold">5.0</span>
+</div>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface">Eiffel Vista Suite</h4>
+<p class="text-on-surface-variant">7th Arrondissement, Paris</p>
+<p class="mt-xs"><span class="font-bold text-primary">$1,200</span><span class="text-on-surface-variant font-label-sm"> / night</span></p>
+</div>
+</div>
+<!-- Stay Card 3 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-[5/4] rounded-[20px] overflow-hidden mb-sm tinted-shadow tinted-shadow-hover transition-all">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="An ultra-luxury skyline view of Dubai at twilight, where the Burj Khalifa towers over a sea of glowing skyscrapers and turquoise waters. A sleek white yacht is anchored in the foreground, reflecting the city's neon lights. The photography is cinematic and high-contrast, emphasizing modern opulence and the vibrant energy of a high-tech metropolis." src="https://lh3.googleusercontent.com/aida/AP1WRLu1L-Zs47oTStqx7t1KGBbPeaa7XBHE41LnqK-uUPvE7pSz7zEz19scFL2_yq2k_o03mVlS4uA9uA1BsUA0O8N-4UkUHO84OiSzTuwCJJFomG8-YVsFKcw7O8BmPqRKqGjVAL_dBmfINWWS7F9iZkAisdw7w7jSeCnQ-UgKoAc6RttmekFwo0F770v0qG3tEIr6-_9LTWetITi2YgRgo1lUdMdqWsm_yuGwkA6OGZqibyQ_stuDVPshiNvs"/>
+<div class="absolute top-4 right-4 bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="star" data-weight="fill">star</span>
+<span class="font-label-sm font-bold">4.95</span>
+</div>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface">Marina Penthouse</h4>
+<p class="text-on-surface-variant">Dubai Marina, UAE</p>
+<p class="mt-xs"><span class="font-bold text-primary">$2,450</span><span class="text-on-surface-variant font-label-sm"> / night</span></p>
+</div>
+</div>
+</div>
+</section>
+<!-- Inspiration Categories (Horizontal Scroll) -->
+<section class="bg-surface-container-low py-xl">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-xl">
+<h3 class="font-display-lg text-headline-lg text-on-surface mb-xl">Where to next?</h3>
+<div class="flex gap-md overflow-x-auto scroll-hide pb-md -mx-4 px-4">
+<div class="flex-shrink-0 w-64 group cursor-pointer">
+<div class="h-80 rounded-3xl overflow-hidden mb-sm tinted-shadow group-hover:-translate-y-2 transition-transform duration-500">
+<img class="w-full h-full object-cover" data-alt="The London skyline at night featuring the iconic Tower Bridge brilliantly illuminated in golden lights over the dark River Thames. The surrounding city lights create a vibrant bokeh effect in the background, combining historical charm with the pulse of a modern world capital. The image is crisp, professional, and full of urban character." src="https://lh3.googleusercontent.com/aida/AP1WRLtgSdQ3HqPkRnP2Nu2O7aOf1HvGrN0myeIEgYZwQhwCCqacDedyD9mTaFwH3Hinz4yc5U7Ky71QkZ_1E3n450MzKbYNKL_tRZU-msbl4hWLFir-mk4YNI7L1Srn1WM31zqNop7YXPCaMAcGESvxdMNx40QzYHHU_lNPS6aZ60caSEXG0k9zH421UQiTlOobeWIEqbjwrK6pu2P5njU13ay6CIDmdoAhu02o9ErfzO3EePpXPoZ77LM8CoaY"/>
+</div>
+<h5 class="font-headline-md text-headline-md text-center">London Charm</h5>
+</div>
+<div class="flex-shrink-0 w-64 group cursor-pointer">
+<div class="h-80 rounded-3xl overflow-hidden mb-sm tinted-shadow group-hover:-translate-y-2 transition-transform duration-500">
+<div class="w-full h-full bg-primary-container flex items-center justify-center p-8 text-center text-on-primary-container font-display-lg text-headline-lg">Swiss Alps</div>
+</div>
+<h5 class="font-headline-md text-headline-md text-center">Mountain Hideouts</h5>
+</div>
+<div class="flex-shrink-0 w-64 group cursor-pointer">
+<div class="h-80 rounded-3xl overflow-hidden mb-sm tinted-shadow group-hover:-translate-y-2 transition-transform duration-500">
+<img class="w-full h-full object-cover" data-alt="A lush tropical jungle valley in Bali with morning mist rising between coconut palms. The light is diffused and soft, highlighting the intense shades of green in the foliage. A distant hint of a traditional wooden retreat is visible, evoking a sense of calm, isolation, and premium wellness travel in harmony with nature." src="https://lh3.googleusercontent.com/aida/AP1WRLuIBNf9qFneO1cv2-52fqabfkRzspKo0CStqztyBySFcino2hvk1w8ZHk0bR1KrmNURUMocLJyt6Y6ugn50uPfnks_k3wjfB_04f6nZWn0B24hBcA6qBSTljqg96nnif5t9miXyVGuhd-i16Qs8U8tPVZm5S5oVq1eZZV69W8Rla5NiOLafknVYUVsPuYyW44rzAf3Usca06AqbhuFobgWniuoviiwSXPAkgukrLSCQkzdH4Tx0QhqZ2sHR"/>
+</div>
+<h5 class="font-headline-md text-headline-md text-center">Bali Jungles</h5>
+</div>
+<div class="flex-shrink-0 w-64 group cursor-pointer">
+<div class="h-80 rounded-3xl overflow-hidden mb-sm tinted-shadow group-hover:-translate-y-2 transition-transform duration-500">
+<img class="w-full h-full object-cover" data-alt="A panoramic view of the rolling hills of Tuscany under a cinematic golden sunset. Cypress trees line the horizon, and historic stone villas are scattered across the landscape. The color palette is rich with siennas, ochres, and deep greens, conveying a feeling of heritage and sophisticated luxury." src="https://lh3.googleusercontent.com/aida/AP1WRLv9DTC1VwHru6lbJZcOD9-8awv5YYiSnFR7k9SH3Foa_3C1yjZ3Mu03t8NvgM_caNX5OQQ-t29Dg-qWo0xWswkXXznoXdz5bnhzlCP7hFiwHp7cPJpw6uEucfl-brZlMSraRUGB09nk7ITQHbL59JXxCQfClRDLNgelXOKJOhtOMnC-_ghAMRwuwIoq-7tr4lTrqJuuMgnXWlVVue-1ZGdE5HBZtoXSNWLWS4b-EZQx_UdGLcjKDLH0cYhk"/>
+</div>
+<h5 class="font-headline-md text-headline-md text-center">Tuscany Hills</h5>
+</div>
+</div>
+</div>
+</section>
+<!-- Trending Experiences -->
+<section class="py-xl max-w-container-max mx-auto px-margin-mobile md:px-xl">
+<h3 class="font-display-lg text-headline-lg text-on-surface mb-xl text-center md:text-left">Trending Experiences</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="relative h-[450px] rounded-[32px] overflow-hidden group cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A high-end, classic sailboat gliding through the crystal-clear blue waters of Lake Como, Italy. The boat's polished wooden deck shines in the bright sunlight, and the surrounding mountains provide a majestic backdrop. The atmosphere is one of exclusive, unhurried leisure and premium nautical travel in one of Europe's most beautiful settings." src="https://lh3.googleusercontent.com/aida/AP1WRLuhUeqbz0R2u9Sok03y57X4T6XaxWe-RVslSsw2MdqDC3XxWEnXcPXtwXECPRv4YGtR81-VDpQu_BGG2bPewXgslSlsvaKG3hpVBfpKMEb9SvmZniYYCcQTLBpui-MY6Rsot10yDQsyZ_SDBZWYjDIiejnhiUTaT1hucMHiLJ8hh_ahAKWAsMBW_ac7SNFkHor8aNvwxlzMa4Fc3qDHKobAuOiumESdz0E4T8dxd5nMZ5oxohaq9pBN7fQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-md">
+<span class="text-white/80 font-label-sm uppercase tracking-widest mb-xs">Nautical</span>
+<h4 class="text-white font-headline-lg text-headline-lg mb-sm">Private Lake Sailing</h4>
+<p class="text-white/70 line-clamp-2 mb-md">Exclusive sunrise cruise on Lake Como with private chef service.</p>
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center self-end opacity-0 group-hover:opacity-100 -translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+<span class="material-symbols-outlined text-primary" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+</div>
+<div class="relative h-[450px] rounded-[32px] overflow-hidden group cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="An intimate, low-lit jazz club in New Orleans with a moody, sophisticated vibe. A saxophone player is captured in silhouette against warm amber stage lighting, with glints of light reflecting off brass instruments. The atmosphere is thick with urban character and professional musicianship, promising a deep, authentic cultural experience." src="https://lh3.googleusercontent.com/aida/AP1WRLsOYorz719dWg3cdvjVSuhogA9ZIqUGXFT8VzUgI3xj6QZrF6aEajkC62CiN12Vee4_qBqUMMhNDqGlx6kca4LZtxqlY9H9qtI91BLhU0c5BNFQ2e17YZZBBQ_9Cpi2HX2Uu9c3iMhxyZLgItZ-hZ_0Kye86A5auoOilAbHjg0D9Zc9XdmgII0l7i4O8tr72LjeMlBmynuFhDg8GpU4rN9wsGVsSFmFSaPK96LskPVUS99crC8K1-cMX1U"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-md">
+<span class="text-white/80 font-label-sm uppercase tracking-widest mb-xs">Culture</span>
+<h4 class="text-white font-headline-lg text-headline-lg mb-sm">Secret Jazz Tour</h4>
+<p class="text-white/70 line-clamp-2 mb-md">Enter the hidden speakeasies of New Orleans with a local musician guide.</p>
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center self-end opacity-0 group-hover:opacity-100 -translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+<span class="material-symbols-outlined text-primary" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+</div>
+<div class="relative h-[450px] rounded-[32px] overflow-hidden group cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="An upscale, authentic Mexican kitchen in Oaxaca where gourmet ingredients are being prepared under warm, atmospheric lighting. The scene features traditional pottery and vibrant colors, focusing on the artistry of traditional Mexican cuisine. It feels warm, inviting, and professional, suggesting a high-end culinary workshop experience." src="https://lh3.googleusercontent.com/aida/AP1WRLvUpoW44yfREZvkT4xa25klmv_0MieGdDBQildVlwfCNXf9JsW0bdKUXnl1oCDQQUr1pmXuOAq6uH-U7Ww8WAfvK10eDL5gQyWxhek9oGrUJKo_NmBAV1QXIjLYdPLr7o9mGAGBR5WtCF1Oee1qVujmLNqwhr2yVjbGwkolSz8unO4O3rMb1KsIEsMr2inSMGV8c_oHoKjE9mNSHQDbibqWvKgmLKXk7p_WgG8-7NmZ6IJj0JuQPHiBRlI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-md">
+<span class="text-white/80 font-label-sm uppercase tracking-widest mb-xs">Gastronomy</span>
+<h4 class="text-white font-headline-lg text-headline-lg mb-sm">The Oaxaca Kitchen</h4>
+<p class="text-white/70 line-clamp-2 mb-md">Master the art of mole with a Michelin-vetted local chef in her private garden.</p>
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center self-end opacity-0 group-hover:opacity-100 -translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+<span class="material-symbols-outlined text-primary" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Brand Story: The Staylens Difference -->
+<section class="py-xl bg-primary text-white">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-xl">
+<div class="text-center mb-xl max-w-2xl mx-auto">
+<h2 class="font-display-lg text-headline-lg mb-md">The Staylens Difference</h2>
+<p class="text-primary-fixed opacity-90 text-body-lg">Redefining luxury travel through transparency, curation, and the soul of nature.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="text-center p-md bg-on-primary-fixed-variant/20 rounded-3xl border border-on-primary-fixed-variant/30">
+<div class="w-16 h-16 bg-primary-fixed/20 rounded-full flex items-center justify-center mx-auto mb-md">
+<span class="material-symbols-outlined text-primary-fixed text-4xl" data-icon="verified_user">verified_user</span>
+</div>
+<h5 class="font-headline-md text-headline-md mb-xs">Vetted Professionals</h5>
+<p class="text-primary-fixed/80">Every stay is inspected and certified by our global network of architecture and hospitality experts.</p>
+</div>
+<div class="text-center p-md bg-on-primary-fixed-variant/20 rounded-3xl border border-on-primary-fixed-variant/30">
+<div class="w-16 h-16 bg-primary-fixed/20 rounded-full flex items-center justify-center mx-auto mb-md">
+<span class="material-symbols-outlined text-primary-fixed text-4xl" data-icon="payments">payments</span>
+</div>
+<h5 class="font-headline-md text-headline-md mb-xs">Transparent Pricing</h5>
+<p class="text-primary-fixed/80">No hidden service fees. What you see is what you pay, including premium insurance and 24/7 concierge.</p>
+</div>
+<div class="text-center p-md bg-on-primary-fixed-variant/20 rounded-3xl border border-on-primary-fixed-variant/30">
+<div class="w-16 h-16 bg-primary-fixed/20 rounded-full flex items-center justify-center mx-auto mb-md">
+<span class="material-symbols-outlined text-primary-fixed text-4xl" data-icon="eco">eco</span>
+</div>
+<h5 class="font-headline-md text-headline-md mb-xs">Nature First</h5>
+<p class="text-primary-fixed/80">We prioritize properties that demonstrate regenerative practices and architectural harmony with nature.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Secondary CTA: Become a Host -->
+<section class="py-xl max-w-container-max mx-auto px-margin-mobile md:px-xl">
+<div class="relative bg-surface-container-high rounded-[40px] overflow-hidden flex flex-col md:flex-row items-center">
+<div class="md:w-1/2 p-xl">
+<h2 class="font-display-lg text-headline-lg text-on-surface mb-md">Share your sanctuary.</h2>
+<p class="text-on-surface-variant text-body-lg mb-xl">Turn your architectural gem into a world-class destination. Join our exclusive circle of luxury hosts.</p>
+<button class="cta-gradient text-white px-lg py-4 rounded-xl font-bold hover:shadow-xl hover:-translate-y-1 transition-all">List your property</button>
+</div>
+<div class="md:w-1/2 h-full min-h-[400px]">
+<img class="w-full h-full object-cover" data-alt="A high-end artist's atelier in Paris during a bright afternoon. Streams of natural light flood through large industrial-style windows, illuminating a workspace filled with creative materials and architectural drafts. The mood is inspiring and professional, reflecting the high standards of design and creativity expected from Staylens hosts." src="https://lh3.googleusercontent.com/aida/AP1WRLtL9EbvzfzwJK8X-IYeUpcGS8P2I5j5bbVec6Tfc4hmPz3sCeGjlf16CAX4AlFYGCFs7aw1gugKeGWKoS4URs44B5e_IfNeKUMSC2z8vgfmbyvE42cM174vynvMjlCzCu8eldMKKhQ0MBK_psbZNJce5Phzbsx2p5FjTfKAiAj1wBBrwpZalJ6lip9rBnYA3VEf6tCgKtlMEXUS_EOFPRnOkvnIQotJjUgPhD-WNbgdxvSVGwHoU6uI69s"/>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="bg-surface-container-low border-t border-outline-variant/30 mt-xl">
+<div class="w-full py-xl px-margin-mobile md:px-xl max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="flex flex-col gap-md">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="nature_people">nature_people</span>
+<h2 class="font-display-lg text-headline-md text-primary tracking-tight">Staylens</h2>
+</div>
+<p class="text-on-surface-variant max-w-xs">Connecting discerning travelers with architectural wonders in nature's most beautiful corners.</p>
+<div class="flex gap-md">
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="public">public</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="chat">chat</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="alternate_email">alternate_email</span>
+</a>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md md:col-span-2">
+<div>
+<h6 class="font-bold mb-md text-on-surface">Explore</h6>
+<ul class="flex flex-col gap-sm">
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Nature Stays</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Experiences</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Luxe Destinations</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Gift Cards</a></li>
+</ul>
+</div>
+<div>
+<h6 class="font-bold mb-md text-on-surface">Support</h6>
+<ul class="flex flex-col gap-sm">
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Help Center</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Safety Information</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Cancellation Options</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Our COVID-19 Response</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="border-t border-outline-variant/20 py-md px-margin-mobile md:px-xl max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-md">
+<p class="text-on-surface-variant font-label-sm">© 2024 Staylens Global Marketplace. All rights reserved.</p>
+<div class="flex gap-md text-on-surface-variant font-label-sm">
+<a class="hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms</a>
+<a class="hover:text-primary transition-colors" href="#">Sitemap</a>
+</div>
+</div>
+</footer>
+<!-- Bottom NavBar for Mobile -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-safe px-4 md:hidden bg-surface shadow-[0_-8px_30px_rgba(45,106,79,0.08)] border-t border-outline-variant/20 z-50 rounded-t-xl">
+<a class="flex flex-col items-center text-primary font-bold" href="#">
+<span class="material-symbols-outlined" data-icon="search" data-weight="fill">search</span>
+<span class="font-label-sm text-label-sm mt-1">Explore</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="font-label-sm text-label-sm mt-1">Wishlist</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="travel_explore">travel_explore</span>
+<span class="font-label-sm text-label-sm mt-1">Trips</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</a>
+</nav>
+<!-- Micro-interaction Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Header scroll effect
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) {
+                    header.classList.add('shadow-sm');
+                } else {
+                    header.classList.remove('shadow-sm');
+                }
+            });
+
+            // Smooth parallax-ish effect for hero image
+            const heroImgs = document.querySelectorAll('.hero-gradient img');
+            window.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 10;
+                const y = (e.clientY / window.innerHeight - 0.5) * 10;
+                heroImgs.forEach((img, i) => {
+                    img.style.transform = `translate(${x * (i + 1)}px, ${y * (i + 1)}px) scale(1.05)`;
+                });
+            });
+        });
+    </script>
+</body></html>

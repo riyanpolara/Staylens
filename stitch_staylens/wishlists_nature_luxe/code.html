@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wishlists | Staylens</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#d9e3f6",
+                    "on-tertiary-fixed": "#231b00",
+                    "on-background": "#121c2a",
+                    "on-secondary-fixed-variant": "#004883",
+                    "tertiary-fixed": "#f3e2af",
+                    "on-error-container": "#93000a",
+                    "primary": "#0f5238",
+                    "outline-variant": "#bfc9c1",
+                    "on-secondary-fixed": "#001c39",
+                    "tertiary-container": "#baaa7c",
+                    "background": "#f8f9ff",
+                    "tertiary": "#6a5e36",
+                    "error-container": "#ffdad6",
+                    "outline": "#707973",
+                    "inverse-surface": "#27313f",
+                    "surface-bright": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#0e5138",
+                    "error": "#ba1a1a",
+                    "surface-tint": "#2c694e",
+                    "primary-fixed": "#b1f0ce",
+                    "secondary-container": "#64a8fe",
+                    "on-surface": "#121c2a",
+                    "surface-dim": "#d0dbed",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed": "#d4e3ff",
+                    "on-tertiary-container": "#493f1a",
+                    "primary-fixed-dim": "#95d4b3",
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#eff4ff",
+                    "surface": "#f8f9ff",
+                    "surface-container-highest": "#d9e3f6",
+                    "on-surface-variant": "#404943",
+                    "primary-container": "#2d6a4f",
+                    "on-primary-container": "#a8e7c5",
+                    "surface-container": "#e6eeff",
+                    "tertiary-fixed-dim": "#d6c695",
+                    "surface-container-high": "#dee9fc",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#002114",
+                    "inverse-primary": "#95d4b3",
+                    "on-tertiary-fixed-variant": "#514620",
+                    "on-secondary-container": "#003c70",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-fixed-dim": "#a4c9ff",
+                    "secondary": "#0060ac"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "sm": "16px",
+                    "gutter": "24px",
+                    "xl": "64px",
+                    "md": "24px",
+                    "container-max": "1280px",
+                    "lg": "40px",
+                    "margin-mobile": "16px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "label-sm": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .wishlist-card-shadow {
+            box-shadow: 0 8px 30px rgba(45, 106, 79, 0.08);
+        }
+        .wishlist-card-shadow:hover {
+            box-shadow: 0 12px 40px rgba(45, 106, 79, 0.12);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #0f5238 0%, #2d6a4f 100%);
+        }
+        body {
+            background-color: #f8f9ff;
+            color: #121c2a;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-body-md selection:bg-secondary-container/30">
+<!-- Top Navigation Shell -->
+<header class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md sticky top-0 z-50 border-b border-outline-variant/30 dark:border-outline/20">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-xl h-20 max-w-container-max mx-auto">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="nature_people">nature_people</span>
+<h1 class="font-display-lg text-headline-md font-bold text-primary dark:text-inverse-primary tracking-tight">Staylens</h1>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md hover:text-primary transition-colors" href="#">Explore</a>
+<a class="text-primary dark:text-primary-fixed-dim font-label-md border-b-2 border-primary" href="#">Wishlist</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md hover:text-primary transition-colors" href="#">Trips</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all" data-icon="tune">tune</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A professional and warm close-up portrait of a travel enthusiast with a blurred natural forest background. The person is smiling gently, wearing high-end outdoor apparel. The lighting is soft and golden, reflecting the premium Nature Luxe aesthetic with natural skin tones and deep green accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAE-2bYotS7SVTrpdfH5XfW3kAyRia1pDvnEHYqOfdtnUb6JuNbaE91U1QBBMrFlcU1mXDXtV2T1Ut-YJ4puPOCki_HMMMjA67rVdJe8CC3JU8XzFMCEyN7H7ymMSDTBrFKm6AH8i-i5a3E08shynOnq9xIMfhjxkhw0MJVh_h4jakS4USZkyDSz8lT30_MAWAMewtFMoaBlHr7H3jrLvfg5_8_RPN8OSU9hWX_y7wqW1QdjzdT-jo6xA"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-xl py-lg">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-sm mb-xl">
+<div>
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2">Wishlists</h2>
+<p class="text-on-surface-variant font-body-md max-w-lg">Curated collections of your most-loved escapes and future adventures in nature's embrace.</p>
+</div>
+</div>
+<!-- Bento Grid Layout for Wishlists -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Collection 1: Winter Getaways (Large Card) -->
+<div class="lg:col-span-2 group cursor-pointer">
+<div class="wishlist-card-shadow rounded-[20px] bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1">
+<div class="relative h-[300px] md:h-[400px]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A breathtaking aerial view of a luxury modern cabin nestled in a dense, snow-covered pine forest. The architecture features large glass panels reflecting a pale blue winter sky. Wisps of smoke curl from a chimney, suggesting a warm, high-end interior. The scene is tranquil, majestic, and bathed in cool, crisp northern light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6V4_lgzT1A3f9THeOLfviwGwd6XNTjXwBqIywotz3JGi8v3WX1-m04i2gMWtoifasOBYB4r5WXeYZHdXv0D7cxeBeMhM7IlE2fjR7Wb2R3DZwdVcRa2ADAefiImoO29XnUrRKl207jj3n1Dh2TrB9kLMX0YQ3WVAxOS6TNvdCr9RPyVtfOs89pmVj1HbS8eq1GxSP2yhSBp4Xnd7IhyPk6-BUknONFnhTaF8LAtB_HzQ2IqkeSsNs_w"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-6 text-white">
+<span class="inline-block px-3 py-1 rounded-full bg-secondary-container/90 text-on-secondary-container font-label-sm mb-3">12 Places</span>
+<h3 class="font-headline-lg text-3xl">Winter Getaways</h3>
+</div>
+</div>
+</div>
+</div>
+<!-- Collection 2: Summer Dreams -->
+<div class="group cursor-pointer">
+<div class="wishlist-card-shadow rounded-[20px] bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1">
+<div class="relative h-[300px] md:h-[400px]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A serene coastal scene featuring a hidden cove with crystal-clear turquoise water gently lapping against smooth, white marble rocks. A minimalist wooden deck with high-end sun loungers sits perched on the edge. The lighting is bright and warm, capturing the essence of a premium summer retreat with lush green foliage framing the top of the frame." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbRfzsMLRk2bBi4uWoGxKY0sPwXSIryNht9m06XF0YXAHzxT6mevzRBr09VWS_t2dVgIYK3WFBI-9wvHWA9pww0LLOeG4NLsKugoAe_mGcUGGKYgnuHK-UUhl17YObG9t1b5ABe0B8EduWsG8G3OK-G4o-vWq1sOmkdLP0v0gduxBnL2d2IsmJLQ_mbByQXMve4RDlXm5sBVPKr6qolkBEqLhR_J7f5o1aRqOdb6AftHDuHf5pu8Uw6Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-6 text-white">
+<span class="inline-block px-3 py-1 rounded-full bg-secondary-container/90 text-on-secondary-container font-label-sm mb-3">8 Places</span>
+<h3 class="font-headline-lg text-3xl">Summer Dreams</h3>
+</div>
+</div>
+</div>
+</div>
+<!-- Collection 3: Forest Sanctuaries -->
+<div class="group cursor-pointer">
+<div class="wishlist-card-shadow rounded-[20px] bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1">
+<div class="relative h-[300px]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="An ethereal view into the heart of a misty temperate rainforest. Sunbeams filter through towering ancient ferns and moss-covered redwood trunks. The palette is rich with deep forest greens and earth tones. The atmospheric lighting creates a sense of profound serenity and natural luxury, emphasizing the quiet majesty of a secluded forest retreat." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBafcqr2lN3YNh8EC2Jr4rCxTUaqA8e827UDthbNoT67uAMp2ZaE2tqbo9O4UE0KLAinq73TZbxsUt3bKpkVPMhsDobBDxWp2aSHa9tvsqGIGM9fLxP4qmYkiQAf57B1RtoshRKoxZJnHgtbULQoS-fqP_hGoe5143C7OR5ZTWqTVMIxKbOIGrcryyfw93s7gHs6lc0gz7SmlxVQa7CR0JgkHfyynQV5Xow05anr4s-nCbTdQ2Wwzrz4w"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-6 text-white">
+<span class="inline-block px-3 py-1 rounded-full bg-secondary-container/90 text-on-secondary-container font-label-sm mb-3">5 Places</span>
+<h3 class="font-headline-md">Forest Sanctuaries</h3>
+</div>
+</div>
+</div>
+</div>
+<!-- Collection 4: Mountain Peaks -->
+<div class="group cursor-pointer">
+<div class="wishlist-card-shadow rounded-[20px] bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1">
+<div class="relative h-[300px]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A high-altitude panorama of jagged, snow-capped mountain peaks during the golden hour. The sky is a gradient of soft peach and deep sky blue. Below the timberline, dark green forests cling to the slopes. The image evokes a sense of expansive luxury and high-adventure, presented in a clean, systematic photographic style typical of high-end travel journals." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyPv5l6_-3UnkIHhAoR5YC4A2TspPm810ierBX3xDW3ttaFvEMSBxsUypTDuD-Ao0sYR8LhTepa_kQDwQaBbaLEi6tYDOw5qeyV84UnCZMXbZe1IuYvSOOZM36zHdxXG0Ka0nl5VjDR8ZrfqsCuPuCmzr1nEgQ4vHrfiQzZi_zLiitZk70Fhf8kS4m0wilCKzyUQis3uTQ--lgzA9K-TKHrOcgnUALc6RpNQdLFG5X2TAWr-BC3qwzwQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-6 text-white">
+<span class="inline-block px-3 py-1 rounded-full bg-secondary-container/90 text-on-secondary-container font-label-sm mb-3">9 Places</span>
+<h3 class="font-headline-md">Mountain Peaks</h3>
+</div>
+</div>
+</div>
+</div>
+<!-- Create New Wishlist Placeholder -->
+<div class="group cursor-pointer">
+<button class="w-full h-[300px] rounded-[20px] border-2 border-dashed border-outline-variant/40 bg-surface-container-low hover:bg-surface-container hover:border-primary transition-all duration-300 flex flex-col items-center justify-center gap-4">
+<div class="w-14 h-14 rounded-full bg-white flex items-center justify-center text-primary wishlist-card-shadow">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</div>
+<span class="font-headline-md text-primary">Create new wishlist</span>
+</button>
+</div>
+</div>
+<!-- Sticky Mobile Create Button (Visible only on mobile) -->
+<div class="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 md:hidden">
+<button class="primary-gradient text-white flex items-center gap-2 px-6 py-4 rounded-full shadow-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span class="font-label-md">New Wishlist</span>
+</button>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-container-lowest border-t border-outline-variant/30 mt-xl">
+<div class="w-full py-xl px-margin-mobile md:px-xl max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="flex flex-col gap-4">
+<h2 class="font-display-lg text-headline-md text-primary dark:text-inverse-primary">Staylens</h2>
+<p class="text-on-surface-variant font-body-md pr-xl">Curating the world's most serene and luxurious nature-focused destinations for the discerning traveler.</p>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-3">
+<span class="font-label-md text-primary">Explore</span>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-md" href="#">Destinations</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-md" href="#">Experiences</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-md" href="#">Sustainability</a>
+</div>
+<div class="flex flex-col gap-3">
+<span class="font-label-md text-primary">Support</span>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-md" href="#">Help Center</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-md" href="#">Safety</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-md" href="#">Terms</a>
+</div>
+</div>
+<div class="flex flex-col items-start md:items-end justify-between">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:opacity-80 transition-opacity" data-icon="public">public</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:opacity-80 transition-opacity" data-icon="language">language</span>
+</div>
+<p class="text-on-surface-variant text-label-sm mt-8">© 2024 Staylens Global Marketplace. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-safe px-4 md:hidden bg-surface dark:bg-surface-container-lowest shadow-[0_-8px_30px_rgba(45,106,79,0.08)] border-t border-outline-variant/20 z-50 rounded-t-xl">
+<a class="flex flex-col items-center text-on-surface-variant dark:text-surface-variant tap-highlight-transparent active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-label-sm text-label-sm mt-1">Explore</span>
+</a>
+<a class="flex flex-col items-center text-primary dark:text-primary-fixed-dim font-bold tap-highlight-transparent active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined filled-icon" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="font-label-sm text-label-sm mt-1">Wishlist</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant dark:text-surface-variant tap-highlight-transparent active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="travel_explore">travel_explore</span>
+<span class="font-label-sm text-label-sm mt-1">Trips</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant dark:text-surface-variant tap-highlight-transparent active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions for hover states
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // Potential for adding subtle haptic vibration for mobile here if supported
+            });
+        });
+        
+        // Handle filter button click
+        const filterBtn = document.querySelector('[data-icon="tune"]');
+        if(filterBtn) {
+            filterBtn.addEventListener('click', () => {
+                console.log('Filter logic triggered');
+                // Could open a bottom sheet here
+            });
+        }
+    </script>
+</body></html>

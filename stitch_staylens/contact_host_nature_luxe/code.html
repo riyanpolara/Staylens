@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contact Host | Staylens</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#d9e3f6",
+                    "on-tertiary-fixed": "#231b00",
+                    "on-background": "#121c2a",
+                    "on-secondary-fixed-variant": "#004883",
+                    "tertiary-fixed": "#f3e2af",
+                    "on-error-container": "#93000a",
+                    "primary": "#0f5238",
+                    "outline-variant": "#bfc9c1",
+                    "on-secondary-fixed": "#001c39",
+                    "tertiary-container": "#baaa7c",
+                    "background": "#f8f9ff",
+                    "tertiary": "#6a5e36",
+                    "error-container": "#ffdad6",
+                    "outline": "#707973",
+                    "inverse-surface": "#27313f",
+                    "surface-bright": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#0e5138",
+                    "error": "#ba1a1a",
+                    "surface-tint": "#2c694e",
+                    "primary-fixed": "#b1f0ce",
+                    "secondary-container": "#64a8fe",
+                    "on-surface": "#121c2a",
+                    "surface-dim": "#d0dbed",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed": "#d4e3ff",
+                    "on-tertiary-container": "#493f1a",
+                    "primary-fixed-dim": "#95d4b3",
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#eff4ff",
+                    "surface": "#f8f9ff",
+                    "surface-container-highest": "#d9e3f6",
+                    "on-surface-variant": "#404943",
+                    "primary-container": "#2d6a4f",
+                    "on-primary-container": "#a8e7c5",
+                    "surface-container": "#e6eeff",
+                    "tertiary-fixed-dim": "#d6c695",
+                    "surface-container-high": "#dee9fc",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#002114",
+                    "inverse-primary": "#95d4b3",
+                    "on-tertiary-fixed-variant": "#514620",
+                    "on-secondary-container": "#003c70",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-fixed-dim": "#a4c9ff",
+                    "secondary": "#0060ac"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "sm": "16px",
+                    "gutter": "24px",
+                    "xl": "64px",
+                    "md": "24px",
+                    "container-max": "1280px",
+                    "lg": "40px",
+                    "margin-mobile": "16px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "label-sm": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+        }
+        .nature-shadow {
+            box-shadow: 0 8px 30px rgba(45, 106, 79, 0.08);
+        }
+        .tap-highlight-transparent {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md antialiased">
+<!-- Top Navigation Bar -->
+<header class="docked full-width top-0 sticky z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-xl h-20 max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-low transition-all duration-300 active:scale-90" onclick="history.back()">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-display-lg-mobile md:font-display-lg text-headline-md font-bold text-primary tracking-tight">Contact Host</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a friendly, smiling woman named Elena in her late 30s. She is outdoors in a lush, green forest setting, wearing a premium cream-colored linen shirt. The lighting is soft, natural, and warm, emphasizing her trustworthy and welcoming expression. The aesthetic is clean and high-end, matching a luxury travel brand's visual identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYcIpwLKcfG5GFf9Q79mFqvNN6GmVnk3VgP1spgnqjQHuWAEXDIokSHAYTA6c9JywXtOQr7DwhIv8BXQJwqEJCb5-tQfwvzTa_f1RJmVk6fjwU9FkDYZKlOokzY_VedbE7bWoXdqWQkKyFL4Gd1TPUSkFCsxS_9_KTrp0CvtKPAiKBwoeotyLbR1aq_JY_cX9QffCmVH5cbAyIMW1h4H0ixnlYucrpvxSIUS3veMpijRwPbaup81QBow"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[800px] mx-auto px-margin-mobile md:px-xl py-lg space-y-xl">
+<!-- Host Profile Section -->
+<section class="flex flex-col md:flex-row items-start md:items-center gap-gutter p-md rounded-xl bg-surface-container-low border border-outline-variant/20 nature-shadow">
+<div class="relative">
+<div class="w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-md">
+<img class="w-full h-full object-cover" data-alt="A close-up portrait of Elena, a luxury property host. She has a warm, inviting smile and is set against a blurred background of a modern, eco-friendly architectural home with large windows. The lighting is bright and airy, typical of high-end hospitality photography, highlighting a serene and premium lifestyle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzRUWwXugdS2dnSWciQbK1E3gEWsBy1LnfvLFGKoBACLu67tlzOgjFxFr7IsMGbwni3AnPYKHOFQNRfQpaU23QHDPdnxqO4rVqc0UpAJkZ9zASmPuEDBF31k-sPdLwy-S-UEEx6io1DjZipn9c9GK-62ZNELvdzpTJqRCDCp4hX25ITFmaeL8OwcS9SzArDEj_ENVsVzxpUe0lX3b3j3RmXWX2vHcyUjqcyqruI5xzEITwUO-NX1GDUw"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-primary text-white rounded-full p-1 border-2 border-white">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="flex-1">
+<h2 class="font-headline-md text-on-surface">Meet Elena</h2>
+<p class="font-body-md text-on-surface-variant mb-2">Superhost · Hosted for 5 years</p>
+<div class="flex flex-wrap gap-2">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-highest text-label-sm font-label-md text-primary">
+<span class="material-symbols-outlined text-[14px] mr-1">chat</span> Usually responds within an hour
+                    </span>
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-highest text-label-sm font-label-md text-primary">
+<span class="material-symbols-outlined text-[14px] mr-1">language</span> Speaks English, Spanish
+                    </span>
+</div>
+</div>
+</section>
+<!-- What most travelers ask (Accordions) -->
+<section class="space-y-sm">
+<h3 class="font-headline-md text-primary mb-4">What most travelers ask</h3>
+<div class="space-y-3">
+<!-- Accordion Item 1 -->
+<div class="group border border-outline-variant/30 rounded-xl bg-white overflow-hidden nature-shadow transition-all duration-300">
+<button class="w-full px-md py-4 flex items-center justify-between text-left tap-highlight-transparent" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.chevron').classList.toggle('rotate-180')">
+<span class="font-label-md text-on-surface">Check-in and Check-out times?</span>
+<span class="material-symbols-outlined chevron transition-transform duration-300 text-on-surface-variant">expand_more</span>
+</button>
+<div class="hidden px-md pb-4 text-on-surface-variant font-body-md border-t border-outline-variant/10 pt-3">
+                        Check-in is typically from 3:00 PM, and Check-out is by 11:00 AM. If you need early access, please message Elena in advance.
+                    </div>
+</div>
+<!-- Accordion Item 2 -->
+<div class="group border border-outline-variant/30 rounded-xl bg-white overflow-hidden nature-shadow transition-all duration-300">
+<button class="w-full px-md py-4 flex items-center justify-between text-left tap-highlight-transparent" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.chevron').classList.toggle('rotate-180')">
+<span class="font-label-md text-on-surface">Is there secure parking available?</span>
+<span class="material-symbols-outlined chevron transition-transform duration-300 text-on-surface-variant">expand_more</span>
+</button>
+<div class="hidden px-md pb-4 text-on-surface-variant font-body-md border-t border-outline-variant/10 pt-3">
+                        Yes, the property includes two secure, private parking spaces monitored by 24/7 security cameras for your peace of mind.
+                    </div>
+</div>
+<!-- Accordion Item 3 -->
+<div class="group border border-outline-variant/30 rounded-xl bg-white overflow-hidden nature-shadow transition-all duration-300">
+<button class="w-full px-md py-4 flex items-center justify-between text-left tap-highlight-transparent" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.chevron').classList.toggle('rotate-180')">
+<span class="font-label-md text-on-surface">Cancellation policy details?</span>
+<span class="material-symbols-outlined chevron transition-transform duration-300 text-on-surface-variant">expand_more</span>
+</button>
+<div class="hidden px-md pb-4 text-on-surface-variant font-body-md border-t border-outline-variant/10 pt-3">
+                        Full refund for cancellations made within 48 hours of booking, if the check-in date is at least 14 days away.
+                    </div>
+</div>
+</div>
+</section>
+<!-- House details and rules -->
+<section class="space-y-gutter">
+<h3 class="font-headline-md text-primary">House details and rules</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<div class="flex items-center gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/10">
+<div class="w-12 h-12 flex items-center justify-center rounded-full bg-secondary-fixed/30 text-primary">
+<span class="material-symbols-outlined">pets</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface">Pets Allowed</p>
+<p class="text-label-sm text-on-surface-variant">Well-behaved pets are welcome</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/10">
+<div class="w-12 h-12 flex items-center justify-center rounded-full bg-secondary-fixed/30 text-primary">
+<span class="material-symbols-outlined">smoke_free</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface">No Smoking</p>
+<p class="text-label-sm text-on-surface-variant">Indoor smoking is prohibited</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/10">
+<div class="w-12 h-12 flex items-center justify-center rounded-full bg-secondary-fixed/30 text-primary">
+<span class="material-symbols-outlined">volume_off</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface">Quiet Hours</p>
+<p class="text-label-sm text-on-surface-variant">10:00 PM – 7:00 AM</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/10">
+<div class="w-12 h-12 flex items-center justify-center rounded-full bg-secondary-fixed/30 text-primary">
+<span class="material-symbols-outlined">celebration</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface">No Large Parties</p>
+<p class="text-label-sm text-on-surface-variant">Small gatherings okay (max 8)</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Message Box Section -->
+<section class="space-y-gutter">
+<div class="flex flex-col gap-sm">
+<label class="font-headline-md text-primary" for="host-message">Still have questions?</label>
+<div class="relative bg-white rounded-xl border-1.5 border-outline focus-within:border-primary transition-colors duration-300 nature-shadow overflow-hidden">
+<textarea class="w-full p-md border-0 focus:ring-0 text-on-surface placeholder:text-outline/60 resize-none bg-transparent font-body-md" id="host-message" placeholder="Write your message to Elena..." rows="6"></textarea>
+<div class="px-md py-3 flex justify-end bg-surface-container-lowest border-t border-outline-variant/20">
+<button class="bg-primary-container text-white px-8 py-3 rounded-[14px] font-label-md hover:opacity-90 transition-all duration-300 scale-100 active:scale-95 shadow-md flex items-center gap-2">
+                            Send Message
+                            <span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Property Card at Bottom -->
+<section class="pt-xl">
+<div class="relative h-[240px] rounded-[20px] overflow-hidden nature-shadow group cursor-pointer border border-outline-variant/20">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A wide-angle, cinematic view of a luxury eco-villa nestled in a serene forest. The architecture features floor-to-ceiling glass walls reflecting the surrounding pine trees. It is dusk, and the interior glows with warm, golden ambient lighting. The pool in the foreground creates a perfect mirror reflection of the sky's soft blue and lavender hues. The overall mood is one of peace, privacy, and high-end natural luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5wbU9puDpl3mW3pbeIGGOq30PpJEDfSn2137VgElHYNDDFmp0xQWIXeUKFyW3FjGKSWo8Uwfq-Pf0fUqc4kZiCNPXjnpqgOFFGwOmHEfi9HM2Lk6CoXcyawk54k0EZqsiQVM4GI3PsJSXytvJ6g5GmLrOVbRq5rwDE0WDO5sxHdp8u1F1RBz3X8LRH7P0_vdLBfahZeQ1mA6c9ujYkagnWbvBVqCgWOdba4au884nRNXVKVDOrKkNog"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-md w-full flex justify-between items-end">
+<div class="text-white">
+<p class="text-label-sm font-label-md uppercase tracking-wider opacity-90">Your Inquiry Property</p>
+<h4 class="font-headline-md">Forest Edge Glass Villa</h4>
+<div class="flex items-center gap-2 text-label-md mt-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                            Cascadia Highlands, OR
+                        </div>
+</div>
+<div class="glass-card px-4 py-2 rounded-lg border border-white/20">
+<p class="text-white font-bold">$420 <span class="font-normal opacity-80">/ night</span></p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Space for Bottom Navigation -->
+<div class="h-24 md:hidden"></div>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-safe px-4 md:hidden bg-surface dark:bg-surface-container-lowest shadow-[0_-8px_30px_rgba(45,106,79,0.08)] border-t border-outline-variant/20 z-50 rounded-t-xl">
+<a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">favorite</span>
+<span class="font-label-sm text-label-sm">Wishlist</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">travel_explore</span>
+<span class="font-label-sm text-label-sm">Trips</span>
+</a>
+<a class="flex flex-col items-center text-primary font-bold active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<footer class="w-full py-xl px-margin-mobile md:px-xl max-w-container-max mx-auto border-t border-outline-variant/30 bg-surface-container-low hidden md:grid grid-cols-1 md:grid-cols-3 gap-gutter mt-xl">
+<div>
+<span class="font-display-lg text-headline-md text-primary tracking-tight">Staylens</span>
+<p class="text-on-surface-variant mt-4 font-body-md">Curating nature's most exclusive stays for the discerning traveler.</p>
+</div>
+<div class="flex flex-col gap-2">
+<h5 class="font-label-md text-primary uppercase tracking-widest mb-2">Marketplace</h5>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Sitemap</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Hosting</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Privacy</a>
+</div>
+<div class="flex flex-col gap-2">
+<h5 class="font-label-md text-primary uppercase tracking-widest mb-2">Support</h5>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Help Center</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Terms of Service</a>
+<p class="text-on-surface-variant text-label-sm mt-4">© 2024 Staylens Global Marketplace.</p>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for accordion focus
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.parentElement.classList.add('border-primary/40');
+            });
+            btn.addEventListener('mouseleave', function() {
+                this.parentElement.classList.remove('border-primary/40');
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Confirm and Pay | Staylens</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#0e5138",
+                        "primary-container": "#2d6a4f",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#d6c695",
+                        "on-surface-variant": "#404943",
+                        "surface-container-high": "#dee9fc",
+                        "primary-fixed-dim": "#95d4b3",
+                        "on-tertiary-fixed-variant": "#514620",
+                        "background": "#f8f9ff",
+                        "on-secondary-fixed": "#001c39",
+                        "on-primary-container": "#a8e7c5",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#f3e2af",
+                        "surface-container": "#e6eeff",
+                        "on-background": "#121c2a",
+                        "secondary-fixed": "#d4e3ff",
+                        "inverse-surface": "#27313f",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#121c2a",
+                        "on-tertiary-container": "#493f1a",
+                        "primary-fixed": "#b1f0ce",
+                        "secondary": "#0060ac",
+                        "surface-container-highest": "#d9e3f6",
+                        "tertiary-container": "#baaa7c",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "secondary-container": "#64a8fe",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#231b00",
+                        "outline": "#707973",
+                        "on-primary-fixed": "#002114",
+                        "primary": "#0f5238",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f8f9ff",
+                        "surface-tint": "#2c694e",
+                        "inverse-primary": "#95d4b3",
+                        "on-secondary-fixed-variant": "#004883",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#d9e3f6",
+                        "on-secondary-container": "#003c70",
+                        "surface-dim": "#d0dbed",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#eaf1ff",
+                        "outline-variant": "#bfc9c1",
+                        "tertiary": "#6a5e36"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "24px",
+                        "base": "4px",
+                        "xs": "8px",
+                        "lg": "40px",
+                        "margin-mobile": "16px",
+                        "sm": "16px",
+                        "container-max": "1280px",
+                        "xl": "64px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .shadow-nature {
+            box-shadow: 0 8px 30px rgba(45, 106, 79, 0.08);
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #0f5238 0%, #2d6a4f 100%);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-background font-body-md min-h-screen">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 h-20">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-xl h-full flex items-center justify-between">
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-all active:scale-90">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-display-lg text-headline-md font-bold text-primary tracking-tight">Confirm and Pay</h1>
+</div>
+<div class="hidden md:flex items-center gap-2">
+<div class="w-8 h-8 bg-primary-fixed-dim rounded-full flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-on-primary-fixed text-sm" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-xl py-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl items-start">
+<!-- Left Column: Authentication & Payment -->
+<div class="lg:col-span-7 space-y-xl">
+<!-- Section 1: Auth -->
+<section class="bg-surface-container-lowest rounded-[20px] p-md md:p-xl shadow-nature border border-outline-variant/10">
+<div class="mb-md">
+<h2 class="font-headline-md text-on-surface mb-2">Log in or sign up to book</h2>
+<p class="text-on-surface-variant font-body-md">Personalize your journey and secure your reservation details.</p>
+</div>
+<div class="space-y-md">
+<div class="relative">
+<label class="absolute -top-2 left-3 px-1 bg-surface-container-lowest text-label-sm text-primary font-medium">Phone number</label>
+<div class="flex items-center border-[1.5px] border-outline-variant rounded-xl overflow-hidden focus-within:border-primary transition-colors">
+<div class="px-4 py-3 border-r border-outline-variant bg-surface-container-low text-on-surface-variant font-medium">
+                                    +1
+                                </div>
+<input class="flex-1 px-4 py-3 bg-transparent border-none focus:ring-0 text-on-surface" placeholder="000-000-0000" type="tel"/>
+</div>
+</div>
+<div class="flex items-center gap-4 py-2">
+<div class="h-px flex-1 bg-outline-variant/30"></div>
+<span class="text-label-sm text-outline font-medium">or continue with</span>
+<div class="h-px flex-1 bg-outline-variant/30"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<button class="flex items-center justify-center gap-3 px-6 py-3 border-[1.5px] border-outline-variant rounded-xl hover:bg-surface-container-low transition-all font-label-md text-on-surface">
+<span class="material-symbols-outlined text-error">google</span>
+                                Google
+                            </button>
+<button class="flex items-center justify-center gap-3 px-6 py-3 border-[1.5px] border-outline-variant rounded-xl hover:bg-surface-container-low transition-all font-label-md text-on-surface">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">apps</span>
+                                Apple
+                            </button>
+</div>
+</div>
+</section>
+<!-- Section 2: Payment Method -->
+<section class="bg-surface-container-lowest rounded-[20px] p-md md:p-xl shadow-nature border border-outline-variant/10">
+<div class="mb-md">
+<h2 class="font-headline-md text-on-surface mb-2">Pay with</h2>
+</div>
+<div class="space-y-sm">
+<!-- Credit Card Selection -->
+<div class="p-4 border-[1.5px] border-primary bg-surface-container-low rounded-xl flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">credit_card</span>
+<div>
+<p class="font-label-md text-on-surface">Credit or debit card</p>
+<p class="text-label-sm text-on-surface-variant">Visa, Mastercard, AMEX</p>
+</div>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-primary flex items-center justify-center">
+<div class="w-3 h-3 bg-primary rounded-full"></div>
+</div>
+</div>
+<!-- PayPal Selection -->
+<div class="p-4 border-[1.5px] border-outline-variant rounded-xl flex items-center justify-between hover:border-primary/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">account_balance_wallet</span>
+<div>
+<p class="font-label-md text-on-surface">PayPal</p>
+<p class="text-label-sm text-on-surface-variant">Safe &amp; easy online payment</p>
+</div>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant"></div>
+</div>
+</div>
+<div class="mt-md space-y-md">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="relative">
+<label class="absolute -top-2 left-3 px-1 bg-surface-container-lowest text-label-sm text-on-surface-variant">Card number</label>
+<input class="w-full px-4 py-3 bg-transparent border-[1.5px] border-outline-variant rounded-xl focus:ring-0 focus:border-primary text-on-surface" placeholder="0000 0000 0000 0000" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="relative">
+<label class="absolute -top-2 left-3 px-1 bg-surface-container-lowest text-label-sm text-on-surface-variant">Expiry</label>
+<input class="w-full px-4 py-3 bg-transparent border-[1.5px] border-outline-variant rounded-xl focus:ring-0 focus:border-primary text-on-surface" placeholder="MM / YY" type="text"/>
+</div>
+<div class="relative">
+<label class="absolute -top-2 left-3 px-1 bg-surface-container-lowest text-label-sm text-on-surface-variant">CVV</label>
+<input class="w-full px-4 py-3 bg-transparent border-[1.5px] border-outline-variant rounded-xl focus:ring-0 focus:border-primary text-on-surface" placeholder="123" type="text"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="hidden lg:block">
+<button class="w-full py-4 rounded-[14px] btn-gradient text-white font-label-md text-lg shadow-lg active:scale-95 transition-all">
+                        Confirm and Pay
+                    </button>
+<p class="mt-4 text-center text-label-sm text-on-surface-variant px-xl">
+                        By selecting the button above, you agree to our Terms of Service, Guest Refund Policy, and Payment Terms of Service.
+                    </p>
+</div>
+</div>
+<!-- Right Column: Reservation Summary -->
+<aside class="lg:col-span-5 sticky top-28">
+<div class="bg-surface-container-lowest rounded-[20px] shadow-nature border border-outline-variant/10 overflow-hidden">
+<!-- Property Image -->
+<div class="aspect-[4/3] w-full relative">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLuIBNf9qFneO1cv2-52fqabfkRzspKo0CStqztyBySFcino2hvk1w8ZHk0bR1KrmNURUMocLJyt6Y6ugn50uPfnks_k3wjfB_04f6nZWn0B24hBcA6qBSTljqg96nnif5t9miXyVGuhd-i16Qs8U8tPVZm5S5oVq1eZZV69W8Rla5NiOLafknVYUVsPuYyW44rzAf3Usca06AqbhuFobgWniuoviiwSXPAkgukrLSCQkzdH4Tx0QhqZ2sHR"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+<div class="absolute bottom-4 left-4 text-white">
+<span class="bg-primary-container/80 backdrop-blur-md px-3 py-1 rounded-full text-label-sm font-semibold text-on-primary-container">Rare find</span>
+</div>
+</div>
+<!-- Summary Details -->
+<div class="p-md md:p-xl space-y-md">
+<div>
+<h3 class="font-headline-md text-on-surface mb-1">Luxury Villa Bali Valley</h3>
+<div class="flex items-center gap-1 text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.98</span>
+<span>(128 reviews)</span>
+</div>
+</div>
+<div class="h-px bg-outline-variant/30"></div>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<div class="space-y-0.5">
+<p class="font-label-md text-on-surface">Dates</p>
+<p class="text-body-md text-on-surface-variant">Oct 12 – 17, 2024</p>
+</div>
+<button class="text-primary font-label-md underline">Edit</button>
+</div>
+<div class="flex justify-between items-center">
+<div class="space-y-0.5">
+<p class="font-label-md text-on-surface">Guests</p>
+<p class="text-body-md text-on-surface-variant">2 guests</p>
+</div>
+<button class="text-primary font-label-md underline">Edit</button>
+</div>
+</div>
+<div class="h-px bg-outline-variant/30"></div>
+<div class="space-y-3">
+<h4 class="font-label-md text-on-surface text-lg">Price details</h4>
+<div class="flex justify-between text-body-md text-on-surface-variant">
+<span>$450 x 5 nights</span>
+<span>$2,250.00</span>
+</div>
+<div class="flex justify-between text-body-md text-on-surface-variant">
+<span class="underline">Staylens service fee</span>
+<span>$318.00</span>
+</div>
+<div class="flex justify-between text-body-md text-on-surface-variant">
+<span class="underline">Taxes &amp; fees</span>
+<span>$245.00</span>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="font-headline-md text-on-surface">Total (USD)</span>
+<span class="font-headline-md text-primary">$2,813.00</span>
+</div>
+</div>
+</div>
+<!-- Cancellation Policy Mini-Card -->
+<div class="mt-md p-4 bg-tertiary-fixed/20 border border-tertiary-container/30 rounded-xl flex gap-3">
+<span class="material-symbols-outlined text-tertiary">calendar_clock</span>
+<div class="text-label-sm">
+<p class="font-bold text-on-tertiary-fixed-variant">Free cancellation</p>
+<p class="text-on-tertiary-container/80">Cancel before Oct 5 for a full refund. After that, the reservation is non-refundable.</p>
+</div>
+</div>
+</aside></div>
+<!-- Mobile Sticky CTA -->
+<div class="lg:hidden fixed bottom-0 left-0 w-full bg-surface-container-lowest p-margin-mobile border-t border-outline-variant/30 z-50">
+<div class="flex items-center justify-between gap-4">
+<div>
+<p class="text-label-sm text-on-surface-variant">Total</p>
+<p class="font-headline-md text-primary">$2,813.00</p>
+</div>
+<button class="px-8 py-3 rounded-[14px] btn-gradient text-white font-label-md shadow-lg">
+                    Confirm and Pay
+                </button>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-outline-variant/30 mt-xl mb-24 md:mb-0">
+<div class="max-w-container-max mx-auto py-xl px-margin-mobile md:px-xl grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="space-y-4">
+<h2 class="font-display-lg text-headline-md text-primary">Staylens</h2>
+<p class="text-on-surface-variant text-body-md max-w-xs">Curating nature-focused luxury escapes for the mindful traveler.</p>
+</div>
+<div class="grid grid-cols-2 gap-4 col-span-2">
+<div class="space-y-2">
+<p class="font-label-md text-on-surface">Marketplace</p>
+<nav class="flex flex-col gap-1">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Hosting</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Staylens Plus</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Sitemap</a>
+</nav>
+</div>
+<div class="space-y-2">
+<p class="font-label-md text-on-surface">Legal</p>
+<nav class="flex flex-col gap-1">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a>
+</nav>
+</div>
+</div>
+<div class="md:col-span-3 pt-8 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-label-sm text-on-surface-variant">© 2024 Staylens Global Marketplace. All rights reserved.</p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">language</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">public</span>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for payment method selection
+        document.querySelectorAll('section:nth-of-type(2) .cursor-pointer').forEach(item => {
+            item.addEventListener('click', function() {
+                // Reset all
+                document.querySelectorAll('section:nth-of-type(2) .cursor-pointer').forEach(el => {
+                    el.classList.remove('border-primary', 'bg-surface-container-low');
+                    el.classList.add('border-outline-variant');
+                    const dot = el.querySelector('.w-6 > div');
+                    if(dot) dot.classList.add('hidden');
+                });
+                
+                // Set active
+                this.classList.remove('border-outline-variant');
+                this.classList.add('border-primary', 'bg-surface-container-low');
+                const activeDot = this.querySelector('.w-6 > div');
+                if(activeDot) activeDot.classList.remove('hidden');
+            });
+        });
+    </script>
+</body></html>

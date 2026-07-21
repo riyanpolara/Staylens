@@ -1,0 +1,39 @@
+# Secrets
+.env
+.env.local
+# local Claude Code settings — permission rules can embed API keys
+.claude/settings.local.json
+
+# Node — unanchored so it also catches nested/stray installs at any depth
+node_modules/
+.next/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Generated data artifacts (regenerate via scripts/run_etl.py)
+# NOTE: multi-GB and far over GitHub's 100 MB/file limit — kept out entirely.
+data/
+sql/seed_sample.sql
+
+# Large raw source datasets (download from insideairbnb.com / Kaggle)
+data_insideairbnb/
+listingsAndReviews.json
+Airbnb_Open_Data.csv
+
+# Runtime logs & scratch artifacts
+backend/logs/
+backend/logs_*.out
+*.log
+init_body.txt
+init_headers.txt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# stray nested npm install (misfired --prefix); safe to delete
+web/web/

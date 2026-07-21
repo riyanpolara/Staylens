@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Edit Profile | Staylens</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .premium-shadow {
+            box-shadow: 0 8px 30px rgba(45, 106, 79, 0.08);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #0f5238 0%, #2d6a4f 100%);
+        }
+        body {
+            background-color: #f8f9ff;
+            color: #121c2a;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#0e5138",
+                        "primary-container": "#2d6a4f",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#d6c695",
+                        "on-surface-variant": "#404943",
+                        "surface-container-high": "#dee9fc",
+                        "primary-fixed-dim": "#95d4b3",
+                        "on-tertiary-fixed-variant": "#514620",
+                        "background": "#f8f9ff",
+                        "on-secondary-fixed": "#001c39",
+                        "on-primary-container": "#a8e7c5",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#f3e2af",
+                        "surface-container": "#e6eeff",
+                        "on-background": "#121c2a",
+                        "secondary-fixed": "#d4e3ff",
+                        "inverse-surface": "#27313f",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#121c2a",
+                        "on-tertiary-container": "#493f1a",
+                        "primary-fixed": "#b1f0ce",
+                        "secondary": "#0060ac",
+                        "surface-container-highest": "#d9e3f6",
+                        "tertiary-container": "#baaa7c",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "secondary-container": "#64a8fe",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#231b00",
+                        "outline": "#707973",
+                        "on-primary-fixed": "#002114",
+                        "primary": "#0f5238",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f8f9ff",
+                        "surface-tint": "#2c694e",
+                        "inverse-primary": "#95d4b3",
+                        "on-secondary-fixed-variant": "#004883",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#d9e3f6",
+                        "on-secondary-container": "#003c70",
+                        "surface-dim": "#d0dbed",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#eaf1ff",
+                        "outline-variant": "#bfc9c1",
+                        "tertiary": "#6a5e36"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "24px",
+                        "base": "4px",
+                        "xs": "8px",
+                        "lg": "40px",
+                        "margin-mobile": "16px",
+                        "sm": "16px",
+                        "container-max": "1280px",
+                        "xl": "64px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface">
+<!-- Top Navigation Bar -->
+<header class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 sticky top-0 z-50">
+<nav class="flex justify-between items-center w-full px-margin-mobile md:px-xl h-20 max-w-container-max mx-auto">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-3xl">nature_people</span>
+<span class="font-display-lg text-headline-md font-bold text-primary tracking-tight">Staylens</span>
+</div>
+<div class="hidden md:flex gap-lg items-center">
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">Explore</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">Wishlist</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">Trips</a>
+<div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of Alex Rivera, a stylish male traveler in his 30s with a warm smile, wearing a premium linen shirt. The background is a soft-focus lush greenhouse with tropical plants and natural morning light, maintaining a bright and serene atmosphere consistent with a nature-focused luxury travel brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtwrGLdZVzwUhrveJV5wU2qLB8dCmmm-D9kGkpUr7Sug9dDPivzfdjvciJmYu4BlQ50ZZMdroucwa0CJo8MYfP9N8ZHIy7pWbQo1BzzEERILFRFptfpWsEPEP4AMhwDtJNMvXEGaSDpOofOhDts0RZXQklIb21JydSLDJaQLjoFs0IYZeFEJIeJf-PzujUmUTzjBbN7PTeZW04LtTpgCXU7b-N-zS8N3Bei0eWWNyQjZIuM2igeRMofQ"/>
+</div>
+</div>
+<button class="md:hidden p-2 text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</nav>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-xl py-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl">
+<!-- Sidebar Navigation (Desktop) -->
+<aside class="hidden lg:block lg:col-span-3">
+<div class="space-y-xs">
+<button class="w-full flex items-center gap-sm p-4 rounded-xl bg-surface-container text-primary font-bold transition-all">
+<span class="material-symbols-outlined filled-icon">account_circle</span>
+<span class="font-label-md">Personal Info</span>
+</button>
+<button class="w-full flex items-center gap-sm p-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">security</span>
+<span class="font-label-md">Login &amp; Security</span>
+</button>
+<button class="w-full flex items-center gap-sm p-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md">Payments &amp; Payouts</span>
+</button>
+<button class="w-full flex items-center gap-sm p-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md">Notifications</span>
+</button>
+<button class="w-full flex items-center gap-sm p-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">visibility</span>
+<span class="font-label-md">Privacy &amp; Sharing</span>
+</button>
+</div>
+</aside>
+<!-- Main Edit Profile Area -->
+<div class="lg:col-span-9 space-y-xl">
+<!-- Profile Header -->
+<section class="flex flex-col md:flex-row items-center gap-md p-md bg-surface-container-lowest rounded-[20px] premium-shadow border border-outline-variant/10">
+<div class="relative group">
+<div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white shadow-md">
+<img class="w-full h-full object-cover" data-alt="A portrait of Alex Rivera, a man in his 30s with a welcoming expression, looking directly at the camera with a blurred background of a modern architectural forest retreat. The lighting is soft and golden, highlighting a premium and serene aesthetic. The overall mood is upscale and approachable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6V0mCOUz7QUY_Iaq-CgVYNbeMMUtpvMM74RjvVm0kBZMb5NXzbjHISxRMZSQJLgkcgjHjp5g_fXV1JCOLeSPvYI4Zy-RX1JYmfUYhh9iPukuKV8HxIIrIMKG2rfuLOHmfV-1BqnspW_Lvtk72cOU6IbBnKM2e1i_ju2AGGxWNcM7DzU0Sz5IIQ4721Rl4190HB9prGvi8PFFAs-dlwAz0jHRYGQS6GxpTNFAtb8iZgftFtpbgOKdoPg"/>
+</div>
+<button class="absolute bottom-1 right-1 bg-primary text-white p-2 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">photo_camera</span>
+</button>
+</div>
+<div class="text-center md:text-left flex-1">
+<h1 class="font-display-lg text-headline-lg text-on-background">Alex Rivera</h1>
+<p class="flex items-center justify-center md:justify-start gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">location_on</span>
+                            Barcelona, Spain
+                        </p>
+<div class="mt-sm flex flex-wrap justify-center md:justify-start gap-xs">
+<span class="bg-surface-container-high px-3 py-1 rounded-full text-label-sm font-semibold flex items-center gap-xs text-primary">
+<span class="material-symbols-outlined text-xs filled-icon">verified</span>
+                                Identity Verified
+                            </span>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="px-6 py-2 rounded-xl bg-primary-container text-on-primary-container font-label-md primary-gradient shadow-md hover:opacity-90 transition-all">Save Changes</button>
+</div>
+</section>
+<!-- Achievement Grid (Asymmetric) -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-md">
+<div class="bg-surface-container-low p-md rounded-xl flex flex-col items-center justify-center text-center premium-shadow border border-outline-variant/10">
+<div class="w-12 h-12 bg-tertiary-fixed rounded-full flex items-center justify-center mb-xs text-on-tertiary-fixed-variant">
+<span class="material-symbols-outlined filled-icon">hotel_class</span>
+</div>
+<p class="font-label-md text-primary">Super Host</p>
+<p class="text-xs text-on-surface-variant">Top 5% Global</p>
+</div>
+<div class="bg-surface-container-low p-md rounded-xl flex flex-col items-center justify-center text-center premium-shadow border border-outline-variant/10">
+<div class="w-12 h-12 bg-primary-fixed rounded-full flex items-center justify-center mb-xs text-on-primary-fixed-variant">
+<span class="material-symbols-outlined filled-icon">travel_explore</span>
+</div>
+<p class="font-label-md text-primary">50 Trips</p>
+<p class="text-xs text-on-surface-variant">Global Explorer</p>
+</div>
+<div class="bg-surface-container-low p-md rounded-xl flex flex-col items-center justify-center text-center premium-shadow border border-outline-variant/10">
+<div class="w-12 h-12 bg-secondary-fixed rounded-full flex items-center justify-center mb-xs text-on-secondary-fixed-variant">
+<span class="material-symbols-outlined filled-icon">reviews</span>
+</div>
+<p class="font-label-md text-primary">4.9 Rating</p>
+<p class="text-xs text-on-surface-variant">Guest Favorite</p>
+</div>
+<div class="bg-surface-container-low p-md rounded-xl flex flex-col items-center justify-center text-center premium-shadow border border-outline-variant/10">
+<div class="w-12 h-12 bg-surface-container-highest rounded-full flex items-center justify-center mb-xs text-on-surface-variant">
+<span class="material-symbols-outlined filled-icon">eco</span>
+</div>
+<p class="font-label-md text-primary">Eco-Traveler</p>
+<p class="text-xs text-on-surface-variant">Green Champion</p>
+</div>
+</section>
+<!-- Basic Information -->
+<section class="bg-white rounded-[20px] p-md md:p-xl premium-shadow border border-outline-variant/10">
+<div class="flex justify-between items-center mb-lg">
+<h2 class="font-display-lg text-headline-md text-on-background">Basic Information</h2>
+<button class="text-primary font-label-md flex items-center gap-xs hover:underline transition-all">
+<span class="material-symbols-outlined text-lg">edit</span> Edit All
+                        </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
+<div class="space-y-sm">
+<div>
+<label class="text-label-sm text-on-surface-variant block mb-1">Legal Name</label>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/20">
+<span class="font-body-md">Alex Rivera</span>
+<button class="text-primary text-sm font-semibold">Edit</button>
+</div>
+</div>
+<div>
+<label class="text-label-sm text-on-surface-variant block mb-1">Email Address</label>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/20">
+<span class="font-body-md">alex.rivera@staylens.com</span>
+<button class="text-primary text-sm font-semibold">Edit</button>
+</div>
+</div>
+</div>
+<div class="space-y-sm">
+<div>
+<label class="text-label-sm text-on-surface-variant block mb-1">Phone Number</label>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/20">
+<span class="font-body-md">+34 6** *** 892</span>
+<button class="text-primary text-sm font-semibold">Edit</button>
+</div>
+</div>
+<div>
+<label class="text-label-sm text-on-surface-variant block mb-1">Emergency Contact</label>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/20">
+<span class="font-body-md">Not provided</span>
+<button class="text-primary text-sm font-semibold">Add</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- About & Travel Identity (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- About Me -->
+<section class="md:col-span-2 bg-white rounded-[20px] p-md md:p-lg premium-shadow border border-outline-variant/10">
+<h3 class="font-display-lg text-headline-md mb-md">About Me</h3>
+<textarea class="w-full h-40 p-4 rounded-xl border-1.5 border-outline-variant/30 focus:border-primary focus:ring-1 focus:ring-primary bg-surface-container-lowest font-body-md resize-none" placeholder="Share your story, your travel philosophy, or what you're looking for in your next staylens experience...">Architect by day, traveler by nature. I seek spaces that blur the line between indoor comfort and outdoor serenity. Always looking for the perfect morning light and a quiet spot to sketch.</textarea>
+</section>
+<!-- Travel Personality -->
+<section class="bg-surface-container-low rounded-[20px] p-md md:p-lg premium-shadow border border-outline-variant/10">
+<h3 class="font-display-lg text-headline-md mb-md">Personality</h3>
+<div class="flex flex-wrap gap-xs">
+<span class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-label-sm font-semibold">Quiet Seeker</span>
+<span class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-label-sm font-semibold">Design Lover</span>
+<span class="bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full text-label-sm font-semibold">Photography</span>
+<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-semibold">Slow Travel</span>
+<button class="w-8 h-8 rounded-full border border-primary text-primary flex items-center justify-center hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</section>
+</div>
+<!-- Languages & History -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<section class="bg-white rounded-[20px] p-md md:p-lg premium-shadow border border-outline-variant/10">
+<h3 class="font-display-lg text-headline-md mb-md">Languages</h3>
+<div class="space-y-sm">
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl">
+<span class="font-label-md">English (Native)</span>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl">
+<span class="font-label-md">Spanish (Fluent)</span>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl">
+<span class="font-label-md">Catalan (Intermediate)</span>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+<button class="w-full py-2 text-primary font-label-md text-center hover:underline">+ Add Language</button>
+</div>
+</section>
+<section class="bg-white rounded-[20px] p-md md:p-lg premium-shadow border border-outline-variant/10 overflow-hidden">
+<h3 class="font-display-lg text-headline-md mb-md">Travel History</h3>
+<div class="relative h-48 rounded-xl overflow-hidden mb-sm">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A stylized interactive world map with soft green and muted blue tones, showing glowing pins on various continents like Europe, Southeast Asia, and South America. The map has a modern, minimalist aesthetic with glassmorphism overlays and subtle organic textures, fitting for a luxury nature-themed travel platform." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBX3S_kcJQNdgt4FvDPiu2DDNQIOvKyZfxoDfxBwBghg0Q7mD2E33vZXCIFnU_3_v0kccJ8B-BqZIUg-q2Tc_8-U44cGi9Ld0zZLBECGCGopJy_A8kPuZnWlxzabeJo8A4mYGT1UC-Q_dkho528U93-KO4s2oZ_vTWesii1YiIlwAzeHasvYHa3uAiNLR261vGbwZ2m9SIMTNiigvgSIMXur2NS7g6NqblhUnXqq3Fb-4L8kf5RgN4U2w')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+<div class="absolute bottom-4 left-4 text-white">
+<p class="text-2xl font-bold">14 Countries</p>
+<p class="text-sm opacity-90">Last trip: Kyoto, Japan</p>
+</div>
+</div>
+<button class="w-full py-2 bg-primary-container text-on-primary-container rounded-xl font-label-md hover:opacity-90 transition-all">View Travel Log</button>
+</section>
+</div>
+<!-- Settings & Connected Accounts -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="bg-white rounded-[20px] p-md md:p-lg premium-shadow border border-outline-variant/10">
+<h3 class="font-display-lg text-headline-md mb-md">Connected Accounts</h3>
+<div class="space-y-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+<svg class="w-5 h-5 text-[#1877F2]" fill="currentColor" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</div>
+<div>
+<p class="font-label-md">Facebook</p>
+<p class="text-xs text-on-surface-variant">Connected</p>
+</div>
+</div>
+<button class="text-error font-label-md">Disconnect</button>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center">
+<svg class="w-5 h-5 text-[#EA4335]" fill="currentColor" viewbox="0 0 24 24"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.9 3.32-2.06 4.44-1.14 1.16-2.9 2.42-6.26 2.42-5.4 0-9.76-4.38-9.76-9.78s4.36-9.78 9.76-9.78c3 0 5.2 1.18 6.98 2.86l2.32-2.32C19.16 2.06 16.32.72 12.48.72c-6.84 0-12.48 5.64-12.48 12.48s5.64 12.48 12.48 12.48c3.68 0 6.48-1.2 8.64-3.48 2.24-2.24 2.96-5.44 2.96-8.08 0-.68-.08-1.32-.2-1.92h-11.4z"></path></svg>
+</div>
+<div>
+<p class="font-label-md">Google</p>
+<p class="text-xs text-on-surface-variant">Not connected</p>
+</div>
+</div>
+<button class="text-primary font-label-md">Connect</button>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-[20px] p-md md:p-lg premium-shadow border border-outline-variant/10">
+<h3 class="font-display-lg text-headline-md mb-md">Privacy Settings</h3>
+<div class="space-y-md">
+<div class="flex items-center justify-between">
+<div>
+<p class="font-label-md">Public Profile</p>
+<p class="text-xs text-on-surface-variant">Allow search engines to index</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant/30 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="font-label-md">Show Wishlists</p>
+<p class="text-xs text-on-surface-variant">Visible to your connections</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant/30 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+</section>
+<div class="flex justify-end gap-md pt-md border-t border-outline-variant/30">
+<button class="px-8 py-3 rounded-xl border-2 border-primary text-primary font-bold hover:bg-primary/5 transition-all">Discard</button>
+<button class="px-10 py-3 rounded-xl bg-primary text-white font-bold primary-gradient shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all">Save All Changes</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-safe px-4 md:hidden bg-surface dark:bg-surface-container-lowest shadow-lg border-t border-outline-variant/20 z-50 rounded-t-xl">
+<a class="flex flex-col items-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">favorite</span>
+<span class="font-label-sm text-label-sm">Wishlist</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">travel_explore</span>
+<span class="font-label-sm text-label-sm">Trips</span>
+</a>
+<a class="flex flex-col items-center text-primary font-bold" href="#">
+<span class="material-symbols-outlined filled-icon">account_circle</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-container-lowest border-t border-outline-variant/30 mt-xl">
+<div class="w-full py-xl px-margin-mobile md:px-xl max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="space-y-md">
+<h4 class="font-display-lg text-headline-md text-primary tracking-tight">Staylens</h4>
+<p class="text-on-surface-variant font-body-md max-w-xs">Curated nature-focused experiences for the modern traveler. Atmospheric luxury in every stay.</p>
+<div class="flex gap-md mt-sm">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">face_nod</span></a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">photo_camera</span></a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="space-y-sm">
+<h5 class="font-label-md text-primary">Support</h5>
+<ul class="space-y-xs text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Cancellation Options</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Safety Information</a></li>
+</ul>
+</div>
+<div class="space-y-sm">
+<h5 class="font-label-md text-primary">Hosting</h5>
+<ul class="space-y-xs text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">Host your home</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Community Forum</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Resources</a></li>
+</ul>
+</div>
+</div>
+<div class="space-y-sm flex flex-col items-start md:items-end">
+<h5 class="font-label-md text-primary">Newsletter</h5>
+<p class="text-on-surface-variant text-sm md:text-right mb-2">Get travel inspiration delivered.</p>
+<div class="flex w-full md:w-auto">
+<input class="bg-white border-outline-variant/30 rounded-l-xl px-4 py-2 focus:ring-1 focus:ring-primary w-full md:w-48 outline-none" placeholder="Email address" type="email"/>
+<button class="bg-primary text-white px-4 py-2 rounded-r-xl font-label-md primary-gradient">Join</button>
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-xl py-md border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-md">
+<p class="text-label-sm text-on-surface-variant">© 2024 Staylens Global Marketplace. All rights reserved.</p>
+<div class="flex gap-md text-label-sm text-on-surface-variant">
+<a class="hover:text-primary" href="#">Privacy</a>
+<a class="hover:text-primary" href="#">Terms</a>
+<a class="hover:text-primary" href="#">Sitemap</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for chips
+        document.querySelectorAll('. Personality span').forEach(chip => {
+            chip.addEventListener('click', () => {
+                chip.classList.toggle('bg-primary-container');
+                chip.classList.toggle('text-on-primary-container');
+                chip.classList.toggle('bg-surface-container-highest');
+                chip.classList.toggle('text-on-surface-variant');
+            });
+        });
+
+        // Sticky header opacity scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('premium-shadow');
+            } else {
+                header.classList.remove('premium-shadow');
+            }
+        });
+    </script>
+</body></html>

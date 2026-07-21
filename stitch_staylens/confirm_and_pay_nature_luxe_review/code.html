@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Staylens - Confirm and Pay</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .tap-highlight-transparent {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-tint": "#2c694e",
+                        "tertiary": "#6a5e36",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-container": "#493f1a",
+                        "on-secondary-fixed": "#001c39",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#231b00",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#95d4b3",
+                        "primary-fixed": "#b1f0ce",
+                        "surface": "#f8f9ff",
+                        "tertiary-fixed": "#f3e2af",
+                        "primary-container": "#2d6a4f",
+                        "outline-variant": "#bfc9c1",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#003c70",
+                        "inverse-surface": "#27313f",
+                        "surface-variant": "#d9e3f6",
+                        "on-secondary-fixed-variant": "#004883",
+                        "error-container": "#ffdad6",
+                        "background": "#f8f9ff",
+                        "outline": "#707973",
+                        "tertiary-container": "#baaa7c",
+                        "on-primary-container": "#a8e7c5",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#d9e3f6",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "inverse-primary": "#95d4b3",
+                        "on-surface": "#121c2a",
+                        "on-primary-fixed-variant": "#0e5138",
+                        "on-background": "#121c2a",
+                        "secondary": "#0060ac",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container-high": "#dee9fc",
+                        "on-primary-fixed": "#002114",
+                        "tertiary-fixed-dim": "#d6c695",
+                        "primary": "#0f5238",
+                        "secondary-fixed": "#d4e3ff",
+                        "surface-dim": "#d0dbed",
+                        "on-surface-variant": "#404943",
+                        "surface-container": "#e6eeff",
+                        "on-tertiary-fixed-variant": "#514620",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#64a8fe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1.25rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "base": "4px",
+                        "margin-mobile": "16px",
+                        "lg": "40px",
+                        "xs": "8px",
+                        "xl": "64px",
+                        "container-max": "1280px",
+                        "md": "24px",
+                        "sm": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="docked full-width top-0 sticky z-50 glass-panel border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-xl h-20 max-w-container-max mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="nature_people">nature_people</span>
+<h1 class="font-display-lg text-headline-md font-bold text-primary tracking-tight">Staylens</h1>
+</div>
+<nav class="hidden md:flex items-center gap-gutter">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">Explore</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">Wishlist</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">Trips</a>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-outline-variant/50">
+<img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGo3jwiumRP9klCLgP2WEa4QMKEwelUdmvCaPN2U6AHteEWreCRxdc4cuu6o9mKSewAm4cu2b7VvsUJ37JgXel92BiWOb69RQmnDeJMYk__N9TKOqF-rPcgmXTbot3lV0C3K6fTetcCJLv-hrhJE_8QmIli6ouAqz664Z8lWiSx9aV_4hA-hwW3BdkYwzkZXB7Rk-Gbp-pskl6XJA9yXdqnYaTjgGmDond9RfuCyJJVgkVi01tDm4-TQ"/>
+</div>
+</nav>
+<button class="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-surface-container">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-xl py-lg md:py-xl">
+<!-- Page Title -->
+<div class="flex items-center gap-4 mb-xl">
+<button aria-label="Back" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Confirm and pay</h2>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left Column: Booking Details & Payment -->
+<div class="lg:col-span-7 space-y-xl">
+<!-- Section: Your Trip -->
+<section>
+<h3 class="font-headline-md text-headline-md mb-md">Your trip</h3>
+<div class="space-y-md">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-md text-on-surface">Dates</p>
+<p class="text-on-surface-variant">Oct 12 – 17, 2024</p>
+</div>
+<button class="text-primary font-label-md hover:underline">Edit</button>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-md text-on-surface">Guests</p>
+<p class="text-on-surface-variant">2 guests</p>
+</div>
+<button class="text-primary font-label-md hover:underline">Edit</button>
+</div>
+</div>
+</section>
+<hr class="border-outline-variant/30"/>
+<!-- Section: Payment Method -->
+<section>
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-headline-md text-headline-md">Pay with</h3>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="credit_card">credit_card</span>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+</div>
+<div class="space-y-sm">
+<!-- Select Payment -->
+<div class="relative">
+<select class="w-full h-14 px-md rounded-xl border-2 border-outline-variant/50 focus:border-primary outline-none bg-surface-container-lowest appearance-none cursor-pointer">
+<option>Credit or debit card</option>
+<option>PayPal</option>
+<option>Google Pay</option>
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none" data-icon="expand_more">expand_more</span>
+</div>
+<!-- Card Inputs -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<div class="md:col-span-2">
+<input class="w-full h-14 px-md rounded-xl border-2 border-outline-variant/50 focus:border-primary outline-none bg-surface-container-lowest" placeholder="Card number" type="text"/>
+</div>
+<div>
+<input class="w-full h-14 px-md rounded-xl border-2 border-outline-variant/50 focus:border-primary outline-none bg-surface-container-lowest" placeholder="Expiration" type="text"/>
+</div>
+<div>
+<input class="w-full h-14 px-md rounded-xl border-2 border-outline-variant/50 focus:border-primary outline-none bg-surface-container-lowest" placeholder="CVV" type="text"/>
+</div>
+</div>
+</div>
+</section>
+<hr class="border-outline-variant/30"/>
+<!-- Section: Required for your trip -->
+<section>
+<h3 class="font-headline-md text-headline-md mb-md">Required for your trip</h3>
+<div class="p-md rounded-2xl bg-surface-container-low flex gap-md items-start">
+<div class="w-12 h-12 flex-shrink-0 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+</div>
+<div class="flex-grow">
+<p class="font-label-md text-on-surface">Message the host</p>
+<p class="text-body-md text-on-surface-variant mb-base">Let the host know why you're traveling and when you'll check in.</p>
+<button class="px-md py-xs rounded-lg border border-primary text-primary font-label-md hover:bg-primary/5 transition-colors">Add message</button>
+</div>
+</div>
+</section>
+<hr class="border-outline-variant/30"/>
+<!-- Section: Rules & Policies -->
+<section class="space-y-md">
+<div>
+<h4 class="font-label-md text-on-surface mb-xs">Cancellation policy</h4>
+<p class="text-on-surface-variant text-body-md">Free cancellation for 48 hours. After that, cancel before Oct 5 for a partial refund. <a class="font-bold underline decoration-primary/30" href="#">Learn more</a></p>
+</div>
+<div>
+<h4 class="font-label-md text-on-surface mb-xs">Ground rules</h4>
+<p class="text-on-surface-variant text-body-md">We ask every guest to remember a few simple things about what makes a great guest.</p>
+<ul class="mt-sm space-y-xs list-disc list-inside text-on-surface-variant">
+<li>Follow the house rules</li>
+<li>Treat the host's home like your own</li>
+</ul>
+</div>
+</section>
+<!-- Footer Legal Button -->
+<div class="pt-md">
+<p class="text-[12px] text-on-surface-variant mb-md">By selecting the button below, I agree to the <a class="underline" href="#">Host's House Rules</a>, <a class="underline" href="#">Ground rules for guests</a>, and that Staylens can charge my payment method if I'm responsible for damage.</p>
+<button class="w-full md:w-auto px-xl py-4 bg-primary text-on-primary font-bold rounded-2xl hover:bg-primary-container transition-all active:scale-95 shadow-[0_8px_30px_rgba(45,106,79,0.15)]">
+                        Confirm and pay
+                    </button>
+</div>
+</div>
+<!-- Right Column: Price Summary Card (Sticky) -->
+<aside class="lg:col-span-5 lg:sticky lg:top-24">
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-md md:p-lg shadow-[0_8px_30px_rgba(45,106,79,0.08)]">
+<!-- Property Summary -->
+<div class="flex gap-md mb-lg">
+<div class="w-24 h-24 md:w-32 md:h-28 rounded-xl overflow-hidden flex-shrink-0">
+<img alt="Eco Villa" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-5PFUzyfMOAb93EWd8c33VSTiAIW3_n6xcpmqCxSgKqxWimQ6XkpRLWqpCEoERaNjq6X0-gDtIbyd-2seC5-o6U8raAy7JOSyPHRyeJ533zeKJJ_d4NOjWE8NowQmNTlN9WGpzULsbbovBcBKnLWyqnZ1vpEp3kEL7rI1KlwNWQ29i06p10ozkK05mvk3MZQptmuR1TBrFeAgtiWOpkl8WzAaj91nAizunUwI9j_c8UGETy2ht6hwjA"/>
+</div>
+<div class="flex flex-col justify-between">
+<div>
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider">ENTIRE COTTAGE</span>
+<h4 class="font-headline-md text-headline-md text-on-surface leading-tight">Serene Forest Sanctuary</h4>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md">4.92</span>
+<span class="text-on-surface-variant text-label-sm">(128 reviews)</span>
+</div>
+</div>
+</div>
+<hr class="border-outline-variant/30 mb-lg"/>
+<!-- Price Details -->
+<div class="space-y-md mb-lg">
+<h4 class="font-headline-md text-headline-md">Price details</h4>
+<div class="flex justify-between items-center text-on-surface-variant">
+<p class="text-body-md">$245.00 x 5 nights</p>
+<p class="text-body-md">$1,225.00</p>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<p class="text-body-md underline decoration-dotted">Cleaning fee</p>
+<p class="text-body-md">$85.00</p>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<p class="text-body-md underline decoration-dotted">Staylens service fee</p>
+<p class="text-body-md">$182.00</p>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<p class="text-body-md underline decoration-dotted">Taxes</p>
+<p class="text-body-md">$125.00</p>
+</div>
+</div>
+<hr class="border-outline-variant/30 mb-md"/>
+<!-- Total -->
+<div class="flex justify-between items-center mb-lg">
+<p class="font-headline-md text-headline-md text-on-surface">Total (USD)</p>
+<p class="font-headline-md text-headline-md text-on-surface">$1,617.00</p>
+</div>
+<!-- Promo Code -->
+<button class="w-full flex items-center justify-between p-md rounded-xl bg-surface-container-low text-primary font-label-md hover:bg-surface-container-high transition-colors">
+<span>Enter a coupon code</span>
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+<!-- Safe Checkout Badge -->
+<div class="mt-gutter flex items-center justify-center gap-2 text-on-surface-variant/60">
+<span class="material-symbols-outlined text-[16px]" data-icon="lock">lock</span>
+<span class="text-label-sm uppercase tracking-widest">Secure Checkout</span>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-outline-variant/30 mt-xl">
+<div class="w-full py-xl px-margin-mobile md:px-xl max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div>
+<h4 class="font-display-lg text-headline-md text-primary mb-md">Staylens</h4>
+<p class="text-on-surface-variant text-body-md max-w-xs">Curated, nature-focused experiences for the discerning traveler. Sustainable luxury in every destination.</p>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="space-y-sm">
+<h5 class="font-label-md text-on-surface">Marketplace</h5>
+<ul class="space-y-xs text-on-surface-variant text-body-md">
+<li><a class="hover:text-primary transition-colors" href="#">Support</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Hosting</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Sitemap</a></li>
+</ul>
+</div>
+<div class="space-y-sm">
+<h5 class="font-label-md text-on-surface">Legal</h5>
+<ul class="space-y-xs text-on-surface-variant text-body-md">
+<li><a class="hover:text-primary transition-colors" href="#">Privacy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Terms</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Cookie Policy</a></li>
+</ul>
+</div>
+</div>
+<div class="flex flex-col justify-end">
+<p class="text-on-surface-variant text-label-md">© 2024 Staylens Global Marketplace. All rights reserved.</p>
+<div class="flex gap-md mt-sm">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-icon="language">language</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-icon="share">share</span>
+</div>
+</div>
+</div>
+</footer>
+<!-- Bottom Nav for Mobile -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-safe px-4 md:hidden bg-surface border-t border-outline-variant/20 shadow-lg z-50 rounded-t-xl">
+<a class="flex flex-col items-center text-on-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="text-label-sm font-label-sm mt-1">Explore</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="text-label-sm font-label-sm mt-1">Wishlist</span>
+</a>
+<a class="flex flex-col items-center text-primary font-bold transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="travel_explore" style="font-variation-settings: 'FILL' 1;">travel_explore</span>
+<span class="text-label-sm font-label-sm mt-1">Trips</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="text-label-sm font-label-sm mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

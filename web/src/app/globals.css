@@ -1,0 +1,205 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ------------------------------------------------------------------ *
+ *  StayLens · "Nature Luxe" theme — tokens from the Stitch Explore
+ *  screen (single source of truth). shadcn vars are remapped to the
+ *  brand palette; Stitch Material-style tokens are exposed as extra
+ *  color utilities (surface-*, on-surface-*, primary-fixed, …).
+ * ------------------------------------------------------------------ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-jakarta);
+
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  /* Stitch design-system tokens */
+  --color-surface: #f8f9ff;
+  --color-surface-bright: #f8f9ff;
+  --color-surface-dim: #d0dbed;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #eff4ff;
+  --color-surface-container: #e6eeff;
+  --color-surface-container-high: #dee9fc;
+  --color-surface-container-highest: #d9e3f6;
+  --color-on-surface: #121c2a;
+  --color-on-surface-variant: #404943;
+  --color-outline: #707973;
+  --color-outline-variant: #bfc9c1;
+  --color-primary-container: #2d6a4f;
+  --color-on-primary-container: #a8e7c5;
+  --color-primary-fixed: #b1f0ce;
+  --color-primary-fixed-dim: #95d4b3;
+  --color-on-primary-fixed: #002114;
+  --color-on-primary-fixed-variant: #0e5138;
+  --color-tertiary: #6a5e36;
+  --color-tertiary-container: #baaa7c;
+  --color-on-tertiary-container: #493f1a;
+  --color-tertiary-fixed: #f3e2af;
+  --color-tertiary-fixed-dim: #d6c695;
+  --color-on-tertiary-fixed-variant: #514620;
+  --color-secondary-fixed: #d4e3ff;
+  --color-on-secondary-fixed-variant: #004883;
+  --color-inverse-surface: #27313f;
+
+  /* Tinted brand shadows (rgba(45,106,79,…)) */
+  --shadow-tinted: 0 8px 30px rgb(45 106 79 / 0.08);
+  --shadow-tinted-lg: 0 12px 40px rgb(45 106 79 / 0.12);
+  --shadow-nav-top: 0 -8px 30px rgb(45 106 79 / 0.08);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* shadcn palette → Nature Luxe */
+  --background: #f8f9ff;            /* surface */
+  --foreground: #121c2a;            /* on-surface */
+  --card: #ffffff;                  /* surface-container-lowest */
+  --card-foreground: #121c2a;
+  --popover: #ffffff;
+  --popover-foreground: #121c2a;
+  --primary: #0f5238;               /* deep forest green */
+  --primary-foreground: #ffffff;
+  --secondary: #eff4ff;             /* surface-container-low */
+  --secondary-foreground: #121c2a;
+  --muted: #e6eeff;                 /* surface-container */
+  --muted-foreground: #404943;      /* on-surface-variant */
+  --accent: #b1f0ce;                /* primary-fixed */
+  --accent-foreground: #0e5138;     /* on-primary-fixed-variant */
+  --destructive: #ba1a1a;
+  --border: color-mix(in srgb, #bfc9c1 40%, transparent);
+  --input: color-mix(in srgb, #bfc9c1 55%, transparent);
+  --ring: #0f5238;
+  --radius: 0.75rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans scroll-smooth;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  ::selection {
+    background: #b1f0ce;
+    color: #0e5138;
+  }
+}
+
+@utility hero-gradient {
+  background: linear-gradient(180deg, #e0f2fe 0%, #f8f9ff 60%, #f5f5dc 100%);
+}
+
+@utility cta-gradient {
+  background: linear-gradient(135deg, #0f5238 0%, #2d6a4f 100%);
+}
+
+@utility glass-header {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@utility scroll-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Dual-thumb price slider: track ignores the pointer, thumbs catch it */
+.range-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 1px solid #bfc9c1;
+  box-shadow: 0 4px 12px rgb(45 106 79 / 0.18);
+  cursor: grab;
+}
+.range-thumb::-moz-range-thumb {
+  pointer-events: auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 1px solid #bfc9c1;
+  box-shadow: 0 4px 12px rgb(45 106 79 / 0.18);
+  cursor: grab;
+}
+
+/* ------------------------------------------------------------------ *
+ *  Premium landing page (StayLens Premium design) — keyframes
+ * ------------------------------------------------------------------ */
+@keyframes lp-kenburns {
+  0% { transform: scale(1.05) translate(0, 0); }
+  100% { transform: scale(1.22) translate(-2%, -2%); }
+}
+@keyframes lp-floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-22px); }
+}
+@keyframes lp-orbpulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 60px 10px rgba(201, 162, 75, 0.35), inset 0 0 40px rgba(255, 255, 255, 0.4); }
+  50% { transform: scale(1.06); box-shadow: 0 0 100px 24px rgba(201, 162, 75, 0.5), inset 0 0 60px rgba(255, 255, 255, 0.55); }
+}
+@keyframes lp-markerpulse {
+  0% { box-shadow: 0 0 0 0 rgba(201, 162, 75, 0.55); }
+  70% { box-shadow: 0 0 0 22px rgba(201, 162, 75, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(201, 162, 75, 0); }
+}
+@keyframes lp-dashflow {
+  to { stroke-dashoffset: -60; }
+}
+@keyframes lp-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+@keyframes lp-spinslow {
+  to { transform: rotate(360deg); }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .lp-anim,
+  .lp-anim * {
+    animation: none !important;
+  }
+}

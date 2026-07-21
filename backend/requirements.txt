@@ -1,0 +1,12 @@
+# StayLens Hybrid Search backend — core (works with NO AI provider)
+fastapi>=0.115
+uvicorn[standard]>=0.30
+psycopg2-binary>=2.9
+pydantic>=2.7
+python-dotenv>=1.0
+
+# ---- optional embedding providers (install only what you use) --------------
+# openai>=1.30                 # EMBEDDING_PROVIDER=openai  (OPENAI_API_KEY)
+# google Gemini needs no SDK — REST via stdlib (GEMINI_API_KEY)
+# Ollama needs no SDK — REST via stdlib (OLLAMA_HOST)
+# sentence-transformers>=3.0   # EMBEDDING_PROVIDER=sentence-transformers (local)

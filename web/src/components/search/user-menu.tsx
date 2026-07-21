@@ -1,0 +1,240 @@
+"use client";
+
+import Link from "next/link";
+import {
+  Bell,
+  Compass,
+  Globe,
+  Heart,
+  HelpCircle,
+  House,
+  Menu,
+  MessageSquare,
+  CircleUser,
+  type LucideIcon,
+} from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
+
+const AUTH_KEY = "staylens_authed";
+/** demo signed-in identity (no real auth in this preview) */
+const DEMO_NAME = "Riyan";
+
+/**
+ * Airbnb-style account menu: a "Become a host" link, a globe (guest) that
+ * becomes a profile avatar once signed in, and a hamburger that opens a
+ * dropdown whose contents depend on the auth state. Sign-in state is simulated
+ * client-side (localStorage) since this preview has no real auth.
+ */
+export function UserMenu({ light = false }: { light?: boolean }) {
+  const [open, setOpen] = useState(false);
+  const [authed, setAuthed] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    try {
+      setAuthed(localStorage.getItem(AUTH_KEY) === "1");
+    } catch {
+      /* SSR / privacy mode — stay signed out */
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(e: PointerEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  function setAuth(next: boolean) {
+    setAuthed(next);
+    try {
+      localStorage.setItem(AUTH_KEY, next ? "1" : "0");
+    } catch {
+      /* ignore */
+    }
+    setOpen(false);
+  }
+
+  const initial = DEMO_NAME.charAt(0).toUpperCase();
+
+  return (
+    <div ref={ref} className="relative flex items-center gap-2 shrink-0">
+      <a
+        href="#"
+        className={cn(
+          "hidden lg:block text-sm font-semibold px-4 py-2 rounded-full transition-colors duration-300",
+          light
+            ? "text-white drop-shadow-md hover:bg-white/10"
+            : "text-on-surface hover:bg-surface-container-low",
+        )}
+      >
+        Become a host
+      </a>
+
+      {authed ? (
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          aria-haspopup="menu"
+          aria-expanded={open}
+          aria-label="Your account"
+          className="w-10 h-10 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-bold flex items-center justify-center hover:scale-105 transition-transform focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          {initial}
+        </button>
+      ) : (
+        <button
+          type="button"
+          aria-label="Choose a language and region"
+          className="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          <Globe aria-hidden className="size-5 text-on-surface" strokeWidth={1.8} />
+        </button>
+      )}
+
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label="Main menu"
+        className="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+      >
+        <Menu aria-hidden className="size-5 text-on-surface" strokeWidth={2} />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="menu"
+            role="menu"
+            aria-label="Account menu"
+            initial={{ opacity: 0, y: 8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+            transition={{ duration: 0.18, ease: [0.21, 0.65, 0.36, 1] }}
+            className="absolute right-0 top-full mt-3 w-80 max-w-[calc(100vw-2rem)] max-h-[min(80vh,640px)] overflow-y-auto bg-surface-container-lowest rounded-2xl shadow-tinted-lg border border-outline-variant/20 py-2 z-[70]"
+          >
+            {authed ? (
+              <AuthedItems onLogout={() => setAuth(false)} onNavigate={() => setOpen(false)} />
+            ) : (
+              <GuestItems onLogin={() => setAuth(true)} />
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function GuestItems({ onLogin }: { onLogin: () => void }) {
+  return (
+    <>
+      <MenuItem icon={HelpCircle} label="Help Centre" />
+      <Divider />
+      <HostPromo />
+      <Divider />
+      <MenuItem label="Refer a host" />
+      <MenuItem label="Find a co-host" />
+      <Divider />
+      <MenuItem label="Log in or sign up" onClick={onLogin} />
+    </>
+  );
+}
+
+function AuthedItems({
+  onLogout,
+  onNavigate,
+}: {
+  onLogout: () => void;
+  onNavigate: () => void;
+}) {
+  return (
+    <>
+      <MenuItem icon={Heart} label="Wishlists" />
+      <MenuItem icon={Compass} label="Trips" />
+      <MenuItem icon={MessageSquare} label="Messages" />
+      <MenuItem icon={CircleUser} label="Profile" href="/profile/edit" onClick={onNavigate} />
+      <Divider />
+      <MenuItem icon={Bell} label="Notifications" />
+      <Divider />
+      <MenuItem icon={HelpCircle} label="Help Centre" />
+      <Divider />
+      <HostPromo />
+      <Divider />
+      <MenuItem label="Refer a host" />
+      <MenuItem label="Find a co-host" />
+      <Divider />
+      <MenuItem label="Log out" onClick={onLogout} />
+    </>
+  );
+}
+
+function HostPromo() {
+  return (
+    <a
+      href="#"
+      role="menuitem"
+      className="flex items-start justify-between gap-3 px-4 py-3 hover:bg-surface-container-low transition-colors"
+    >
+      <span className="min-w-0">
+        <span className="block font-semibold text-on-surface">Become a host</span>
+        <span className="block text-sm text-on-surface-variant leading-snug">
+          It&apos;s easy to start hosting and earn extra income.
+        </span>
+      </span>
+      <span className="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center shrink-0">
+        <House aria-hidden className="size-6 text-on-primary-fixed-variant" strokeWidth={1.8} />
+      </span>
+    </a>
+  );
+}
+
+function MenuItem({
+  icon: Icon,
+  label,
+  href,
+  onClick,
+}: {
+  icon?: LucideIcon;
+  label: string;
+  href?: string;
+  onClick?: () => void;
+}) {
+  const className = cn(
+    "w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-on-surface hover:bg-surface-container-low transition-colors",
+  );
+  const inner = (
+    <>
+      {Icon && <Icon aria-hidden className="size-5 text-on-surface shrink-0" strokeWidth={1.8} />}
+      <span>{label}</span>
+    </>
+  );
+  if (href) {
+    return (
+      <Link href={href} role="menuitem" className={className} onClick={onClick}>
+        {inner}
+      </Link>
+    );
+  }
+  return (
+    <button type="button" role="menuitem" className={className} onClick={onClick}>
+      {inner}
+    </button>
+  );
+}
+
+function Divider() {
+  return <hr className="my-2 border-outline-variant/30" role="separator" />;
+}

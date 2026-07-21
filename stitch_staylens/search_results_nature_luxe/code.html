@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Staylens | Amalfi Coast Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tap-highlight-transparent {
+            -webkit-tap-highlight-color: transparent;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        @media (max-width: 768px) {
+            .pb-safe {
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#0e5138",
+                        "primary-container": "#2d6a4f",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#d6c695",
+                        "on-surface-variant": "#404943",
+                        "surface-container-high": "#dee9fc",
+                        "primary-fixed-dim": "#95d4b3",
+                        "on-tertiary-fixed-variant": "#514620",
+                        "background": "#f8f9ff",
+                        "on-secondary-fixed": "#001c39",
+                        "on-primary-container": "#a8e7c5",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#f3e2af",
+                        "surface-container": "#e6eeff",
+                        "on-background": "#121c2a",
+                        "secondary-fixed": "#d4e3ff",
+                        "inverse-surface": "#27313f",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#121c2a",
+                        "on-tertiary-container": "#493f1a",
+                        "primary-fixed": "#b1f0ce",
+                        "secondary": "#0060ac",
+                        "surface-container-highest": "#d9e3f6",
+                        "tertiary-container": "#baaa7c",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "secondary-container": "#64a8fe",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#231b00",
+                        "outline": "#707973",
+                        "on-primary-fixed": "#002114",
+                        "primary": "#0f5238",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f8f9ff",
+                        "surface-tint": "#2c694e",
+                        "inverse-primary": "#95d4b3",
+                        "on-secondary-fixed-variant": "#004883",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#d9e3f6",
+                        "on-secondary-container": "#003c70",
+                        "surface-dim": "#d0dbed",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#eaf1ff",
+                        "outline-variant": "#bfc9c1",
+                        "tertiary": "#6a5e36"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "24px",
+                        "base": "4px",
+                        "xs": "8px",
+                        "lg": "40px",
+                        "margin-mobile": "16px",
+                        "sm": "16px",
+                        "container-max": "1280px",
+                        "xl": "64px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<header class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 dark:border-outline/20 docked full-width top-0 sticky z-50">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-xl h-20 max-w-container-max mx-auto gap-gutter">
+<!-- Brand -->
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="nature_people">nature_people</span>
+<span class="font-display-lg text-headline-md font-bold text-primary tracking-tight hidden sm:block">Staylens</span>
+</div>
+<!-- Search Bar (Active State) -->
+<div class="flex-1 max-w-2xl px-xs md:px-0">
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant rounded-full py-2 px-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+<div class="flex-1 overflow-hidden">
+<p class="text-label-md font-bold truncate">Amalfi Coast</p>
+<p class="text-label-sm text-on-surface-variant truncate">Oct 15-20 • 2 guests</p>
+</div>
+<div class="bg-primary p-2 rounded-full text-on-primary flex items-center justify-center group-active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="search">search</span>
+</div>
+</div>
+</div>
+<!-- Profile/Avatar -->
+<div class="flex items-center gap-md">
+<nav class="hidden lg:flex items-center gap-md">
+<a class="text-primary dark:text-primary-fixed-dim font-label-md border-b-2 border-primary py-xs" href="#">Explore</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md hover:text-primary transition-colors py-xs" href="#">Wishlist</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md hover:text-primary transition-colors py-xs" href="#">Trips</a>
+</nav>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant cursor-pointer active:scale-95 transition-transform">
+<img class="w-full h-full object-cover" data-alt="A professional and friendly portrait of a traveler, high-end photography style, soft natural lighting, elegant and approachable appearance. The user is set against a blurred background of a modern luxury lounge, emphasizing a theme of premium travel and elite hospitality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-l5rJOscvQ8pXqYxOXPOECydHc5_SjmpOJjN9wamlRFQPO0whi8F6k1Rwi-6X3J9dC5Er5__11X6ge3UAmEBFUcFRL6z_OqBDE8JkyStQC5TzOkJwQkWuFlkD5MQcLy7hjzoGtM5EEAqVqU4krA1sytaFRyAAHv17BiI1KxdBeJHtx2lIU24kar3orDuCO_-syiZnaXADfXB1FHW0sP_MrTBTCUMS-33unKKlk7WhZ_OLWiTfm0rp5A"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-xl pt-xs pb-xl">
+<!-- Filter Bar -->
+<section class="sticky top-20 bg-surface/80 backdrop-blur-md py-4 z-40">
+<div class="flex items-center gap-xs overflow-x-auto no-scrollbar pb-2">
+<button class="flex items-center gap-xs bg-primary text-on-primary px-sm py-2 rounded-full font-label-md whitespace-nowrap active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px]" data-icon="tune">tune</span>
+                    Filters
+                </button>
+<div class="h-8 w-px bg-outline-variant mx-xs"></div>
+<button class="bg-surface-container-lowest border border-outline-variant px-sm py-2 rounded-full font-label-md whitespace-nowrap hover:border-primary hover:text-primary transition-all active:scale-95">Price</button>
+<button class="bg-surface-container-lowest border border-outline-variant px-sm py-2 rounded-full font-label-md whitespace-nowrap hover:border-primary hover:text-primary transition-all active:scale-95">Type of place</button>
+<button class="bg-surface-container-lowest border border-outline-variant px-sm py-2 rounded-full font-label-md whitespace-nowrap hover:border-primary hover:text-primary transition-all active:scale-95">Rooms &amp; beds</button>
+<button class="bg-primary-container text-on-primary-container px-sm py-2 rounded-full font-label-md whitespace-nowrap border border-primary-container active:scale-95">Amenities: Nature</button>
+<button class="bg-surface-container-lowest border border-outline-variant px-sm py-2 rounded-full font-label-md whitespace-nowrap hover:border-primary hover:text-primary transition-all active:scale-95">Guest favorites</button>
+</div>
+</section>
+<!-- Results Header -->
+<header class="mt-xs mb-md">
+<h1 class="font-headline-md text-on-background">348 results for Amalfi Coast</h1>
+<p class="text-on-surface-variant font-body-md mt-base">Luxury stays nestled in nature's finest coastal cliffs.</p>
+</header>
+<!-- Results Grid -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
+<!-- Result Card 1 -->
+<article class="group cursor-pointer">
+<div class="relative aspect-[5/4] overflow-hidden rounded-[20px] shadow-[0_8px_30px_rgba(45,106,79,0.08)] mb-4">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AP1WRLv9DTC1VwHru6lbJZcOD9-8awv5YYiSnFR7k9SH3Foa_3C1yjZ3Mu03t8NvgM_caNX5OQQ-t29Dg-qWo0xWswkXXznoXdz5bnhzlCP7hFiwHp7cPJpw6uEucfl-brZlMSraRUGB09nk7ITQHbL59JXxCQfClRDLNgelXOKJOhtOMnC-_ghAMRwuwIoq-7tr4lTrqJuuMgnXWlVVue-1ZGdE5HBZtoXSNWLWS4b-EZQx_UdGLcjKDLH0cYhk"/>
+<button class="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-colors">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-[14px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-bold">4.92</span>
+</div>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-label-md text-on-surface font-bold">The Golden Vineyard Villa</h3>
+<p class="text-on-surface-variant text-label-sm">Positano, Italy</p>
+<p class="text-on-surface-variant text-label-sm">Oct 15 – 20</p>
+<p class="mt-xs font-label-md text-primary"><span class="font-bold">$842</span> night</p>
+</div>
+</div>
+</article>
+<!-- Result Card 2 -->
+<article class="group cursor-pointer">
+<div class="relative aspect-[5/4] overflow-hidden rounded-[20px] shadow-[0_8px_30px_rgba(45,106,79,0.08)] mb-4">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AP1WRLsT2OtWNIRb2b1Z6qxaVfGzo87Ticvyfr4dhdTb6-Icb2o-lFJRq0VmW2w72ERm8CR3g4s22U6l9X9wTAGJLMltVFfvZ4b5EHxjojEqQGWO40UGgOcjIR6kadvHX7282auPD9mPK6czMnXBd9Qe2cKra899Oh-B9C4lwwN6cegpGff2QG8rqoFvcCjX3LD26fmDbizBi29pbHHaTOQ0EWmeNwb-SvSgkzJRdyyMIdnvwQdjdU_Oh_FhWLBJ"/>
+<button class="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-colors">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-[14px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-bold">4.98</span>
+</div>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-label-md text-on-surface font-bold">Amalfi Heritage Estate</h3>
+<p class="text-on-surface-variant text-label-sm">Amalfi, Italy</p>
+<p class="text-on-surface-variant text-label-sm">Oct 15 – 20</p>
+<p class="mt-xs font-label-md text-primary"><span class="font-bold">$1,250</span> night</p>
+</div>
+</div>
+</article>
+<!-- Result Card 3 (Placeholder) -->
+<article class="group cursor-pointer">
+<div class="relative aspect-[5/4] overflow-hidden rounded-[20px] shadow-[0_8px_30px_rgba(45,106,79,0.08)] mb-4">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="A wide-angle landscape shot of a luxurious, infinity-edge swimming pool overlooking the turquoise Tyrrhenian Sea at dusk. The villa is constructed with traditional white stucco and warm wooden accents, illuminated by soft golden exterior lighting. The atmosphere is quiet, expensive, and deeply relaxing, capturing the essence of an Amalfi Coast luxury retreat." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDjQV84LlDksiKLRvrY82aZCj9W6DdRw1c6Kk9HvY72mI9u1ifM3QPtZYFyGzJA_4ybXWbnHPvDu7IP_wx_iLDPXNoJw3b8yQyDk7-KnWOZIbIglKLcBmdiDVTfMfWTXuFsK_pX0iIKboU9QSPES0QuPeaIgXT9KRdXnIjM9kry-0FUavPocscmDvkz-sDfvhLXdXuanijvcya-I79p4I0AIteHvhFau0H9wCoAXuFcyZZWto36rBMlIA')"></div>
+<button class="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-md rounded-full text-white">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-[14px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-bold">4.85</span>
+</div>
+</div>
+<div>
+<h3 class="font-label-md text-on-surface font-bold">Azure Cliffside Retreat</h3>
+<p class="text-on-surface-variant text-label-sm">Ravello, Italy</p>
+<p class="text-on-surface-variant text-label-sm">Oct 15 – 20</p>
+<p class="mt-xs font-label-md text-primary"><span class="font-bold">$960</span> night</p>
+</div>
+</article>
+<!-- Result Card 4 (Placeholder) -->
+<article class="group cursor-pointer">
+<div class="relative aspect-[5/4] overflow-hidden rounded-[20px] shadow-[0_8px_30px_rgba(45,106,79,0.08)] mb-4">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="An interior shot of a sun-drenched, high-ceilinged bedroom in a Mediterranean villa. Large French doors open to a private balcony with vibrant pink bougainvillea flowers framing a view of the sea. The decor is minimalist with organic textures, featuring light linens, natural wood furniture, and local ceramic accents. The lighting is bright and airy, symbolizing a serene morning on the coast." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA5oGCSq_OL2noHxy17Y2kIEhBgmtxw6ft3-pDUWcjoero_ZxHAJHgpyJsC2z0rHUiSZY83toeUEj-qUFCLZyOA3w89ScZYqZY3dMvLyW_kXqeb06c9ffozlb-GPFe5GoGULAI8j-mJUqz4xX09mdw8g8Qlqsckr856mUt3aNLjP_KYEdZXkA0UCMa3CFnzmUQeAxHjr_uu_UyPDPzukN8cl4OmS8YIRrEIEeacAY402aPRoi3rShEkYg')"></div>
+<button class="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-md rounded-full text-white">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-[14px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-bold">4.95</span>
+</div>
+</div>
+<div>
+<h3 class="font-label-md text-on-surface font-bold">Praiano Sky Suites</h3>
+<p class="text-on-surface-variant text-label-sm">Praiano, Italy</p>
+<p class="text-on-surface-variant text-label-sm">Oct 15 – 20</p>
+<p class="mt-xs font-label-md text-primary"><span class="font-bold">$720</span> night</p>
+</div>
+</article>
+</section>
+</main>
+<!-- Floating Action Button -->
+<div class="fixed bottom-24 md:bottom-12 left-1/2 -translate-x-1/2 z-50">
+<button class="flex items-center gap-xs bg-primary text-on-primary px-6 py-3 rounded-full font-label-md shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="map">map</span>
+            Show map
+        </button>
+</div>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-container-lowest border-t border-outline-variant/30 mt-xl">
+<div class="w-full py-xl px-margin-mobile md:px-xl max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="flex flex-col gap-sm">
+<span class="font-display-lg text-headline-md text-primary dark:text-inverse-primary">Staylens</span>
+<p class="text-on-surface-variant text-body-md">Curating nature's most exclusive escapes for the mindful traveler.</p>
+</div>
+<div class="flex flex-col gap-xs">
+<h4 class="font-label-md font-bold mb-xs">Quick Links</h4>
+<div class="grid grid-cols-2 gap-xs">
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-md" href="#">Support</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-md" href="#">Hosting</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-md" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-md" href="#">Terms</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-md" href="#">Staylens</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-md" href="#">Sitemap</a>
+</div>
+</div>
+<div class="flex flex-col gap-sm">
+<p class="text-on-surface-variant text-label-md">© 2024 Staylens Global Marketplace. All rights reserved.</p>
+<div class="flex gap-md">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-icon="public">public</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-icon="share">share</span>
+</div>
+</div>
+</div>
+</footer>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full bg-surface dark:bg-surface-container-lowest flex justify-around items-center pt-3 pb-safe px-4 md:hidden border-t border-outline-variant/20 shadow-[0_-8px_30px_rgba(45,106,79,0.08)] z-50 rounded-t-xl">
+<a class="flex flex-col items-center text-primary dark:text-primary-fixed-dim font-bold tap-highlight-transparent active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="search" style="font-variation-settings: 'FILL' 1;">search</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant dark:text-surface-variant tap-highlight-transparent active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="favorite">favorite</span>
+<span class="font-label-sm text-label-sm">Wishlist</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant dark:text-surface-variant tap-highlight-transparent active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="travel_explore">travel_explore</span>
+<span class="font-label-sm text-label-sm">Trips</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant dark:text-surface-variant tap-highlight-transparent active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="account_circle">account_circle</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for filter buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if(this.classList.contains('bg-surface-container-lowest')) {
+                    this.classList.toggle('bg-primary-container');
+                    this.classList.toggle('text-on-primary-container');
+                    this.classList.toggle('bg-surface-container-lowest');
+                }
+            });
+        });
+    </script>
+</body></html>
