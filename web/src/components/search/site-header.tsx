@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Search, TreePine } from "lucide-react";
+import { Search, TreePine } from "lucide-react";
 import {
   AnimatePresence,
   LayoutGroup,
@@ -15,7 +15,6 @@ import { cn } from "@/lib/utils";
 import { SearchBar } from "@/components/search/search-bar";
 import { CompactSearch } from "@/components/search/compact-search";
 import { UserMenu } from "@/components/search/user-menu";
-import { MobileSearchSheet } from "@/components/search/mobile-search-sheet";
 import {
   WherePanel,
   WhenPanel,
@@ -24,8 +23,6 @@ import {
 import {
   EMPTY_SEARCH,
   FALLBACK_SUGGESTIONS,
-  formatGuests,
-  formatWhen,
   type DestinationSuggestion,
   type SearchField,
   type SearchState,
@@ -101,7 +98,6 @@ export function SiteHeader({
   const [active, setActive] = useState<SearchField | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [override, setOverride] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   const headerRef = useRef<HTMLElement>(null);
   const openScrollY = useRef(0);
@@ -198,15 +194,8 @@ export function SiteHeader({
       >
         <LayoutGroup>
           <div className="relative max-w-[1280px] mx-auto px-4 md:px-16">
-            {/* ---- Row 1: logo · nav-links/compact-pill · actions ----
-                 hidden on mobile for collapsed pages (results/property), where
-                 the single compact search row below replaces it (Airbnb). */}
-            <div
-              className={cn(
-                "relative justify-between items-center h-20",
-                defaultCollapsed ? "hidden md:flex" : "flex",
-              )}
-            >
+            {/* ---- Row 1: logo · nav-links/compact-pill · actions ---- */}
+            <div className="relative flex justify-between items-center h-20">
               <Link
                 href="/"
                 className="flex items-center gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 shrink-0"
@@ -330,62 +319,22 @@ export function SiteHeader({
               )}
             </AnimatePresence>
 
-            {/* ---- Mobile: summary pill (opens the full-screen sheet) ----
-                 collapsed pages: sole top row (h-20). landing: sits below the
-                 logo row (pb-3). */}
-            <div
-              className={cn(
-                "md:hidden flex items-center gap-2",
-                defaultCollapsed ? "h-20" : "pb-3",
-              )}
-            >
-              {defaultCollapsed && (
-                <button
-                  type="button"
-                  aria-label="Go back"
-                  onClick={() => router.back()}
-                  className="w-11 h-11 rounded-full bg-surface-container-lowest shadow-tinted flex items-center justify-center shrink-0"
-                >
-                  <ArrowLeft aria-hidden className="size-5" />
-                </button>
-              )}
+            {/* ---- Mobile: single tap-friendly pill ---- */}
+            <div className="md:hidden pb-3">
               <button
                 type="button"
-                onClick={() => setMobileOpen(true)}
+                className="w-full h-12 rounded-full bg-surface-container-lowest border border-outline-variant/30 shadow-tinted flex items-center gap-3 px-4"
                 aria-label="Start your search"
-                aria-haspopup="dialog"
-                className="flex-1 min-w-0 h-13 rounded-full bg-surface-container-lowest border border-outline-variant/30 shadow-tinted flex items-center gap-3 px-4 py-2"
               >
-                <Search aria-hidden className="size-4 text-primary shrink-0" strokeWidth={2.4} />
-                {search.where || search.checkIn || search.guests.adults > 0 ? (
-                  <span className="min-w-0 text-left leading-tight">
-                    <span className="block text-sm font-bold text-on-surface truncate">
-                      {search.where ? `Homes in ${search.where}` : "Anywhere"}
-                    </span>
-                    <span className="block text-xs text-on-surface-variant truncate">
-                      {formatWhen(search, "Any week")} · {formatGuests(search, "Add guests")}
-                    </span>
-                  </span>
-                ) : (
-                  <span className="text-sm font-semibold text-on-surface">
-                    Start your search
-                  </span>
-                )}
+                <Search aria-hidden className="size-4 text-primary" strokeWidth={2.4} />
+                <span className="text-sm font-semibold text-on-surface">
+                  {search.where || "Start your search"}
+                </span>
               </button>
             </div>
           </div>
         </LayoutGroup>
       </motion.header>
-
-      {/* full-screen mobile search (portal; shares this header's state) */}
-      <MobileSearchSheet
-        open={mobileOpen}
-        suggestions={suggestions}
-        state={search}
-        onChange={(next) => setSearch((s) => ({ ...s, ...next }))}
-        onSubmit={handleSubmit}
-        onClose={() => setMobileOpen(false)}
-      />
     </>
   );
 }
