@@ -81,7 +81,7 @@ export function FiltersBar() {
   return (
     <section
       aria-label="Filters"
-      className="sticky top-[144px] md:top-20 -mx-4 px-4 md:mx-0 md:px-0 bg-surface/90 glass-header py-3 md:py-4 z-40 border-b border-outline-variant/20 md:border-0"
+      className="sticky top-[80px] -mx-4 px-4 md:mx-0 md:px-0 bg-surface/90 glass-header py-3 md:py-4 z-40 border-b border-outline-variant/20 md:border-0"
     >
       <div className="flex items-center gap-2 overflow-x-auto scroll-hide pb-1">
         {/* outlined Filters button — opens the modal (video behavior) */}

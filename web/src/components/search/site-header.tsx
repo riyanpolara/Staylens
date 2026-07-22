@@ -198,8 +198,15 @@ export function SiteHeader({
       >
         <LayoutGroup>
           <div className="relative max-w-[1280px] mx-auto px-4 md:px-16">
-            {/* ---- Row 1: logo · nav-links/compact-pill · actions ---- */}
-            <div className="relative flex justify-between items-center h-20">
+            {/* ---- Row 1: logo · nav-links/compact-pill · actions ----
+                 hidden on mobile for collapsed pages (results/property), where
+                 the single compact search row below replaces it (Airbnb). */}
+            <div
+              className={cn(
+                "relative justify-between items-center h-20",
+                defaultCollapsed ? "hidden md:flex" : "flex",
+              )}
+            >
               <Link
                 href="/"
                 className="flex items-center gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 shrink-0"
@@ -323,8 +330,15 @@ export function SiteHeader({
               )}
             </AnimatePresence>
 
-            {/* ---- Mobile: summary pill (opens the full-screen sheet) ---- */}
-            <div className="md:hidden pb-3 flex items-center gap-2">
+            {/* ---- Mobile: summary pill (opens the full-screen sheet) ----
+                 collapsed pages: sole top row (h-20). landing: sits below the
+                 logo row (pb-3). */}
+            <div
+              className={cn(
+                "md:hidden flex items-center gap-2",
+                defaultCollapsed ? "h-20" : "pb-3",
+              )}
+            >
               {defaultCollapsed && (
                 <button
                   type="button"

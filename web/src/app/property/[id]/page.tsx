@@ -93,7 +93,7 @@ export default async function PropertyPage({
     <>
       {/* compact Airbnb search pill in the header (image 3) */}
       <SiteHeader suggestions={suggestions} defaultCollapsed />
-      <main id="main-content" className="pt-[144px] md:pt-[88px] pb-16 md:pb-24">
+      <main id="main-content" className="pt-[88px] pb-16 md:pb-24">
         {/* hero gallery */}
         <section
           id="photos"

@@ -157,7 +157,7 @@ export default async function SearchPage({
       />
       <main
         id="main-content"
-        className="pt-[144px] md:pt-[88px] max-w-[1400px] mx-auto px-4 md:px-10 pb-16"
+        className="pt-[88px] max-w-[1400px] mx-auto px-4 md:px-10 pb-16"
       >
         <FiltersBar />
 
