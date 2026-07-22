@@ -164,15 +164,15 @@ export default async function SearchPage({
         {/* split layout: results left, persistent map right (desktop) */}
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(360px,42%)] lg:gap-6 mt-2">
           <div>
-            <header className="mb-6 flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <h1 className="font-display text-xl md:text-2xl font-semibold text-on-surface">
+            <header className="mb-4 md:mb-6 flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <h1 className="font-display text-base md:text-2xl font-semibold text-on-surface truncate">
                   {results.total >= 1000
                     ? `Over ${Math.floor(results.total / 1000) * 1000} homes`
                     : `${results.total.toLocaleString()} homes`}
                   {where ? ` ${results.wherePreposition ?? "in"} ${where}` : ""}
                 </h1>
-                <p className="text-on-surface-variant mt-1 text-sm">
+                <p className="hidden md:block text-on-surface-variant mt-1 text-sm">
                   Luxury stays nestled in nature&apos;s finest corners.
                 </p>
               </div>

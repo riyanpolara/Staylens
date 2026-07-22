@@ -43,7 +43,7 @@ export function MapToggle({
           ) : (
             <MapIcon aria-hidden className="size-5" />
           )}
-          {open ? "Show list" : "Show map"}
+          {open ? "List" : "Map"}
         </button>
       </div>
 
