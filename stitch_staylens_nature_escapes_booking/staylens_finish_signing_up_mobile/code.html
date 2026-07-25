@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Staylens - Finish Signing Up</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        
+        .cta-gradient {
+            background: linear-gradient(135deg, #2D6A4F 0%, #1B4332 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .cta-gradient:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+        .nature-shadow {
+            box-shadow: 0 8px 30px rgba(45, 106, 79, 0.08);
+        }
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#d9e3f6",
+                      "on-tertiary-fixed": "#231b00",
+                      "on-background": "#121c2a",
+                      "on-secondary-fixed-variant": "#004883",
+                      "tertiary-fixed": "#f3e2af",
+                      "on-error-container": "#93000a",
+                      "primary": "#0f5238",
+                      "outline-variant": "#bfc9c1",
+                      "on-secondary-fixed": "#001c39",
+                      "tertiary-container": "#baaa7c",
+                      "background": "#f8f9ff",
+                      "tertiary": "#6a5e36",
+                      "error-container": "#ffdad6",
+                      "outline": "#707973",
+                      "inverse-surface": "#27313f",
+                      "surface-bright": "#f8f9ff",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-fixed-variant": "#0e5138",
+                      "error": "#ba1a1a",
+                      "surface-tint": "#2c694e",
+                      "primary-fixed": "#b1f0ce",
+                      "secondary-container": "#64a8fe",
+                      "on-surface": "#121c2a",
+                      "surface-dim": "#d0dbed",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "secondary-fixed": "#d4e3ff",
+                      "on-tertiary-container": "#493f1a",
+                      "primary-fixed-dim": "#95d4b3",
+                      "on-error": "#ffffff",
+                      "surface-container-low": "#eff4ff",
+                      "surface": "#f8f9ff",
+                      "surface-container-highest": "#d9e3f6",
+                      "on-surface-variant": "#404943",
+                      "primary-container": "#2d6a4f",
+                      "on-primary-container": "#a8e7c5",
+                      "surface-container": "#e6eeff",
+                      "tertiary-fixed-dim": "#d6c695",
+                      "surface-container-high": "#dee9fc",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed": "#002114",
+                      "inverse-primary": "#95d4b3",
+                      "on-tertiary-fixed-variant": "#514620",
+                      "on-secondary-container": "#003c70",
+                      "inverse-on-surface": "#eaf1ff",
+                      "secondary-fixed-dim": "#a4c9ff",
+                      "secondary": "#0060ac"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "8px",
+                      "sm": "16px",
+                      "gutter": "24px",
+                      "xl": "64px",
+                      "md": "24px",
+                      "container-max": "1280px",
+                      "lg": "40px",
+                      "margin-mobile": "16px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "display-lg": ["Plus Jakarta Sans"],
+                      "headline-md": ["Plus Jakarta Sans"],
+                      "display-lg-mobile": ["Plus Jakarta Sans"],
+                      "label-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body-md text-on-background selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top AppBar (Navigation Shell Suppressed per Transactional Rule) -->
+<header class="bg-surface/80 backdrop-blur-md sticky top-0 z-50 border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-xl h-20 max-w-container-max mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="nature_people">nature_people</span>
+<span class="font-display-lg text-headline-md font-bold text-primary tracking-tight">Staylens</span>
+</div>
+<button aria-label="Close" class="text-on-surface-variant hover:text-primary transition-colors p-2">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+</header>
+<main class="min-h-[calc(100vh-80px)] flex items-center justify-center py-xl px-margin-mobile">
+<div class="w-full max-w-[560px] animate-in fade-in slide-in-from-bottom-4 duration-700">
+<div class="mb-lg">
+<h1 class="font-display-lg text-display-lg-mobile md:text-headline-lg text-on-surface tracking-tight mb-2">Finish signing up</h1>
+<p class="font-body-md text-on-surface-variant">Join our community of nature-focused travelers and discover curated serene escapes.</p>
+</div>
+<!-- Registration Form Card -->
+<div class="bg-surface-container-lowest nature-shadow rounded-[20px] p-md md:p-lg border border-outline-variant/20">
+<form class="space-y-sm" onsubmit="event.preventDefault();">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<!-- First Name -->
+<div class="space-y-base">
+<label class="font-label-md text-on-surface-variant ml-1">First name</label>
+<input class="w-full h-12 px-md bg-white border border-outline rounded-[12px] focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-outline-variant" placeholder="John" type="text"/>
+</div>
+<!-- Last Name -->
+<div class="space-y-base">
+<label class="font-label-md text-on-surface-variant ml-1">Last name</label>
+<input class="w-full h-12 px-md bg-white border border-outline rounded-[12px] focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-outline-variant" placeholder="Doe" type="text"/>
+</div>
+</div>
+<!-- Email Address -->
+<div class="space-y-base">
+<label class="font-label-md text-on-surface-variant ml-1">Email</label>
+<input class="w-full h-12 px-md bg-white border border-outline rounded-[12px] focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-outline-variant" placeholder="example@staylens.com" type="email"/>
+<p class="text-[11px] font-label-sm text-on-surface-variant/70 px-1">We'll email you trip confirmations and inspiration.</p>
+</div>
+<!-- Birthday -->
+<div class="space-y-base">
+<label class="font-label-md text-on-surface-variant ml-1">Birthday</label>
+<div class="relative">
+<input class="w-full h-12 px-md bg-white border border-outline rounded-[12px] focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all appearance-none" type="date"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline-variant pointer-events-none" data-icon="calendar_today">calendar_today</span>
+</div>
+<p class="text-[11px] font-label-sm text-on-surface-variant/70 px-1">To sign up, you need to be at least 18. Your birthday won't be shared with other people who use Staylens.</p>
+</div>
+<div class="pt-sm space-y-md">
+<p class="text-[12px] font-body-md text-on-surface-variant leading-relaxed">
+                            By selecting <span class="font-semibold">Agree and Continue</span>, I agree to Staylens’s <a class="text-primary underline hover:text-primary-container" href="#">Terms of Service</a>, <a class="text-primary underline hover:text-primary-container" href="#">Payments Terms of Service</a>, and <a class="text-primary underline hover:text-primary-container" href="#">Nondiscrimination Policy</a> and acknowledge the <a class="text-primary underline hover:text-primary-container" href="#">Privacy Policy</a>.
+                        </p>
+<button class="cta-gradient w-full h-14 rounded-[14px] text-white font-label-md flex items-center justify-center nature-shadow" type="submit">
+                            Agree and Continue
+                        </button>
+</div>
+</form>
+<!-- Privacy Disclaimer -->
+<div class="mt-md pt-md border-t border-outline-variant/30 flex items-start gap-4">
+<div class="bg-surface-container-low p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="verified_user">verified_user</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface">Staylens is committed to your privacy</p>
+<p class="text-[12px] font-body-md text-on-surface-variant">We use bank-level encryption to secure your personal data and never sell your information to third parties.</p>
+</div>
+</div>
+</div>
+<!-- Support Links -->
+<div class="mt-lg text-center">
+<p class="font-body-md text-on-surface-variant">
+                    Need help? <a class="text-primary font-semibold hover:underline" href="#">Contact Staylens Support</a>
+</p>
+</div>
+</div>
+</main>
+<!-- Visual Element: Background Subtle Blur Objects -->
+<div class="fixed top-[-10%] right-[-5%] w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+<div class="fixed bottom-[-5%] left-[-5%] w-[300px] h-[300px] bg-secondary/5 rounded-full blur-[80px] -z-10 pointer-events-none"></div>
+<footer class="w-full py-xl px-margin-mobile md:px-xl max-w-container-max mx-auto border-t border-outline-variant/30 mt-xl">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="space-y-sm">
+<span class="font-display-lg text-headline-md text-primary tracking-tight">Staylens</span>
+<p class="font-body-md text-on-surface-variant max-w-xs">Curating the world's most breathtaking nature escapes for the discerning traveler.</p>
+</div>
+<div class="grid grid-cols-2 gap-md md:col-span-2">
+<div class="space-y-xs">
+<h4 class="font-label-md text-on-surface">Company</h4>
+<nav class="flex flex-col gap-2">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Staylens</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Hosting</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Support</a>
+</nav>
+</div>
+<div class="space-y-xs">
+<h4 class="font-label-md text-on-surface">Legal</h4>
+<nav class="flex flex-col gap-2">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Terms</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Sitemap</a>
+</nav>
+</div>
+</div>
+</div>
+<div class="mt-xl pt-md border-t border-outline-variant/10">
+<p class="font-label-md text-on-surface-variant text-center md:text-left">© 2024 Staylens Global Marketplace. All rights reserved.</p>
+</div>
+</footer>
+<script>
+        // Micro-interaction for input fields
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('scale-[1.01]');
+                input.parentElement.style.transition = 'transform 0.2s ease-out';
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('scale-[1.01]');
+            });
+        });
+        // Form submission animation mock
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (e) => {
+            const btn = form.querySelector('button');
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin" data-icon="progress_activity">progress_activity</span>';
+            btn.classList.add('opacity-80');
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerHTML = 'Agree and Continue';
+                btn.classList.remove('opacity-80');
+                btn.disabled = false;
+            }, 1500);
+        });
+    </script>
+</body></html>

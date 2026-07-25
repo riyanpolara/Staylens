@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   Bell,
   Compass,
@@ -16,29 +18,21 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-
-const AUTH_KEY = "staylens_authed";
-/** demo signed-in identity (no real auth in this preview) */
-const DEMO_NAME = "Riyan";
+import { useAuth } from "@/components/auth/use-auth";
+import { signOutAction } from "@/app/(auth)/actions";
 
 /**
  * Airbnb-style account menu: a "Become a host" link, a globe (guest) that
  * becomes a profile avatar once signed in, and a hamburger that opens a
- * dropdown whose contents depend on the auth state. Sign-in state is simulated
- * client-side (localStorage) since this preview has no real auth.
+ * dropdown whose contents depend on the auth state. Backed by real Supabase
+ * Auth via useAuth().
  */
 export function UserMenu({ light = false }: { light?: boolean }) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [authed, setAuthed] = useState(false);
+  const { user, initial, avatarUrl } = useAuth();
+  const authed = !!user;
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    try {
-      setAuthed(localStorage.getItem(AUTH_KEY) === "1");
-    } catch {
-      /* SSR / privacy mode — stay signed out */
-    }
-  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -56,17 +50,12 @@ export function UserMenu({ light = false }: { light?: boolean }) {
     };
   }, [open]);
 
-  function setAuth(next: boolean) {
-    setAuthed(next);
-    try {
-      localStorage.setItem(AUTH_KEY, next ? "1" : "0");
-    } catch {
-      /* ignore */
-    }
+  async function handleLogout() {
     setOpen(false);
+    await signOutAction();
+    router.push("/");
+    router.refresh();
   }
-
-  const initial = DEMO_NAME.charAt(0).toUpperCase();
 
   return (
     <div ref={ref} className="relative flex items-center gap-2 shrink-0">
@@ -89,9 +78,20 @@ export function UserMenu({ light = false }: { light?: boolean }) {
           aria-haspopup="menu"
           aria-expanded={open}
           aria-label="Your account"
-          className="w-10 h-10 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-bold flex items-center justify-center hover:scale-105 transition-transform focus-visible:outline-2 focus-visible:outline-offset-2"
+          className="w-10 h-10 rounded-full overflow-hidden bg-primary-fixed text-on-primary-fixed-variant font-bold flex items-center justify-center hover:scale-105 transition-transform focus-visible:outline-2 focus-visible:outline-offset-2"
         >
-          {initial}
+          {avatarUrl ? (
+            <Image
+              src={avatarUrl}
+              alt=""
+              width={40}
+              height={40}
+              unoptimized
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            initial
+          )}
         </button>
       ) : (
         <button
@@ -127,9 +127,9 @@ export function UserMenu({ light = false }: { light?: boolean }) {
             className="absolute right-0 top-full mt-3 w-80 max-w-[calc(100vw-2rem)] max-h-[min(80vh,640px)] overflow-y-auto bg-surface-container-lowest rounded-2xl shadow-tinted-lg border border-outline-variant/20 py-2 z-[70]"
           >
             {authed ? (
-              <AuthedItems onLogout={() => setAuth(false)} onNavigate={() => setOpen(false)} />
+              <AuthedItems onLogout={handleLogout} onNavigate={() => setOpen(false)} />
             ) : (
-              <GuestItems onLogin={() => setAuth(true)} />
+              <GuestItems onNavigate={() => setOpen(false)} />
             )}
           </motion.div>
         )}
@@ -138,7 +138,7 @@ export function UserMenu({ light = false }: { light?: boolean }) {
   );
 }
 
-function GuestItems({ onLogin }: { onLogin: () => void }) {
+function GuestItems({ onNavigate }: { onNavigate: () => void }) {
   return (
     <>
       <MenuItem icon={HelpCircle} label="Help Centre" />
@@ -148,7 +148,8 @@ function GuestItems({ onLogin }: { onLogin: () => void }) {
       <MenuItem label="Refer a host" />
       <MenuItem label="Find a co-host" />
       <Divider />
-      <MenuItem label="Log in or sign up" onClick={onLogin} />
+      {/* opens the real Create Account page (Stitch design) */}
+      <MenuItem label="Log in or sign up" href="/signup" onClick={onNavigate} />
     </>
   );
 }

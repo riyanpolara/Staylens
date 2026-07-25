@@ -3,13 +3,10 @@ import { SiteHeader, type InitialSearch } from "@/components/search/site-header"
 import { FALLBACK_SUGGESTIONS } from "@/components/search/search-types";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { Footer } from "@/components/layout/footer";
-import { PropertyCard } from "@/components/explore/property-card";
-import { Reveal } from "@/components/shared/reveal";
-import { FiltersBar } from "@/components/search-results/filters-bar";
-import { SortSelect } from "@/components/search-results/sort-select";
-import { Pagination } from "@/components/search-results/pagination";
 import { MapToggle } from "@/components/search-results/map-toggle";
-import { ResultsMap } from "@/components/search-results/results-map";
+import { SearchDesktop } from "@/components/search-results/desktop/search-desktop";
+import { SearchMobile } from "@/components/search-results/mobile/search-mobile";
+import { MobileHeader } from "@/components/search-results/mobile/mobile-header";
 import {
   getSearchSuggestionList,
   searchStays,
@@ -149,82 +146,46 @@ export default async function SearchPage({
 
   return (
     <>
-      {/* video behavior: results page header starts as the compact pill */}
-      <SiteHeader
-        suggestions={suggestions}
-        initialSearch={initialSearch}
-        defaultCollapsed
+      {/* ── Desktop / tablet header (≥768px): compact morphing search bar ── */}
+      <div className="hidden md:block">
+        <SiteHeader
+          suggestions={suggestions}
+          initialSearch={initialSearch}
+          defaultCollapsed
+        />
+      </div>
+
+      {/* ── Mobile header (<768px): back · compact search · filters ── */}
+      <MobileHeader suggestions={suggestions} initialSearch={initialSearch} />
+
+      {/* ── Desktop / tablet layout: split list + sticky map ── */}
+      <SearchDesktop
+        results={results}
+        where={where}
+        dates={dates}
+        nights={nights}
+        hrefQuery={hrefQuery}
+        flatParams={flatParams}
+        pins={pins}
       />
-      <main
-        id="main-content"
-        className="pt-[144px] md:pt-[88px] max-w-[1400px] mx-auto px-4 md:px-10 pb-16"
-      >
-        <FiltersBar />
 
-        {/* split layout: results left, persistent map right (desktop) */}
-        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(360px,42%)] lg:gap-6 mt-2">
-          <div>
-            <header className="mb-6 flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <h1 className="font-display text-xl md:text-2xl font-semibold text-on-surface">
-                  {results.total >= 1000
-                    ? `Over ${Math.floor(results.total / 1000) * 1000} homes`
-                    : `${results.total.toLocaleString()} homes`}
-                  {where ? ` ${results.wherePreposition ?? "in"} ${where}` : ""}
-                </h1>
-                <p className="text-on-surface-variant mt-1 text-sm">
-                  Luxury stays nestled in nature&apos;s finest corners.
-                </p>
-              </div>
-              <SortSelect />
-            </header>
+      {/* ── Mobile layout: single-column Airbnb-style feed ── */}
+      <SearchMobile
+        results={results}
+        where={where}
+        dates={dates}
+        nights={nights}
+        hrefQuery={hrefQuery}
+        flatParams={flatParams}
+      />
 
-            {results.items.length > 0 ? (
-              <section
-                aria-label="Search results"
-                className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-6"
-              >
-                {results.items.map((stay, i) => (
-                  <Reveal key={stay.id} index={i % 4}>
-                    <PropertyCard
-                      stay={stay}
-                      variant="result"
-                      datesLabel={dates}
-                      nights={nights}
-                      hrefQuery={hrefQuery}
-                    />
-                  </Reveal>
-                ))}
-              </section>
-            ) : (
-              <section className="py-24 text-center">
-                <h2 className="font-display text-xl font-semibold mb-2">
-                  No exact matches
-                </h2>
-                <p className="text-on-surface-variant">
-                  Try changing or removing some of your filters
-                  {where ? ` — or searching beyond ${where}` : ""}.
-                </p>
-              </section>
-            )}
+      {/* floating map button — tablet + mobile (desktop uses the split map) */}
+      <div className="lg:hidden">
+        <MapToggle pins={pins} hrefQuery={hrefQuery} />
+      </div>
 
-            <Pagination
-              page={results.page}
-              totalPages={results.totalPages}
-              params={flatParams}
-            />
-          </div>
-
-          <ResultsMap pins={pins} locationLabel={where} hrefQuery={hrefQuery} />
-        </div>
-
-        {/* mobile keeps the FAB + full-screen overlay */}
-        <div className="lg:hidden">
-          <MapToggle pins={pins} hrefQuery={hrefQuery} />
-        </div>
-      </main>
       <Footer />
-      <MobileNav />
+      <MobileNav active="Explore" />
     </>
   );
 }

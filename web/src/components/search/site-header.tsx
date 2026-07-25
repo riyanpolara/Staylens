@@ -12,8 +12,10 @@ import {
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { searchHref } from "@/lib/search-query";
 import { SearchBar } from "@/components/search/search-bar";
 import { CompactSearch } from "@/components/search/compact-search";
+import { MobileSearch } from "@/components/search/mobile-search";
 import { UserMenu } from "@/components/search/user-menu";
 import {
   WherePanel,
@@ -56,12 +58,6 @@ function parseDate(v?: string | null): Date | null {
   return new Date(y, m - 1, d);
 }
 
-function toParam(d: Date | null): string | null {
-  if (!d) return null;
-  const p = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
-}
-
 export function SiteHeader({
   suggestions = FALLBACK_SUGGESTIONS,
   initialSearch,
@@ -98,6 +94,7 @@ export function SiteHeader({
   const [active, setActive] = useState<SearchField | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [override, setOverride] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const headerRef = useRef<HTMLElement>(null);
   const openScrollY = useRef(0);
@@ -139,6 +136,24 @@ export function SiteHeader({
     };
   }, [close]);
 
+  // external trigger (the landing "Try AI Search" CTA): smooth-scroll up to the
+  // hero and open the search. On desktop, activating the "where" field expands
+  // the bar and opens the Suggested destinations panel (SearchBar also focuses
+  // the input) — the final state matches the design. Mobile has no over-hero
+  // bar, so it opens the full-screen search sheet instead.
+  useEffect(() => {
+    function openSearch() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (window.matchMedia("(min-width: 768px)").matches) {
+        setActive("where");
+      } else {
+        setMobileOpen(true);
+      }
+    }
+    window.addEventListener("staylens:open-search", openSearch);
+    return () => window.removeEventListener("staylens:open-search", openSearch);
+  }, []);
+
   function openFromPill(field: SearchField) {
     openScrollY.current = scrollY.get();
     setOverride(true);
@@ -153,16 +168,8 @@ export function SiteHeader({
   function handleSubmit() {
     setActive(null);
     setOverride(false);
-    const qs = new URLSearchParams();
-    if (search.where.trim()) qs.set("where", search.where.trim());
-    const ci = toParam(search.checkIn);
-    const co = toParam(search.checkOut);
-    if (ci) qs.set("in", ci);
-    if (co) qs.set("out", co);
-    for (const key of ["adults", "children", "infants", "pets"] as const) {
-      if (search.guests[key] > 0) qs.set(key, String(search.guests[key]));
-    }
-    router.push(qs.size ? `/search?${qs.toString()}` : "/search");
+    setMobileOpen(false);
+    router.push(searchHref(search));
   }
 
   return (
@@ -319,12 +326,15 @@ export function SiteHeader({
               )}
             </AnimatePresence>
 
-            {/* ---- Mobile: single tap-friendly pill ---- */}
+            {/* ---- Mobile: single tap-friendly pill → full-screen sheet ---- */}
             <div className="md:hidden pb-3">
               <button
                 type="button"
+                onClick={() => setMobileOpen(true)}
                 className="w-full h-12 rounded-full bg-surface-container-lowest border border-outline-variant/30 shadow-tinted flex items-center gap-3 px-4"
                 aria-label="Start your search"
+                aria-haspopup="dialog"
+                aria-expanded={mobileOpen}
               >
                 <Search aria-hidden className="size-4 text-primary" strokeWidth={2.4} />
                 <span className="text-sm font-semibold text-on-surface">
@@ -335,6 +345,29 @@ export function SiteHeader({
           </div>
         </LayoutGroup>
       </motion.header>
+
+      {/* mobile full-screen search sheet (reuses the desktop When/Who panels) */}
+      {mobileOpen && (
+        <MobileSearch
+          suggestions={suggestions}
+          state={search}
+          onWhereInput={(v) => setSearch((s) => ({ ...s, where: v }))}
+          onWherePick={(label) => setSearch((s) => ({ ...s, where: label }))}
+          onWhenChange={(next) => setSearch((s) => ({ ...s, ...next }))}
+          onWhoChange={(guests) => setSearch((s) => ({ ...s, guests }))}
+          onClear={() =>
+            setSearch((s) => ({
+              ...s,
+              where: "",
+              checkIn: null,
+              checkOut: null,
+              guests: { adults: 0, children: 0, infants: 0, pets: 0 },
+            }))
+          }
+          onSubmit={handleSubmit}
+          onClose={() => setMobileOpen(false)}
+        />
+      )}
     </>
   );
 }

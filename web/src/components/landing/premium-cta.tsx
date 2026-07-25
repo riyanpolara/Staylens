@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/shared/reveal";
+import { TryAiSearchButton } from "@/components/landing/try-ai-search-button";
 import { CTA_IMG, LP } from "@/components/landing/landing-data";
 
 /** Final CTA — mountain panorama with layered actions. */
@@ -42,18 +43,7 @@ export function PremiumCta() {
             >
               Explore Stays
             </Link>
-            <Link
-              href="/search?where=quiet%20beachfront%20villa%20with%20infinity%20pool"
-              className="px-[38px] py-[18px] rounded-full font-semibold text-[17px] text-white border transition-colors duration-300 hover:bg-white/25"
-              style={{
-                background: "rgba(255,255,255,.14)",
-                backdropFilter: "blur(14px)",
-                WebkitBackdropFilter: "blur(14px)",
-                borderColor: "rgba(255,255,255,.4)",
-              }}
-            >
-              Try AI Search
-            </Link>
+            <TryAiSearchButton />
             <a
               href="#"
               className="px-[38px] py-[18px] rounded-full font-semibold text-[17px] text-white border bg-transparent transition-colors duration-300 hover:border-[#e6c778]"

@@ -1,74 +1,24 @@
 "use client";
 
-import {
-  AirVent,
-  Bath,
-  Car,
-  CookingPot,
-  KeyRound,
-  PawPrint,
-  SlidersHorizontal,
-  Tv,
-  WashingMachine,
-  Waves,
-  Wifi,
-} from "lucide-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Bath, SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { FiltersModal } from "@/components/search-results/filters-modal";
-
-/** Video's quick amenity pills → our real amenity slugs. */
-const QUICK_FILTERS = [
-  { slug: "wifi", label: "Wifi", icon: Wifi },
-  { slug: "washer", label: "Washing machine", icon: WashingMachine },
-  { slug: "tv", label: "TV", icon: Tv },
-  { slug: "free-parking-on-premises", label: "Free parking", icon: Car },
-  { slug: "air-conditioning", label: "Air conditioning", icon: AirVent },
-  { slug: "kitchen", label: "Kitchen", icon: CookingPot },
-  { slug: "pets-allowed", label: "Allows pets", icon: PawPrint },
-  { slug: "pool", label: "Pool", icon: Waves },
-  { slug: "self-check-in", label: "Self check-in", icon: KeyRound },
-] as const;
-
-/** Keys owned by the Filters modal — counted on the Filters button. */
-const MODAL_KEYS = ["price", "type", "beds", "bath", "ptype", "fav", "luxe"];
+import { QUICK_FILTERS } from "@/components/search-results/filter-config";
+import { useAmenityFilters } from "@/components/search-results/use-amenity-filters";
 
 /**
  * Sticky quick-filter bar (video pass 2): outlined "Filters" button that
  * opens the full modal, a divider, then one-click amenity toggles and the
  * "1+ bathrooms" pill. All state lives in the URL (server-filtered).
+ *
+ * Desktop/tablet only — the mobile layout uses MobileFilters. Both share the
+ * toggle logic via useAmenityFilters().
  */
 export function FiltersBar() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const { activeAmenities, bathActive, modalCount, toggleAmenity, toggleBath } =
+    useAmenityFilters();
   const [modalOpen, setModalOpen] = useState(false);
-
-  const activeAmenities = new Set(
-    (searchParams.get("am") ?? "").split(",").filter(Boolean),
-  );
-  const bathActive = searchParams.get("bath") === "1";
-  const modalCount =
-    MODAL_KEYS.filter((k) => searchParams.has(k)).length +
-    activeAmenities.size;
-
-  function replaceParams(mutate: (next: URLSearchParams) => void) {
-    const next = new URLSearchParams(searchParams.toString());
-    mutate(next);
-    next.delete("page");
-    router.replace(`${pathname}?${next.toString()}`, { scroll: false });
-  }
-
-  function toggleAmenity(slug: string) {
-    replaceParams((next) => {
-      const set = new Set((next.get("am") ?? "").split(",").filter(Boolean));
-      if (set.has(slug)) set.delete(slug);
-      else set.add(slug);
-      if (set.size) next.set("am", [...set].join(","));
-      else next.delete("am");
-    });
-  }
 
   const pillClass = (active: boolean) =>
     cn(
@@ -117,12 +67,7 @@ export function FiltersBar() {
         <button
           type="button"
           aria-pressed={bathActive}
-          onClick={() =>
-            replaceParams((next) => {
-              if (bathActive) next.delete("bath");
-              else next.set("bath", "1");
-            })
-          }
+          onClick={toggleBath}
           className={pillClass(bathActive)}
         >
           <Bath aria-hidden className="size-4" strokeWidth={1.9} />
