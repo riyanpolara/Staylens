@@ -1,4 +1,5 @@
 import "server-only";
+import { getServerEnv } from "@/lib/env";
 import type { ExploreStay, StaySearchResult } from "@/lib/queries";
 import type { StaySearchParams } from "@/lib/stay-filters";
 
@@ -10,15 +11,50 @@ import type { StaySearchParams } from "@/lib/stay-filters";
  * unchanged. Returns null on any failure/timeout so the caller can fall back to
  * the direct-Supabase path (semantic search stays an enhancement, not a hard
  * dependency).
+ *
+ * Availability strategy: the backend may be on a free tier that sleeps and
+ * cold-starts for ~50s. Waiting that out would make every search feel frozen,
+ * so we (a) cap each attempt with a short AbortController timeout and (b) trip a
+ * circuit breaker after repeated failures, which makes subsequent searches skip
+ * the network entirely and answer immediately from Supabase. Results stay
+ * correct either way — only ranking quality degrades.
  */
 
-const BASE = process.env.HYBRID_SEARCH_URL ?? "http://127.0.0.1:8000";
-/**
- * Give up and fall back to direct Supabase after this long. Raise it via
- * HYBRID_SEARCH_TIMEOUT_MS when the API is on a free tier that cold-starts
- * (Render free sleeps after ~15 min and takes ~50s to wake).
- */
-const TIMEOUT_MS = Number(process.env.HYBRID_SEARCH_TIMEOUT_MS ?? 8000);
+/* ---- circuit breaker (per server instance) ----------------------------- */
+
+const FAILURE_THRESHOLD = 2;
+const COOLDOWN_BASE_MS = 30_000;
+const COOLDOWN_MAX_MS = 5 * 60_000;
+
+let consecutiveFailures = 0;
+let circuitOpenUntil = 0;
+
+type FailureKind = "timeout" | "connection" | "server" | "malformed";
+
+function recordFailure(kind: FailureKind, detail: string, elapsedMs: number) {
+  consecutiveFailures += 1;
+  if (consecutiveFailures >= FAILURE_THRESHOLD) {
+    const backoff = Math.min(
+      COOLDOWN_BASE_MS * 2 ** (consecutiveFailures - FAILURE_THRESHOLD),
+      COOLDOWN_MAX_MS,
+    );
+    circuitOpenUntil = Date.now() + backoff;
+    console.warn(
+      `[hybrid-search] ${kind} after ${elapsedMs}ms (${detail}); ` +
+        `circuit open for ${Math.round(backoff / 1000)}s — serving Supabase results.`,
+    );
+  } else {
+    console.warn(`[hybrid-search] ${kind} after ${elapsedMs}ms (${detail}); falling back.`);
+  }
+}
+
+function recordSuccess() {
+  if (consecutiveFailures > 0) {
+    console.info("[hybrid-search] backend healthy again; circuit closed.");
+  }
+  consecutiveFailures = 0;
+  circuitOpenUntil = 0;
+}
 
 type HybridProperty = {
   id: string;
@@ -109,18 +145,48 @@ function toExploreStay(p: HybridProperty): ExploreStay {
 export async function searchStaysHybrid(
   params: StaySearchParams,
 ): Promise<StaySearchResult | null> {
+  const { hybridSearchUrl, hybridTimeoutMs } = getServerEnv();
+
+  // Unset, malformed, or localhost-in-production → never attempt the request.
+  // env.ts has already logged why; returning null keeps search instant.
+  if (!hybridSearchUrl) return null;
+
+  // Breaker open: skip the network entirely so the user isn't made to wait
+  // again for a backend we already know is down or still cold-starting.
+  if (Date.now() < circuitOpenUntil) return null;
+
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), hybridTimeoutMs);
+  const startedAt = Date.now();
+
   try {
-    const res = await fetch(`${BASE}/api/search/hybrid`, {
+    const res = await fetch(`${hybridSearchUrl}/api/search/hybrid`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(toHybridBody(params)),
       cache: "no-store",
       signal: controller.signal,
     });
-    if (!res.ok) return null;
-    const data = (await res.json()) as HybridResponse;
+
+    if (!res.ok) {
+      recordFailure("server", `HTTP ${res.status}`, Date.now() - startedAt);
+      return null;
+    }
+
+    let data: HybridResponse;
+    try {
+      data = (await res.json()) as HybridResponse;
+    } catch {
+      recordFailure("malformed", "response was not valid JSON", Date.now() - startedAt);
+      return null;
+    }
+
+    if (!data?.properties || !data?.pagination) {
+      recordFailure("malformed", "response missing properties/pagination", Date.now() - startedAt);
+      return null;
+    }
+
+    recordSuccess();
     return {
       items: data.properties.map(toExploreStay),
       wherePreposition: wherePreposition(
@@ -132,9 +198,36 @@ export async function searchStaysHybrid(
       perPage: data.pagination.page_size,
       totalPages: data.pagination.total_pages,
     };
-  } catch {
-    return null; // unreachable / timeout / bad JSON → caller falls back
+  } catch (err) {
+    // Distinguish "we gave up waiting" (likely a cold start) from "nothing is
+    // listening" — they need very different operational responses.
+    const elapsed = Date.now() - startedAt;
+    const aborted =
+      controller.signal.aborted || (err as Error)?.name === "AbortError";
+    if (aborted) {
+      recordFailure(
+        "timeout",
+        `exceeded ${hybridTimeoutMs}ms — backend slow or cold-starting`,
+        elapsed,
+      );
+    } else {
+      const cause = (err as { cause?: { code?: string } })?.cause?.code;
+      recordFailure("connection", cause ?? (err as Error)?.message ?? "unreachable", elapsed);
+    }
+    return null;
   } finally {
     clearTimeout(timer);
   }
+}
+
+/** Diagnostics for the health endpoint — no secrets. */
+export function getHybridSearchStatus() {
+  const { hybridSearchUrl, hybridTimeoutMs } = getServerEnv();
+  return {
+    configured: hybridSearchUrl !== null,
+    timeoutMs: hybridTimeoutMs,
+    circuitOpen: Date.now() < circuitOpenUntil,
+    consecutiveFailures,
+    retryInMs: Math.max(0, circuitOpenUntil - Date.now()),
+  };
 }

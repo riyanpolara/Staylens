@@ -57,3 +57,47 @@ export type BookingResult =
   | { ok: false; error: string };
 
 export type SubmitBooking = (input: BookingInput) => Promise<BookingResult>;
+
+/* ------------------------------------------------------------------ *
+ *  Razorpay flow
+ * ------------------------------------------------------------------ */
+
+/** What the browser needs to open Razorpay Checkout. No secret is included. */
+export type CreateOrderResult =
+  | {
+      ok: true;
+      /** publishable Key ID — safe in the browser, identifies the merchant */
+      keyId: string;
+      orderId: string;
+      /** smallest currency unit (paise), computed server-side */
+      amountMinor: number;
+      currency: string;
+      bookingRef: string;
+      prefill: { name: string; email: string; contact: string };
+    }
+  | { ok: false; error: string };
+
+/** Handed back to the server after Checkout reports success. */
+export type VerifyPaymentInput = {
+  razorpayOrderId: string;
+  razorpayPaymentId: string;
+  razorpaySignature: string;
+  bookingRef: string;
+  /** re-sent so the server can re-price rather than trust an amount */
+  booking: BookingInput;
+};
+
+export type VerifyPaymentResult =
+  | {
+      ok: true;
+      bookingRef: string;
+      total: number;
+      currency: string;
+      provider: string;
+    }
+  | { ok: false; error: string };
+
+export type CreateOrder = (input: BookingInput) => Promise<CreateOrderResult>;
+export type VerifyPayment = (
+  input: VerifyPaymentInput,
+) => Promise<VerifyPaymentResult>;

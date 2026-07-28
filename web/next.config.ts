@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    // Serve modern formats — AVIF first (~20-25% smaller than JPEG at the same
+    // visual quality), WebP as the fallback for older browsers.
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       // Airbnb-hosted property & host photos (both datasets)
       { protocol: "https", hostname: "a0.muscache.com" },

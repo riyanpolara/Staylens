@@ -4,7 +4,13 @@ import { List, Map as MapIcon, X } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { MapPinInput } from "@/lib/map-pins";
-import { GoogleMap } from "@/components/maps/google-map";
+import dynamic from "next/dynamic";
+
+// The map only mounts after the user opens it — load the Maps bundle then.
+const GoogleMap = dynamic(
+  () => import("@/components/maps/google-map").then((m) => m.GoogleMap),
+  { ssr: false },
+);
 
 /**
  * Floating "Show map" button (mobile) + a full-screen Google Map overlay with

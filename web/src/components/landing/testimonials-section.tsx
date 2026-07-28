@@ -49,7 +49,7 @@ export function TestimonialsSection() {
                   alt={t.name}
                   width={340}
                   height={400}
-                  unoptimized
+                  sizes="340px"
                   className="w-[340px] h-[400px] object-cover rounded-[28px]"
                   style={{ boxShadow: "0 24px 60px rgba(20,52,42,.2)" }}
                 />

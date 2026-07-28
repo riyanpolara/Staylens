@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/organic-52e01a93-a8f3-4ecb-85f5-0268db962c5a/styles.css">
+<script src="_ds/organic-52e01a93-a8f3-4ecb-85f5-0268db962c5a/_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+  html, body { margin: 0; padding: 0; background: var(--color-bg); }
+  [data-theme="dark"] {
+    --color-bg: #1a1817;
+    --color-surface: #262220;
+    --color-text: #f3e8d7;
+    --color-divider: color-mix(in srgb, #f3e8d7 15%, transparent);
+    --color-accent: #f6a06b;
+    --color-accent-2: #aebf92;
+    --color-accent-100: #3d2312;
+    --color-accent-200: #4d2c16;
+    --color-accent-800: #ffc6a5;
+    --color-accent-700: #ffd9bf;
+    --color-accent-2-100: #272e1b;
+    --color-accent-2-200: #313a22;
+    --color-accent-2-800: #ccdbb2;
+    --color-neutral-100: #2e2b25;
+    --color-neutral-200: #383430;
+    --color-neutral-800: #dcd3c4;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+    --shadow-md: 0 4px 14px rgba(0,0,0,.45);
+    --shadow-lg: 0 18px 44px rgba(0,0,0,.55);
+    color-scheme: dark;
+  }
+  image-slot::part(empty) { font-size: 0; gap: 0; padding: 0; color: transparent; }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes draw { from { stroke-dashoffset: 1400; } to { stroke-dashoffset: 0; } }
+  @keyframes grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes slidein { from { transform: translateX(-100%); } to { transform: none; } }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--color-neutral-300); border-radius: 999px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+</style>
+</helmet>
+
+<div data-theme="{{ theme }}" style="display: flex; min-height: 100vh; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); overflow: hidden;">
+
+  <sc-if value="{{ showRail }}" hint-placeholder-val="{{ true }}">
+    <aside style="width: {{ railWidth }}; flex: none; padding: var(--space-4) var(--space-3); display: flex; flex-direction: column; gap: var(--space-4); height: 100vh; position: sticky; top: 0; transition: width .28s cubic-bezier(.4,0,.2,1);">
+      <div style="display: flex; align-items: center; gap: 10px; padding: 0 6px; min-height: 40px;">
+        <div style="width: 34px; height: 34px; flex: none; border-radius: 999px; background: var(--color-accent); display: grid; place-items: center; color: var(--color-bg); font-family: var(--font-heading); font-size: 17px;">S</div>
+        <sc-if value="{{ railOpen }}" hint-placeholder-val="{{ true }}">
+          <div style="font-family: var(--font-heading); font-size: 19px; letter-spacing: -.02em; white-space: nowrap;">StayLens</div>
+        </sc-if>
+      </div>
+
+      <nav style="display: flex; flex-direction: column; gap: 2px; flex: 1; overflow-y: auto; overflow-x: hidden;">
+        <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="13">
+          <a href="#" onClick="{{ item.go }}" title="{{ item.label }}" style="display: flex; align-items: center; gap: 12px; padding: 9px 11px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 600; white-space: nowrap; background: {{ item.bg }}; color: {{ item.fg }}; transition: background .16s ease, color .16s ease;" style-hover="background: color-mix(in srgb, var(--color-text) 7%, transparent);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="{{ item.d }}"></path></svg>
+            <sc-if value="{{ railOpen }}" hint-placeholder-val="{{ true }}">
+              <span style="overflow: hidden; text-overflow: ellipsis;">{{ item.label }}</span>
+            </sc-if>
+            <sc-if value="{{ item.badgeShown }}" hint-placeholder-val="{{ false }}">
+              <span class="tag tag-accent" style="margin-left: auto; font-weight: 700;">{{ item.badge }}</span>
+            </sc-if>
+          </a>
+        </sc-for>
+      </nav>
+
+      <div style="display: flex; flex-direction: column; gap: 2px; padding-top: var(--space-3); border-top: 1px solid var(--color-divider);">
+        <a href="#" onClick="{{ noop }}" style="display: flex; align-items: center; gap: 12px; padding: 9px 11px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 600; white-space: nowrap; color: color-mix(in srgb, var(--color-text) 65%, transparent);" style-hover="background: color-mix(in srgb, var(--color-text) 7%, transparent);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg>
+          <sc-if value="{{ railOpen }}" hint-placeholder-val="{{ true }}"><span>Log out</span></sc-if>
+        </a>
+      </div>
+    </aside>
+  </sc-if>
+
+  <main style="flex: 1; min-width: 0; height: 100vh; overflow-y: auto; padding: 0 0 var(--space-8);">
+    <header style="position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-6); background: color-mix(in srgb, var(--color-bg) 78%, transparent); backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3); border-bottom: 1px solid var(--color-divider);">
+      <button class="btn btn-secondary btn-icon" onClick="{{ toggleRail }}" aria-label="Toggle sidebar" style="flex: none; border-color: var(--color-divider);">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18v14H3zM9 5v14"></path></svg>
+      </button>
+
+      <div style="display: flex; flex-direction: column; min-width: 0;">
+        <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 50%, transparent);">
+          <span>Admin</span><span>/</span><span style="color: var(--color-accent);">{{ crumb }}</span>
+        </div>
+        <div style="font-family: var(--font-heading); font-size: 21px; line-height: 1.15; letter-spacing: -.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ title }}</div>
+      </div>
+
+      <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+        <div style="position: relative; margin-left: auto; width: min(300px, 30vw);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" style="position: absolute; left: 14px; top: 11px; opacity: .5;"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zM21 21l-5.2-5.2"></path></svg>
+          <input class="input" placeholder="Search properties, hosts, bookings…" style="padding-left: 36px; background: color-mix(in srgb, var(--color-text) 5%, transparent);">
+        </div>
+      </sc-if>
+
+      <div style="display: flex; align-items: center; gap: var(--space-2); margin-left: auto;">
+        <button class="btn btn-secondary btn-icon" onClick="{{ toggleTheme }}" aria-label="Switch theme" style="border-color: var(--color-divider);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="{{ themeIcon }}"></path></svg>
+        </button>
+        <div style="position: relative;">
+          <button class="btn btn-secondary btn-icon" onClick="{{ toggleNotif }}" aria-label="Notifications" style="border-color: var(--color-divider);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 9a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M10.3 21a2 2 0 0 0 3.4 0"></path></svg>
+            <span style="position: absolute; top: 5px; right: 6px; width: 8px; height: 8px; border-radius: 999px; background: var(--color-accent); box-shadow: 0 0 0 2px var(--color-bg);"></span>
+          </button>
+          <sc-if value="{{ notifOpen }}" hint-placeholder-val="{{ false }}">
+            <div class="card elev-lg" style="position: absolute; right: 0; top: 46px; width: min(360px, 84vw); padding: var(--space-3); gap: 0; animation: rise .18s ease both;">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; padding: 0 6px var(--space-2);">
+                <div style="font-family: var(--font-heading); font-size: 16px;">Notifications</div>
+                <button class="btn btn-ghost" onClick="{{ noop }}" style="font-size: 12px;">Mark all read</button>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 2px; max-height: 320px; overflow-y: auto;">
+                <sc-for list="{{ notifs }}" as="n" hint-placeholder-count="5">
+                  <div style="display: grid; grid-template-columns: 30px 1fr; gap: 10px; padding: 10px 6px; border-radius: var(--radius-md); cursor: pointer;" style-hover="background: color-mix(in srgb, var(--color-text) 5%, transparent);">
+                    <div style="width: 30px; height: 30px; border-radius: 999px; display: grid; place-items: center; background: {{ n.tint }}; color: {{ n.ink }};">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="{{ n.d }}"></path></svg>
+                    </div>
+                    <div style="min-width: 0;">
+                      <div style="font-size: 13px; font-weight: 600;">{{ n.title }}</div>
+                      <div style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">{{ n.meta }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+        <div style="display: flex; align-items: center; gap: 9px; padding: 4px 4px 4px 10px; border-radius: 999px; border: 1px solid var(--color-divider); cursor: pointer;" style-hover="background: color-mix(in srgb, var(--color-text) 5%, transparent);">
+          <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+            <div style="text-align: right; line-height: 1.2;">
+              <div style="font-size: 13px; font-weight: 700;">Mara Ellison</div>
+              <div style="font-size: 11px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">Platform admin</div>
+            </div>
+          </sc-if>
+          <div style="width: 30px; height: 30px; border-radius: 999px; background: var(--color-accent-2); color: var(--color-bg); display: grid; place-items: center; font-size: 12px; font-weight: 700;">ME</div>
+        </div>
+      </div>
+    </header>
+
+    <div style="padding: var(--space-6);">
+
+      <!-- ══ DASHBOARD ══ -->
+      <sc-if value="{{ isDash }}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3);">
+            <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+              <div class="card elev-sm" style="gap: var(--space-2); padding: var(--space-4); animation: rise .45s cubic-bezier(.2,.7,.3,1) both; animation-delay: {{ k.delay }}; transition: transform .22s ease, box-shadow .22s ease;" style-hover="transform: translateY(-4px); box-shadow: var(--shadow-lg);">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 34px; height: 34px; border-radius: 999px; background: {{ k.tint }}; color: {{ k.ink }}; display: grid; place-items: center; flex: none;">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="{{ k.d }}"></path></svg>
+                  </div>
+                  <div style="font-size: 12px; font-weight: 600; letter-spacing: .02em; color: color-mix(in srgb, var(--color-text) 62%, transparent);">{{ k.label }}</div>
+                </div>
+                <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-2);">
+                  <div>
+                    <div style="font-family: var(--font-heading); font-size: 30px; line-height: 1.05; letter-spacing: -.02em;">{{ k.value }}</div>
+                    <div style="display: flex; align-items: center; gap: 5px; margin-top: 5px; font-size: 12px; font-weight: 700; color: {{ k.deltaInk }};">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="{{ k.arrow }}"></path></svg>
+                      <span>{{ k.delta }}</span>
+                      <span style="font-weight: 500; white-space: nowrap; color: color-mix(in srgb, var(--color-text) 45%, transparent);">vs last mo.</span>
+                    </div>
+                  </div>
+                  <svg viewBox="0 0 120 40" width="96" height="34" fill="none" preserveAspectRatio="none" style="flex: none; overflow: visible;">
+                    <polyline points="{{ k.spark }}" stroke="{{ k.ink }}" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"></polyline>
+                  </svg>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: var(--space-3); align-items: start;">
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+              <div style="display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2);">
+                <div style="margin-right: auto;">
+                  <div style="font-family: var(--font-heading); font-size: 19px;">Gross booking value</div>
+                  <div style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">{{ revNote }}</div>
+                </div>
+                <div class="seg">
+                  <sc-for list="{{ ranges }}" as="r" hint-placeholder-count="3">
+                    <label class="seg-opt" style="background: {{ r.bg }}; color: {{ r.fg }}; font-weight: 600;">
+                      <input type="radio" name="range" checked="{{ r.on }}" onChange="{{ r.go }}">{{ r.label }}
+                    </label>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="position: relative;" onMouseLeave="{{ clearHover }}">
+                <svg viewBox="0 0 1000 260" width="100%" height="240" preserveAspectRatio="none" style="display: block; overflow: visible;">
+                  <defs>
+                    <linearGradient id="revfill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--color-accent)" stop-opacity="0.30"></stop>
+                      <stop offset="100%" stop-color="var(--color-accent)" stop-opacity="0"></stop>
+                    </linearGradient>
+                  </defs>
+                  <path d="{{ rev.area }}" fill="url(#revfill)" style="animation: fade .7s ease both;"></path>
+                  <path d="{{ rev.line }}" fill="none" stroke="var(--color-accent)" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" stroke-dasharray="1400" style="animation: draw 1.1s cubic-bezier(.4,0,.2,1) both;"></path>
+                  <path d="{{ rev.prevLine }}" fill="none" stroke="color-mix(in srgb, var(--color-text) 28%, transparent)" stroke-width="1.75" stroke-dasharray="5 6" vector-effect="non-scaling-stroke"></path>
+                  <sc-for list="{{ rev.pts }}" as="p" hint-placeholder-count="12">
+                    <rect x="{{ p.hx }}" y="0" width="{{ p.hw }}" height="260" fill="transparent" onMouseEnter="{{ p.go }}"></rect>
+                  </sc-for>
+                  <sc-if value="{{ hoverPt }}" hint-placeholder-val="{{ false }}">
+                    <g>
+                      <line x1="{{ hoverPt.cx }}" y1="0" x2="{{ hoverPt.cx }}" y2="260" stroke="var(--color-accent)" stroke-width="1" stroke-opacity=".4" vector-effect="non-scaling-stroke"></line>
+                      <circle cx="{{ hoverPt.cx }}" cy="{{ hoverPt.cy }}" r="5" fill="var(--color-bg)" stroke="var(--color-accent)" stroke-width="3" vector-effect="non-scaling-stroke"></circle>
+                    </g>
+                  </sc-if>
+                </svg>
+                <sc-if value="{{ hoverPt }}" hint-placeholder-val="{{ false }}">
+                  <div class="card elev-lg" style="position: absolute; top: 0; left: {{ hoverPt.leftPct }}; transform: translateX(-50%); padding: 8px 12px; gap: 2px; pointer-events: none; white-space: nowrap; border-radius: var(--radius-md);">
+                    <div style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 55%, transparent);">{{ hoverPt.label }}</div>
+                    <div style="font-family: var(--font-heading); font-size: 17px;">{{ hoverPt.value }}</div>
+                    <div style="font-size: 11px; color: var(--color-accent-700);">{{ hoverPt.sub }}</div>
+                  </div>
+                </sc-if>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-top: 6px; color: color-mix(in srgb, var(--color-text) 50%, transparent);">
+                  <sc-for list="{{ rev.axis }}" as="a" hint-placeholder-count="6"><span>{{ a.label }}</span></sc-for>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: var(--space-4); flex-wrap: wrap; padding-top: var(--space-2); border-top: 1px solid var(--color-divider);">
+                <sc-for list="{{ revLegend }}" as="l" hint-placeholder-count="3">
+                  <div>
+                    <div style="font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 50%, transparent);">{{ l.label }}</div>
+                    <div style="font-family: var(--font-heading); font-size: 17px;">{{ l.value }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+              <div>
+                <div style="font-family: var(--font-heading); font-size: 19px;">Bookings by month</div>
+                <div style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">Confirmed vs cancelled, last 12 months</div>
+              </div>
+              <svg viewBox="0 0 1000 240" width="100%" height="220" preserveAspectRatio="none" style="display: block; overflow: visible;" onMouseLeave="{{ clearBar }}">
+                <sc-for list="{{ bars }}" as="b" hint-placeholder-count="12">
+                  <g onMouseEnter="{{ b.go }}">
+                    <rect x="{{ b.x }}" y="0" width="{{ b.slot }}" height="240" fill="transparent"></rect>
+                    <rect x="{{ b.x }}" y="{{ b.cy }}" width="{{ b.w }}" height="{{ b.ch }}" rx="6" fill="var(--color-accent-2)" fill-opacity="{{ b.dim }}" style="transform-origin: 50% 240px; animation: grow .6s cubic-bezier(.2,.8,.3,1) both; animation-delay: {{ b.delay }};"></rect>
+                    <rect x="{{ b.x }}" y="{{ b.xy }}" width="{{ b.w }}" height="{{ b.xh }}" rx="4" fill="var(--color-accent)" fill-opacity="{{ b.dim }}" style="transform-origin: 50% 240px; animation: grow .6s cubic-bezier(.2,.8,.3,1) both; animation-delay: {{ b.delay }};"></rect>
+                  </g>
+                </sc-for>
+              </svg>
+              <div style="display: flex; justify-content: space-between; font-size: 11px; color: color-mix(in srgb, var(--color-text) 50%, transparent);">
+                <sc-for list="{{ bars }}" as="b" hint-placeholder-count="12"><span>{{ b.short }}</span></sc-for>
+              </div>
+              <div style="display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; padding-top: var(--space-2); border-top: 1px solid var(--color-divider); font-size: 12px;">
+                <span style="display: flex; align-items: center; gap: 7px;"><span style="width: 10px; height: 10px; border-radius: 3px; background: var(--color-accent-2);"></span>Confirmed</span>
+                <span style="display: flex; align-items: center; gap: 7px;"><span style="width: 10px; height: 10px; border-radius: 3px; background: var(--color-accent);"></span>Cancelled</span>
+                <span style="margin-left: auto; font-weight: 700;">{{ barNote }}</span>
+              </div>
+            </div>
+          </div>
+
+          <sc-if value="{{ showAi }}" hint-placeholder-val="{{ true }}">
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-4); background: color-mix(in srgb, var(--color-accent-2) 12%, var(--color-surface));">
+              <div style="display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-2)" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.9L18.8 9.8l-4.9 1.9L12 16.6l-1.9-4.9L5.2 9.8l4.9-1.9zM18.5 16.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"></path></svg>
+                <div style="margin-right: auto;">
+                  <div style="font-family: var(--font-heading); font-size: 19px;">AI search performance</div>
+                  <div style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">Natural-language search, last 24 hours</div>
+                </div>
+                <button class="btn btn-secondary" onClick="{{ goAi }}">Open AI dashboard</button>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-3);">
+                <sc-for list="{{ aiMini }}" as="m" hint-placeholder-count="4">
+                  <div style="padding: var(--space-3); border-radius: var(--radius-md); background: color-mix(in srgb, var(--color-bg) 55%, transparent);">
+                    <div style="font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 55%, transparent);">{{ m.label }}</div>
+                    <div style="font-family: var(--font-heading); font-size: 24px; margin-top: 4px;">{{ m.value }}</div>
+                    <div style="font-size: 11px; color: {{ m.ink }}; font-weight: 700;">{{ m.delta }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-4);">
+                <div>
+                  <div style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: var(--space-2); color: color-mix(in srgb, var(--color-text) 55%, transparent);">Top prompts today</div>
+                  <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <sc-for list="{{ topPrompts }}" as="p" hint-placeholder-count="4">
+                      <div>
+                        <div style="display: flex; justify-content: space-between; gap: var(--space-3); font-size: 13px; margin-bottom: 4px;">
+                          <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">“{{ p.text }}”</span>
+                          <span style="font-weight: 700; flex: none;">{{ p.count }}</span>
+                        </div>
+                        <div style="height: 6px; border-radius: 999px; background: color-mix(in srgb, var(--color-text) 8%, transparent); overflow: hidden;">
+                          <div style="height: 100%; width: {{ p.pct }}; border-radius: 999px; background: var(--color-accent-2); transition: width .5s ease;"></div>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: var(--space-2); color: color-mix(in srgb, var(--color-text) 55%, transparent);">Trending keywords</div>
+                  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <sc-for list="{{ keywords }}" as="k" hint-placeholder-count="10">
+                      <span class="tag tag-accent-2" style="font-size: 12px; padding: 5px 12px;">{{ k.word }} <span style="opacity: .6; margin-left: 6px;">{{ k.growth }}</span></span>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-3); align-items: start;">
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+              <div style="font-family: var(--font-heading); font-size: 19px;">Top cities</div>
+              <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <sc-for list="{{ cities }}" as="c" hint-placeholder-count="5">
+                  <div style="display: grid; grid-template-columns: 1fr auto; gap: 4px var(--space-3);">
+                    <div style="font-size: 14px; font-weight: 600;">{{ c.name }}</div>
+                    <div style="font-family: var(--font-heading); font-size: 15px;">{{ c.revenue }}</div>
+                    <div style="grid-column: 1 / -1; height: 7px; border-radius: 999px; background: color-mix(in srgb, var(--color-text) 8%, transparent); overflow: hidden;">
+                      <div style="height: 100%; width: {{ c.pct }}; border-radius: 999px; background: var(--color-accent);"></div>
+                    </div>
+                    <div style="grid-column: 1 / -1; display: flex; gap: var(--space-3); font-size: 11px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">
+                      <span>{{ c.bookings }} bookings</span><span>{{ c.adr }} ADR</span><span>{{ c.occ }} occupancy</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+              <div style="font-family: var(--font-heading); font-size: 19px;">Platform health</div>
+              <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <sc-for list="{{ minis }}" as="m" hint-placeholder-count="4">
+                  <div style="display: flex; align-items: center; gap: var(--space-3);">
+                    <div style="flex: 1; min-width: 0;">
+                      <div style="font-size: 13px; font-weight: 600;">{{ m.label }}</div>
+                      <div style="font-size: 11px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">{{ m.note }}</div>
+                    </div>
+                    <div style="font-family: var(--font-heading); font-size: 20px;">{{ m.value }}</div>
+                    <span class="tag {{ m.tagClass }}" style="flex: none;">{{ m.state }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+              <div style="font-family: var(--font-heading); font-size: 19px;">Recent activity</div>
+              <div style="display: flex; flex-direction: column;">
+                <sc-for list="{{ activity }}" as="a" hint-placeholder-count="6">
+                  <div style="display: grid; grid-template-columns: 26px 1fr; gap: 12px; padding-bottom: var(--space-3);">
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                      <div style="width: 26px; height: 26px; border-radius: 999px; background: {{ a.tint }}; color: {{ a.ink }}; display: grid; place-items: center; flex: none;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="{{ a.d }}"></path></svg>
+                      </div>
+                      <div style="width: 1px; flex: 1; background: var(--color-divider);"></div>
+                    </div>
+                    <div style="padding-top: 3px;">
+                      <div style="font-size: 13px;">{{ a.text }}</div>
+                      <div style="font-size: 11px; color: color-mix(in srgb, var(--color-text) 50%, transparent);">{{ a.time }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ══ PROPERTIES ══ -->
+      <sc-if value="{{ isProps }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2);">
+            <div style="position: relative; flex: 1; min-width: 220px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" style="position: absolute; left: 14px; top: 11px; opacity: .5;"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zM21 21l-5.2-5.2"></path></svg>
+              <input class="input" placeholder="Search by property, host or city" value="{{ query }}" onChange="{{ setQuery }}" style="padding-left: 36px;">
+            </div>
+            <div class="seg">
+              <sc-for list="{{ statusTabs }}" as="s" hint-placeholder-count="4">
+                <label class="seg-opt" style="background: {{ s.bg }}; color: {{ s.fg }}; font-weight: 600;">
+                  <input type="radio" name="pstatus" checked="{{ s.on }}" onChange="{{ s.go }}">{{ s.label }} <span style="opacity: .6;">{{ s.count }}</span>
+                </label>
+              </sc-for>
+            </div>
+            <button class="btn btn-secondary" onClick="{{ noop }}">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12H3M18 6H6M14 18h-4"></path></svg>
+              Filters
+            </button>
+            <button class="btn btn-secondary" onClick="{{ noop }}">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"></path></svg>
+              Export CSV
+            </button>
+            <button class="btn btn-primary" onClick="{{ noop }}">New property</button>
+          </div>
+
+          <sc-if value="{{ hasSelection }}" hint-placeholder-val="{{ false }}">
+            <div class="card elev-sm" style="flex-direction: row; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-4); background: var(--color-accent-100); animation: rise .2s ease both;">
+              <span style="font-size: 13px; font-weight: 700; color: var(--color-accent-800);">{{ selectedCount }} selected</span>
+              <div style="display: flex; gap: var(--space-2); margin-left: auto; flex-wrap: wrap;">
+                <button class="btn btn-secondary" onClick="{{ noop }}" style="border-color: var(--color-accent-300);">Feature</button>
+                <button class="btn btn-secondary" onClick="{{ noop }}" style="border-color: var(--color-accent-300);">Approve</button>
+                <button class="btn btn-secondary" onClick="{{ askSuspendMany }}" style="border-color: var(--color-accent-300);">Suspend</button>
+                <button class="btn btn-ghost" onClick="{{ clearSelection }}">Clear</button>
+              </div>
+            </div>
+          </sc-if>
+
+          <div style="overflow-x: auto; padding-bottom: 4px;">
+            <div style="min-width: 940px; display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: grid; grid-template-columns: 34px 76px minmax(200px, 2.2fr) 1.2fr 96px 108px 84px 92px 44px; align-items: center; gap: var(--space-3); padding: 0 var(--space-4);">
+                <span></span><span></span>
+                <sc-for list="{{ propHeaders }}" as="h" hint-placeholder-count="7">
+                  <button onClick="{{ h.go }}" style="display: flex; align-items: center; gap: 5px; background: none; border: 0; padding: 0; cursor: pointer; font: inherit; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: {{ h.ink }}; justify-content: {{ h.align }};">
+                    {{ h.label }}
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="opacity: {{ h.op }};"><path d="{{ h.arrow }}"></path></svg>
+                  </button>
+                </sc-for>
+                <span></span>
+              </div>
+
+              <sc-for list="{{ propRows }}" as="p" hint-placeholder-count="6">
+                <div class="card" style="display: grid; grid-template-columns: 34px 76px minmax(200px, 2.2fr) 1.2fr 96px 108px 84px 92px 44px; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-4); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); animation: rise .3s ease both; animation-delay: {{ p.delay }}; transition: transform .18s ease, box-shadow .18s ease;" style-hover="transform: translateY(-2px); box-shadow: var(--shadow-md);">
+                  <input type="checkbox" checked="{{ p.checked }}" onChange="{{ p.toggle }}" style="width: 17px; height: 17px; accent-color: var(--color-accent); cursor: pointer;">
+                  <image-slot id="{{ p.slot }}" style="width: 76px; height: 56px;" radius="14" placeholder=" "></image-slot>
+                  <div style="min-width: 0;">
+                    <div style="display: flex; align-items: center; gap: 7px;">
+                      <span style="font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ p.name }}</span>
+                      <sc-if value="{{ p.featured }}" hint-placeholder-val="{{ false }}">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="var(--color-accent)" stroke="none" style="flex: none;"><path d="M12 3l2.9 6 6.1.9-4.5 4.3 1.1 6.3L12 17.6 6.4 20.5l1.1-6.3L3 9.9 9.1 9z"></path></svg>
+                      </sc-if>
+                    </div>
+                    <div style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ p.type }} · {{ p.host }}</div>
+                  </div>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 13px;">{{ p.city }}</div>
+                    <div style="font-size: 11px; color: color-mix(in srgb, var(--color-text) 50%, transparent);">{{ p.country }}</div>
+                  </div>
+                  <div style="font-size: 14px; font-weight: 700;">{{ p.price }}<span style="font-size: 11px; font-weight: 500; opacity: .55;">/night</span></div>
+                  <span class="tag {{ p.tagClass }}" style="justify-self: start;">{{ p.status }}</span>
+                  <div style="display: flex; align-items: center; gap: 5px; font-size: 13px;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="var(--color-accent)" stroke="none"><path d="M12 3l2.9 6 6.1.9-4.5 4.3 1.1 6.3L12 17.6 6.4 20.5l1.1-6.3L3 9.9 9.1 9z"></path></svg>
+                    <span style="font-weight: 700;">{{ p.rating }}</span>
+                    <span style="opacity: .5; font-size: 11px;">({{ p.reviews }})</span>
+                  </div>
+                  <div style="font-size: 13px;">{{ p.bookings }}<div style="font-size: 11px; opacity: .5;">{{ p.created }}</div></div>
+                  <div style="position: relative; justify-self: end;">
+                    <button class="btn btn-secondary btn-icon" onClick="{{ p.menu }}" aria-label="Row actions" style="width: 32px; height: 32px; border-color: var(--color-divider);">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="12" cy="19" r="1.6"></circle></svg>
+                    </button>
+                    <sc-if value="{{ p.menuOpen }}" hint-placeholder-val="{{ false }}">
+                      <div class="card elev-lg" style="position: absolute; right: 0; top: 36px; z-index: 20; width: 176px; padding: 6px; gap: 0; border-radius: var(--radius-md); animation: rise .16s ease both;">
+                        <sc-for list="{{ p.actions }}" as="act" hint-placeholder-count="5">
+                          <button onClick="{{ act.go }}" style="display: flex; align-items: center; gap: 9px; width: 100%; padding: 8px 10px; border: 0; border-radius: var(--radius-md); background: none; cursor: pointer; font: inherit; font-size: 13px; text-align: left; color: {{ act.ink }};" style-hover="background: color-mix(in srgb, var(--color-text) 7%, transparent);">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="{{ act.d }}"></path></svg>
+                            {{ act.label }}
+                          </button>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-for>
+
+              <sc-if value="{{ propsEmpty }}" hint-placeholder-val="{{ false }}">
+                <div class="card" style="align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-8); border-radius: var(--radius-lg);">
+                  <div style="width: 62px; height: 62px; border-radius: 999px; background: var(--color-accent-100); color: var(--color-accent-800); display: grid; place-items: center;">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zM21 21l-5.2-5.2"></path></svg>
+                  </div>
+                  <div style="font-family: var(--font-heading); font-size: 20px;">No properties match</div>
+                  <div style="font-size: 13px; max-width: 320px; color: color-mix(in srgb, var(--color-text) 60%, transparent);">Try a different search term or clear the status filter to see the full inventory.</div>
+                  <button class="btn btn-primary" onClick="{{ resetFilters }}" style="margin-top: var(--space-2);">Clear filters</button>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3); padding-top: var(--space-2);">
+            <span style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">{{ pageNote }}</span>
+            <div style="display: flex; align-items: center; gap: 6px; margin-left: auto;">
+              <button class="btn btn-secondary btn-icon" onClick="{{ prevPage }}" aria-label="Previous page" style="border-color: var(--color-divider);">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+              </button>
+              <sc-for list="{{ pageBtns }}" as="b" hint-placeholder-count="3">
+                <button onClick="{{ b.go }}" style="min-width: 34px; height: 34px; border-radius: 999px; border: 1px solid {{ b.border }}; background: {{ b.bg }}; color: {{ b.fg }}; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;">{{ b.label }}</button>
+              </sc-for>
+              <button class="btn btn-secondary btn-icon" onClick="{{ nextPage }}" aria-label="Next page" style="border-color: var(--color-divider);">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ══ BOOKINGS ══ -->
+      <sc-if value="{{ isBookings }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-3);">
+            <sc-for list="{{ bookStats }}" as="s" hint-placeholder-count="4">
+              <div class="card elev-sm" style="padding: var(--space-4); gap: 4px;">
+                <div style="font-size: 12px; font-weight: 600; color: color-mix(in srgb, var(--color-text) 60%, transparent);">{{ s.label }}</div>
+                <div style="font-family: var(--font-heading); font-size: 26px;">{{ s.value }}</div>
+                <div style="font-size: 12px; font-weight: 700; color: {{ s.ink }};">{{ s.delta }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-3); align-items: start;">
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3); grid-column: span 2; min-width: 0;">
+              <div style="display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2);">
+                <div style="font-family: var(--font-heading); font-size: 19px; margin-right: auto;">Bookings</div>
+                <div class="seg">
+                  <sc-for list="{{ bookTabs }}" as="t" hint-placeholder-count="4">
+                    <label class="seg-opt" style="background: {{ t.bg }}; color: {{ t.fg }}; font-weight: 600;">
+                      <input type="radio" name="bstatus" checked="{{ t.on }}" onChange="{{ t.go }}">{{ t.label }}
+                    </label>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="overflow-x: auto;">
+                <table class="table" style="min-width: 760px;">
+                  <thead>
+                    <tr>
+                      <th>Booking</th><th>Guest</th><th>Property</th><th>Dates</th><th>Nights</th><th>Amount</th><th>Payment</th><th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <sc-for list="{{ bookRows }}" as="b" hint-placeholder-count="8">
+                      <tr>
+                        <td style="font-family: var(--font-heading); font-size: 13px; white-space: nowrap;">{{ b.id }}</td>
+                        <td style="white-space: nowrap;">
+                          <div style="display: flex; align-items: center; gap: 9px;">
+                            <div style="width: 28px; height: 28px; flex: none; border-radius: 999px; background: {{ b.tint }}; color: {{ b.ink }}; display: grid; place-items: center; font-size: 11px; font-weight: 700;">{{ b.initials }}</div>
+                            <span>{{ b.guest }}</span>
+                          </div>
+                        </td>
+                        <td style="max-width: 190px;"><div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ b.property }}</div><div style="font-size: 11px; opacity: .55;">{{ b.host }}</div></td>
+                        <td style="font-size: 13px;">{{ b.dates }}</td>
+                        <td>{{ b.nights }}</td>
+                        <td style="font-weight: 700;">{{ b.amount }}</td>
+                        <td><span class="tag {{ b.payClass }}">{{ b.payment }}</span></td>
+                        <td><span class="tag {{ b.statusClass }}">{{ b.status }}</span></td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+              <div>
+                <div style="font-family: var(--font-heading); font-size: 19px;">Arrivals calendar</div>
+                <div style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">August 2026 · check-in density</div>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 50%, transparent); text-align: center;">
+                <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;">
+                <sc-for list="{{ calDays }}" as="d" hint-placeholder-count="35">
+                  <div title="{{ d.tip }}" style="aspect-ratio: 1; border-radius: 12px; display: grid; place-items: center; font-size: 12px; font-weight: 600; background: {{ d.bg }}; color: {{ d.fg }}; border: 1px solid {{ d.border }}; cursor: default; transition: transform .15s ease;" style-hover="transform: scale(1.08);">{{ d.n }}</div>
+                </sc-for>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 11px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">
+                <span>Quiet</span>
+                <div style="flex: 1; height: 7px; border-radius: 999px; background: linear-gradient(90deg, var(--color-accent-100), var(--color-accent));"></div>
+                <span>Busy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ══ USERS ══ -->
+      <sc-if value="{{ isUsers }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2);">
+            <div style="position: relative; flex: 1; min-width: 220px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" style="position: absolute; left: 14px; top: 11px; opacity: .5;"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zM21 21l-5.2-5.2"></path></svg>
+              <input class="input" placeholder="Search users by name or email" value="{{ query }}" onChange="{{ setQuery }}" style="padding-left: 36px;">
+            </div>
+            <div class="seg">
+              <sc-for list="{{ roleTabs }}" as="r" hint-placeholder-count="4">
+                <label class="seg-opt" style="background: {{ r.bg }}; color: {{ r.fg }}; font-weight: 600;">
+                  <input type="radio" name="urole" checked="{{ r.on }}" onChange="{{ r.go }}">{{ r.label }}
+                </label>
+              </sc-for>
+            </div>
+            <button class="btn btn-secondary" onClick="{{ noop }}">Export CSV</button>
+            <button class="btn btn-primary" onClick="{{ noop }}">Invite admin</button>
+          </div>
+
+          <div style="overflow-x: auto; padding-bottom: 4px;">
+            <div style="min-width: 900px; display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: grid; grid-template-columns: minmax(210px, 2fr) 1fr 110px 110px 78px 104px 100px 44px; align-items: center; gap: var(--space-3); padding: 0 var(--space-4); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 55%, transparent);">
+                <span>User</span><span>Country</span><span>Joined</span><span>Last login</span><span>Trips</span><span>Role</span><span>Status</span><span></span>
+              </div>
+              <sc-for list="{{ userRows }}" as="u" hint-placeholder-count="8">
+                <div class="card" style="display: grid; grid-template-columns: minmax(210px, 2fr) 1fr 110px 110px 78px 104px 100px 44px; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-4); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); animation: rise .3s ease both; animation-delay: {{ u.delay }}; transition: transform .18s ease, box-shadow .18s ease;" style-hover="transform: translateY(-2px); box-shadow: var(--shadow-md);">
+                  <div style="display: flex; align-items: center; gap: 11px; min-width: 0;">
+                    <div style="width: 36px; height: 36px; flex: none; border-radius: 999px; background: {{ u.tint }}; color: {{ u.ink }}; display: grid; place-items: center; font-size: 13px; font-weight: 700;">{{ u.initials }}</div>
+                    <div style="min-width: 0;">
+                      <div style="font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ u.name }}</div>
+                      <div style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ u.email }}</div>
+                    </div>
+                  </div>
+                  <div style="font-size: 13px;">{{ u.country }}</div>
+                  <div style="font-size: 13px;">{{ u.joined }}</div>
+                  <div style="font-size: 13px;">{{ u.last }}</div>
+                  <div style="font-size: 13px; font-weight: 700;">{{ u.trips }}</div>
+                  <span class="tag {{ u.roleClass }}" style="justify-self: start;">{{ u.role }}</span>
+                  <span class="tag {{ u.statusClass }}" style="justify-self: start;">{{ u.status }}</span>
+                  <div style="position: relative; justify-self: end;">
+                    <button class="btn btn-secondary btn-icon" onClick="{{ u.menu }}" aria-label="Row actions" style="width: 32px; height: 32px; border-color: var(--color-divider);">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="12" cy="19" r="1.6"></circle></svg>
+                    </button>
+                    <sc-if value="{{ u.menuOpen }}" hint-placeholder-val="{{ false }}">
+                      <div class="card elev-lg" style="position: absolute; right: 0; top: 36px; z-index: 20; width: 170px; padding: 6px; gap: 0; border-radius: var(--radius-md); animation: rise .16s ease both;">
+                        <sc-for list="{{ u.actions }}" as="act" hint-placeholder-count="4">
+                          <button onClick="{{ act.go }}" style="display: flex; align-items: center; gap: 9px; width: 100%; padding: 8px 10px; border: 0; border-radius: var(--radius-md); background: none; cursor: pointer; font: inherit; font-size: 13px; text-align: left; color: {{ act.ink }};" style-hover="background: color-mix(in srgb, var(--color-text) 7%, transparent);">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="{{ act.d }}"></path></svg>
+                            {{ act.label }}
+                          </button>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-for>
+              <sc-if value="{{ usersEmpty }}" hint-placeholder-val="{{ false }}">
+                <div class="card" style="align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-8); border-radius: var(--radius-lg);">
+                  <div style="font-family: var(--font-heading); font-size: 20px;">No users match</div>
+                  <div style="font-size: 13px; color: color-mix(in srgb, var(--color-text) 60%, transparent);">Adjust the search or role filter.</div>
+                  <button class="btn btn-primary" onClick="{{ resetFilters }}">Clear filters</button>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ══ AI ANALYTICS ══ -->
+      <sc-if value="{{ isAi }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-3);">
+            <sc-for list="{{ aiStats }}" as="s" hint-placeholder-count="5">
+              <div class="card elev-sm" style="padding: var(--space-4); gap: 4px; animation: rise .4s ease both; animation-delay: {{ s.delay }};">
+                <div style="font-size: 12px; font-weight: 600; color: color-mix(in srgb, var(--color-text) 60%, transparent);">{{ s.label }}</div>
+                <div style="font-family: var(--font-heading); font-size: 27px;">{{ s.value }}</div>
+                <div style="font-size: 12px; font-weight: 700; color: {{ s.ink }};">{{ s.delta }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: var(--space-3); align-items: start;">
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+              <div style="display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2);">
+                <div style="margin-right: auto;">
+                  <div style="font-family: var(--font-heading); font-size: 19px;">Search volume &amp; latency</div>
+                  <div style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">Hourly, last 24 hours</div>
+                </div>
+                <span class="tag tag-accent-2" style="gap: 5px;"><span>p95</span>{{ aiP95 }}</span>
+              </div>
+              <div style="position: relative;" onMouseLeave="{{ clearHover }}">
+                <svg viewBox="0 0 1000 240" width="100%" height="220" preserveAspectRatio="none" style="display: block; overflow: visible;">
+                  <defs>
+                    <linearGradient id="aifill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--color-accent-2)" stop-opacity="0.32"></stop>
+                      <stop offset="100%" stop-color="var(--color-accent-2)" stop-opacity="0"></stop>
+                    </linearGradient>
+                  </defs>
+                  <path d="{{ aiChart.area }}" fill="url(#aifill)" style="animation: fade .7s ease both;"></path>
+                  <path d="{{ aiChart.line }}" fill="none" stroke="var(--color-accent-2)" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" stroke-dasharray="1400" style="animation: draw 1.1s cubic-bezier(.4,0,.2,1) both;"></path>
+                  <sc-for list="{{ aiChart.pts }}" as="p" hint-placeholder-count="12">
+                    <rect x="{{ p.hx }}" y="0" width="{{ p.hw }}" height="240" fill="transparent" onMouseEnter="{{ p.go }}"></rect>
+                  </sc-for>
+                  <sc-if value="{{ hoverPt }}" hint-placeholder-val="{{ false }}">
+                    <circle cx="{{ hoverPt.cx }}" cy="{{ hoverPt.cy }}" r="5" fill="var(--color-bg)" stroke="var(--color-accent-2)" stroke-width="3" vector-effect="non-scaling-stroke"></circle>
+                  </sc-if>
+                </svg>
+                <sc-if value="{{ hoverPt }}" hint-placeholder-val="{{ false }}">
+                  <div class="card elev-lg" style="position: absolute; top: 0; left: {{ hoverPt.leftPct }}; transform: translateX(-50%); padding: 8px 12px; gap: 2px; pointer-events: none; white-space: nowrap; border-radius: var(--radius-md);">
+                    <div style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; opacity: .6;">{{ hoverPt.label }}</div>
+                    <div style="font-family: var(--font-heading); font-size: 17px;">{{ hoverPt.value }}</div>
+                    <div style="font-size: 11px; color: var(--color-accent-2-800);">{{ hoverPt.sub }}</div>
+                  </div>
+                </sc-if>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-top: 6px; color: color-mix(in srgb, var(--color-text) 50%, transparent);">
+                  <sc-for list="{{ aiChart.axis }}" as="a" hint-placeholder-count="6"><span>{{ a.label }}</span></sc-for>
+                </div>
+              </div>
+            </div>
+
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+              <div style="font-family: var(--font-heading); font-size: 19px;">Outcome of every search</div>
+              <div style="display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap;">
+                <svg width="150" height="150" viewBox="0 0 42 42" style="flex: none; transform: rotate(-90deg);">
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="color-mix(in srgb, var(--color-text) 8%, transparent)" stroke-width="6"></circle>
+                  <sc-for list="{{ donut }}" as="d" hint-placeholder-count="3">
+                    <circle cx="21" cy="21" r="15.9" fill="none" stroke="{{ d.color }}" stroke-width="6" stroke-linecap="round" stroke-dasharray="{{ d.dash }}" stroke-dashoffset="{{ d.offset }}"></circle>
+                  </sc-for>
+                </svg>
+                <div style="display: flex; flex-direction: column; gap: var(--space-2); flex: 1; min-width: 150px;">
+                  <sc-for list="{{ donut }}" as="d" hint-placeholder-count="3">
+                    <div style="display: flex; align-items: center; gap: 9px; font-size: 13px;">
+                      <span style="width: 10px; height: 10px; border-radius: 999px; background: {{ d.color }}; flex: none;"></span>
+                      <span style="flex: 1;">{{ d.label }}</span>
+                      <span style="font-weight: 700;">{{ d.pct }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="font-size: 12px; padding-top: var(--space-2); border-top: 1px solid var(--color-divider); color: color-mix(in srgb, var(--color-text) 60%, transparent);">Searches that returned nothing are queued for inventory review — the biggest gap is coastal stays under $120.</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: var(--space-3); align-items: start;">
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+              <div style="font-family: var(--font-heading); font-size: 19px;">Prompt history</div>
+              <div style="overflow-x: auto;">
+                <table class="table" style="min-width: 460px;">
+                  <thead><tr><th>Prompt</th><th>Runs</th><th>Results</th><th>CTR</th><th>Booked</th></tr></thead>
+                  <tbody>
+                    <sc-for list="{{ promptRows }}" as="p" hint-placeholder-count="7">
+                      <tr>
+                        <td style="max-width: 260px;"><div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ p.text }}</div></td>
+                        <td>{{ p.runs }}</td>
+                        <td>{{ p.results }}</td>
+                        <td style="font-weight: 700;">{{ p.ctr }}</td>
+                        <td><span class="tag {{ p.tagClass }}">{{ p.booked }}</span></td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+              <div style="font-family: var(--font-heading); font-size: 19px;">Most clicked recommendations</div>
+              <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <sc-for list="{{ recs }}" as="r" hint-placeholder-count="4">
+                  <div style="display: flex; align-items: center; gap: var(--space-3);">
+                    <image-slot id="{{ r.slot }}" style="width: 76px; height: 56px; flex: none;" radius="14" placeholder=" "></image-slot>
+                    <div style="flex: 1; min-width: 0;">
+                      <div style="font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ r.name }}</div>
+                      <div style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">{{ r.city }} · surfaced {{ r.surfaced }}×</div>
+                    </div>
+                    <div style="text-align: right;">
+                      <div style="font-family: var(--font-heading); font-size: 17px;">{{ r.ctr }}</div>
+                      <div style="font-size: 11px; opacity: .55;">click rate</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ══ NOT YET DESIGNED ══ -->
+      <sc-if value="{{ isStub }}" hint-placeholder-val="{{ false }}">
+        <div class="card elev-sm" style="align-items: center; text-align: center; gap: var(--space-3); padding: var(--space-8); border-radius: var(--radius-lg);">
+          <div style="width: 74px; height: 74px; border-radius: 999px; background: var(--color-accent-2-100); color: var(--color-accent-2-800); display: grid; place-items: center;">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="{{ stubIcon }}"></path></svg>
+          </div>
+          <div style="font-family: var(--font-heading); font-size: 26px;">{{ title }}</div>
+          <div style="font-size: 14px; max-width: 420px; color: color-mix(in srgb, var(--color-text) 60%, transparent);">This section is specified in the handoff document but not yet designed. It will reuse the same DataTable, ChartCard and moderation patterns shown on the five built screens.</div>
+          <div style="display: flex; gap: var(--space-2); flex-wrap: wrap; justify-content: center;">
+            <button class="btn btn-primary" onClick="{{ goDash }}">Back to dashboard</button>
+            <button class="btn btn-secondary" onClick="{{ noop }}">Read the spec</button>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </main>
+
+  <sc-if value="{{ confirm }}" hint-placeholder-val="{{ false }}">
+    <div class="dialog-backdrop" style="z-index: 60; animation: fade .18s ease both;">
+      <div class="dialog" style="animation: rise .22s cubic-bezier(.2,.8,.3,1) both;">
+        <div style="width: 46px; height: 46px; border-radius: 999px; background: var(--color-accent-100); color: var(--color-accent-800); display: grid; place-items: center;">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9L2.4 17.6A2 2 0 0 0 4.1 20.6h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
+        </div>
+        <div class="dialog-title">{{ confirm.title }}</div>
+        <div class="dialog-body">{{ confirm.body }}</div>
+        <div class="dialog-actions">
+          <button class="btn btn-secondary" onClick="{{ closeConfirm }}">Cancel</button>
+          <button class="btn btn-primary" onClick="{{ closeConfirm }}">{{ confirm.action }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ drawer }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ toggleRail }}" style="position: fixed; inset: 0; z-index: 50; background: color-mix(in srgb, var(--color-neutral-900) 50%, transparent); animation: fade .2s ease both;">
+      <aside style="width: 268px; height: 100%; padding: var(--space-4) var(--space-3); background: var(--color-surface); box-shadow: var(--shadow-lg); display: flex; flex-direction: column; gap: var(--space-4); animation: slidein .26s cubic-bezier(.3,.8,.3,1) both;">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 0 6px;">
+          <div style="width: 34px; height: 34px; border-radius: 999px; background: var(--color-accent); display: grid; place-items: center; color: var(--color-bg); font-family: var(--font-heading); font-size: 17px;">S</div>
+          <div style="font-family: var(--font-heading); font-size: 19px;">StayLens</div>
+        </div>
+        <nav style="display: flex; flex-direction: column; gap: 2px; overflow-y: auto;">
+          <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="13">
+            <a href="#" onClick="{{ item.go }}" style="display: flex; align-items: center; gap: 12px; padding: 10px 11px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 600; background: {{ item.bg }}; color: {{ item.fg }};">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="{{ item.d }}"></path></svg>
+              <span>{{ item.label }}</span>
+            </a>
+          </sc-for>
+        </nav>
+      </aside>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultTheme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;'light' | 'dark'&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;showAiSection&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Dashboard home&quot;}}">
+class Component extends DCLogic {
+  state = { screen: 'dash', theme: null, rail: true, drawer: false, notif: false, range: '12m',
+    hover: null, bar: null, sort: { key: 'bookings', dir: 'desc' }, status: 'all', page: 1,
+    query: '', sel: [], menu: null, confirm: null, role: 'all', bstatus: 'all', w: 1400 };
+
+  nav = [
+    ['dash', 'Dashboard', 'M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z'],
+    ['props', 'Properties', 'M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'],
+    ['hosts', 'Hosts', 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8M16 11l2 2 4-4'],
+    ['bookings', 'Bookings', 'M4 5h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM8 3v4M16 3v4M3 11h18', '24'],
+    ['users', 'Users', 'M18 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M10.5 3a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9'],
+    ['reviews', 'Reviews', 'M12 3l2.9 6 6.1.9-4.5 4.3 1.1 6.3L12 17.6 6.4 20.5l1.1-6.3L3 9.9 9.1 9z', '7'],
+    ['cities', 'Cities', 'M12 22s7-6.3 7-12A7 7 0 0 0 5 10c0 5.7 7 12 7 12zM12 12.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z'],
+    ['amenities', 'Amenities', 'M5 12.5a10 10 0 0 1 14 0M8 16a6 6 0 0 1 8 0M12 20h.01'],
+    ['ai', 'AI Search', 'M12 3l1.9 4.9L18.8 9.8l-4.9 1.9L12 16.6l-1.9-4.9L5.2 9.8l4.9-1.9zM18.5 16.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z'],
+    ['revenue', 'Revenue', 'M3 17l6-6 4 4 8-8M15 7h6v6'],
+    ['messages', 'Messages', 'M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'],
+    ['reports', 'Reports', 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h4'],
+    ['settings', 'Settings', 'M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6']
+  ];
+
+  titles = { dash: 'Platform overview', props: 'Properties', hosts: 'Hosts', bookings: 'Bookings',
+    users: 'Users', reviews: 'Review moderation', cities: 'City analytics', amenities: 'Amenities',
+    ai: 'AI search analytics', revenue: 'Revenue', messages: 'Messages', reports: 'Reports', settings: 'Settings' };
+
+  props_ = [
+    ['Cliffside Olive House', 'Villa', 'Ilaria Bruno', 'Amalfi', 'Italy', 486, 'Live', 4.94, 212, 148, 'Mar 2025', true],
+    ['The Salt Cabin', 'Cabin', 'Nils Aune', 'Lofoten', 'Norway', 264, 'Live', 4.88, 141, 96, 'Jun 2025', false],
+    ['Casa Barranco', 'Loft', 'Diego Ferrer', 'Lisbon', 'Portugal', 198, 'Live', 4.79, 308, 204, 'Jan 2024', true],
+    ['Cedar & Fog Retreat', 'Cabin', 'Marta Reyes', 'Tofino', 'Canada', 342, 'Pending', 0, 0, 0, 'Jul 2026', false],
+    ['Juniper Courtyard', 'Riad', 'Yasmine Idrissi', 'Marrakesh', 'Morocco', 176, 'Live', 4.91, 264, 187, 'Sep 2024', false],
+    ['Nº 12 Kiwi Lane', 'Cottage', 'Aroha TeRina', 'Wanaka', 'New Zealand', 228, 'Suspended', 4.12, 63, 41, 'Feb 2025', false],
+    ['Suburbio Verde', 'Apartment', 'Camila Rocha', 'Mexico City', 'Mexico', 132, 'Live', 4.85, 196, 152, 'Nov 2024', false],
+    ['The Reed Barn', 'Barn', 'Fen Harlow', 'Cotswolds', 'United Kingdom', 254, 'Live', 4.9, 174, 118, 'Apr 2025', true],
+    ['Terrazza Solaia', 'Villa', 'Ilaria Bruno', 'Palermo', 'Italy', 398, 'Pending', 0, 0, 0, 'Jul 2026', false],
+    ['Kite House Kamakura', 'House', 'Sora Nakai', 'Kamakura', 'Japan', 286, 'Live', 4.96, 232, 163, 'Aug 2024', false],
+    ['Dune Nine', 'Bungalow', 'Peter Vos', 'Zandvoort', 'Netherlands', 214, 'Live', 4.71, 118, 88, 'May 2025', false],
+    ['Alto Nube', 'Cabin', 'Tomás Lira', 'Pucón', 'Chile', 168, 'Suspended', 3.94, 47, 29, 'Oct 2024', false],
+    ['Olive Grove Annex', 'Guesthouse', 'Nikos Vasilis', 'Crete', 'Greece', 152, 'Live', 4.82, 205, 141, 'Mar 2024', false],
+    ['Fernwood Studio', 'Studio', 'Elin Sato', 'Vancouver', 'Canada', 144, 'Live', 4.68, 132, 97, 'Dec 2024', false]
+  ].map((r, i) => ({ id: i, name: r[0], type: r[1], host: r[2], city: r[3], country: r[4], priceN: r[5],
+    status: r[6], ratingN: r[7], reviews: r[8], bookings: r[9], created: r[10], featured: r[11] }));
+
+  users_ = [
+    ['Amelie Fournier', 'amelie.f@mail.com', 'France', 'Feb 2024', '2h ago', 14, 'Guest', 'Active'],
+    ['Ilaria Bruno', 'ilaria@olivehouse.it', 'Italy', 'Mar 2023', '11m ago', 3, 'Host', 'Active'],
+    ['Devon Marsh', 'devon.marsh@mail.com', 'United States', 'Jul 2025', '1d ago', 6, 'Guest', 'Active'],
+    ['Sora Nakai', 'sora.nakai@kite.jp', 'Japan', 'Aug 2024', '4h ago', 2, 'Host', 'Active'],
+    ['Priya Raghunath', 'priya.r@mail.com', 'India', 'Jan 2026', '6d ago', 1, 'Guest', 'Pending'],
+    ['Mara Ellison', 'mara@staylens.com', 'United Kingdom', 'Nov 2022', 'Online', 0, 'Admin', 'Active'],
+    ['Tomás Lira', 'tomas@altonube.cl', 'Chile', 'Oct 2024', '3w ago', 4, 'Host', 'Suspended'],
+    ['Grace Okonkwo', 'grace.ok@mail.com', 'Nigeria', 'May 2025', '9h ago', 11, 'Guest', 'Active'],
+    ['Lukas Brandt', 'lukas.brandt@mail.com', 'Germany', 'Apr 2024', '2d ago', 8, 'Guest', 'Active'],
+    ['Yasmine Idrissi', 'yasmine@juniper.ma', 'Morocco', 'Sep 2024', '1h ago', 2, 'Host', 'Active'],
+    ['Rob Callahan', 'rob.callahan@mail.com', 'Ireland', 'Jun 2026', '5d ago', 0, 'Guest', 'Banned'],
+    ['Elin Sato', 'elin@fernwood.ca', 'Canada', 'Dec 2024', '7h ago', 1, 'Host', 'Active']
+  ].map((r, i) => ({ id: i, name: r[0], email: r[1], country: r[2], joined: r[3], last: r[4], trips: r[5], role: r[6], status: r[7] }));
+
+  books_ = [
+    ['SL-48210', 'Amelie Fournier', 'Cliffside Olive House', 'Ilaria Bruno', 'Aug 4 – Aug 9', 5, 2430, 'Paid', 'Confirmed'],
+    ['SL-48209', 'Devon Marsh', 'Casa Barranco', 'Diego Ferrer', 'Aug 6 – Aug 13', 7, 1386, 'Paid', 'Confirmed'],
+    ['SL-48208', 'Grace Okonkwo', 'Juniper Courtyard', 'Yasmine Idrissi', 'Aug 11 – Aug 15', 4, 704, 'Pending', 'Pending'],
+    ['SL-48207', 'Lukas Brandt', 'The Salt Cabin', 'Nils Aune', 'Aug 18 – Aug 22', 4, 1056, 'Paid', 'Confirmed'],
+    ['SL-48206', 'Priya Raghunath', 'Kite House Kamakura', 'Sora Nakai', 'Sep 2 – Sep 6', 4, 1144, 'Failed', 'Cancelled'],
+    ['SL-48205', 'Rob Callahan', 'Dune Nine', 'Peter Vos', 'Aug 9 – Aug 12', 3, 642, 'Refunded', 'Cancelled'],
+    ['SL-48204', 'Amelie Fournier', 'Terrazza Solaia', 'Ilaria Bruno', 'Sep 14 – Sep 21', 7, 2786, 'Paid', 'Confirmed'],
+    ['SL-48203', 'Elin Sato', 'Cedar & Fog Retreat', 'Marta Reyes', 'Aug 25 – Aug 29', 4, 1368, 'Pending', 'Pending'],
+    ['SL-48202', 'Devon Marsh', 'The Reed Barn', 'Fen Harlow', 'Oct 1 – Oct 5', 4, 1016, 'Paid', 'Confirmed'],
+    ['SL-48201', 'Grace Okonkwo', 'Olive Grove Annex', 'Nikos Vasilis', 'Aug 20 – Aug 27', 7, 1064, 'Paid', 'Completed']
+  ].map(r => ({ id: r[0], guest: r[1], property: r[2], host: r[3], dates: r[4], nights: r[5], amountN: r[6], payment: r[7], status: r[8] }));
+
+  rev12 = [{ l: 'Aug 25', v: 742 }, { l: 'Sep', v: 688 }, { l: 'Oct', v: 613 }, { l: 'Nov', v: 549 }, { l: 'Dec', v: 771 }, { l: 'Jan 26', v: 604 }, { l: 'Feb', v: 658 }, { l: 'Mar', v: 812 }, { l: 'Apr', v: 906 }, { l: 'May', v: 1042 }, { l: 'Jun', v: 1188 }, { l: 'Jul', v: 1284 }];
+  rev12p = [612, 588, 502, 470, 640, 512, 546, 668, 742, 830, 918, 1004];
+  rev30 = [31, 28, 34, 39, 36, 44, 47, 41, 38, 43, 49, 52, 46, 42, 48, 55, 58, 51, 47, 53, 60, 63, 57, 52, 58, 66, 71, 64, 59, 68].map((v, i) => ({ l: 'Day ' + (i + 1), v }));
+  rev7 = [58, 66, 71, 64, 59, 68, 74].map((v, i) => ({ l: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][i], v }));
+  bookM = [[1840, 142], [1712, 121], [1504, 138], [1388, 96], [1962, 151], [1520, 118], [1648, 124], [2014, 149], [2240, 161], [2588, 174], [2916, 188], [3142, 196]];
+  aiHourly = [186, 142, 98, 74, 68, 92, 148, 274, 386, 452, 498, 536, 574, 612, 588, 546, 602, 688, 742, 806, 764, 648, 482, 312].map((v, i) => ({ l: (i < 10 ? '0' + i : i) + ':00', v }));
+
+  componentDidMount() {
+    this.setState({ theme: this.props.defaultTheme || 'light', w: window.innerWidth,
+      rail: window.innerWidth >= 1024 });
+    this._r = () => this.setState({ w: window.innerWidth, drawer: false });
+    window.addEventListener('resize', this._r);
+    this._c = e => { if (!e.target.closest('[aria-label="Row actions"], [aria-label="Notifications"]')) this.setState({ menu: null, notif: false }); };
+    document.addEventListener('click', this._c);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._r); document.removeEventListener('click', this._c); }
+
+  money(k) { return k >= 1000 ? '$' + (k / 1000).toFixed(2) + 'M' : '$' + k + 'K'; }
+  num(n) { return n.toLocaleString('en-US'); }
+
+  chart(data, w, h, pad) {
+    const max = Math.max.apply(null, data.map(d => d.v)) * 1.12, n = data.length;
+    const x = i => pad + i * (w - pad * 2) / (n - 1);
+    const y = v => h - pad - v / max * (h - pad * 2);
+    const pts = data.map((d, i) => ({ cx: +x(i).toFixed(1), cy: +y(d.v).toFixed(1), l: d.l, v: d.v }));
+    let line = '';
+    pts.forEach((p, i) => {
+      if (!i) { line = 'M' + p.cx + ' ' + p.cy; return; }
+      const q = pts[i - 1], mx = (q.cx + p.cx) / 2;
+      line += ' C' + mx.toFixed(1) + ' ' + q.cy + ' ' + mx.toFixed(1) + ' ' + p.cy + ' ' + p.cx + ' ' + p.cy;
+    });
+    const area = line + ' L' + x(n - 1).toFixed(1) + ' ' + (h - pad) + ' L' + pad + ' ' + (h - pad) + ' Z';
+    return { line, area, pts, w, max };
+  }
+
+  seg(on) { return { bg: on ? 'var(--color-accent)' : 'transparent', fg: on ? 'var(--color-bg)' : 'var(--color-text)', on }; }
+  tint(i) { const t = [['var(--color-accent-100)', 'var(--color-accent-800)'], ['var(--color-accent-2-100)', 'var(--color-accent-2-800)'], ['var(--color-neutral-200)', 'var(--color-neutral-800)']][i % 3]; return { tint: t[0], ink: t[1] }; }
+  statusClass(s) {
+    if (s === 'Live' || s === 'Active' || s === 'Confirmed' || s === 'Paid' || s === 'Completed') return 'tag-accent-2';
+    if (s === 'Pending') return 'tag-accent';
+    return 'tag-neutral';
+  }
+  go(screen) { return e => { if (e && e.preventDefault) e.preventDefault(); this.setState({ screen, drawer: false, page: 1, query: '', sel: [], menu: null, hover: null }); }; }
+
+  renderVals() {
+    const s = this.state, mobile = s.w < 900, dark = s.theme === 'dark';
+    const railOpen = s.rail && !mobile;
+    const v = {
+      theme: s.theme || 'light',
+      showRail: !mobile,
+      railOpen,
+      railWidth: railOpen ? '236px' : '76px',
+      drawer: s.drawer && mobile,
+      wide: s.w >= 1180,
+      isMobile: mobile,
+      themeIcon: dark ? 'M12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10zM12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4' : 'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z',
+      toggleTheme: () => this.setState({ theme: dark ? 'light' : 'dark' }),
+      toggleRail: () => this.setState(p => mobile ? { drawer: !p.drawer } : { rail: !p.rail }),
+      toggleNotif: () => this.setState(p => ({ notif: !p.notif, menu: null })),
+      notifOpen: s.notif,
+      noop: e => { if (e && e.preventDefault) e.preventDefault(); },
+      goDash: this.go('dash'),
+      goAi: this.go('ai'),
+      title: this.titles[s.screen],
+      crumb: this.titles[s.screen],
+      isDash: s.screen === 'dash', isProps: s.screen === 'props', isBookings: s.screen === 'bookings',
+      isUsers: s.screen === 'users', isAi: s.screen === 'ai',
+      isStub: ['hosts', 'reviews', 'cities', 'amenities', 'revenue', 'messages', 'reports', 'settings'].indexOf(s.screen) > -1,
+      stubIcon: (this.nav.find(n => n[0] === s.screen) || [, , ''])[2],
+      showAi: this.props.showAiSection !== false,
+      navItems: this.nav.map(n => {
+        const on = n[0] === s.screen;
+        return { id: n[0], label: n[1], d: n[2], badge: n[3], badgeShown: railOpen && !!n[3], go: this.go(n[0]),
+          bg: on ? 'color-mix(in srgb, var(--color-accent) 16%, transparent)' : 'transparent',
+          fg: on ? 'var(--color-accent-700)' : 'color-mix(in srgb, var(--color-text) 78%, transparent)' };
+      }),
+      notifs: [
+        { d: 'M4 5h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM8 3v4M16 3v4M3 11h18', title: 'New booking · SL-48210', meta: 'Cliffside Olive House · $2,430 · 4m ago', ...this.tint(1) },
+        { d: 'M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z', title: '2 properties awaiting approval', meta: 'Tofino, Palermo · 22m ago', ...this.tint(0) },
+        { d: 'M12 9v4M12 17h.01M10.3 3.9L2.4 17.6A2 2 0 0 0 4.1 20.6h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z', title: 'Payment failed · SL-48206', meta: 'Card declined, guest notified · 1h ago', ...this.tint(0) },
+        { d: 'M12 3l2.9 6 6.1.9-4.5 4.3 1.1 6.3L12 17.6 6.4 20.5l1.1-6.3L3 9.9 9.1 9z', title: 'Review reported as spam', meta: 'Alto Nube · flagged by host · 3h ago', ...this.tint(2) },
+        { d: 'M18 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M10.5 3a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9', title: '186 new registrations today', meta: 'Up 24% on the 7-day average', ...this.tint(1) }
+      ],
+      confirm: s.confirm,
+      closeConfirm: () => this.setState({ confirm: null }),
+      resetFilters: () => this.setState({ query: '', status: 'all', role: 'all', page: 1 }),
+      clearHover: () => this.setState({ hover: null }),
+      clearBar: () => this.setState({ bar: null })
+    };
+
+    // ── dashboard KPIs
+    const kpi = [
+      ['Gross revenue', '$1.28M', '+12.4%', true, 'M12 2v20M17 6.5c0-2-2.2-3.5-5-3.5S7 4.5 7 6.5s2.2 3 5 3.5 5 1.5 5 3.5-2.2 3.5-5 3.5-5-1.5-5-3.5', '4,12 20,34 34,26 48,29 62,18 76,21 90,10 104,13 118,4'],
+      ['Total users', '128,406', '+8.1%', true, 'M18 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M10.5 3a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9', '4,30 20,27 34,28 48,22 62,20 76,15 90,14 104,9 118,6'],
+      ['Live properties', '9,842', '+5.6%', true, 'M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z', '4,26 20,24 34,25 48,20 62,21 76,16 90,13 104,12 118,8'],
+      ['Bookings (30d)', '3,142', '+14.9%', true, 'M4 5h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM8 3v4M16 3v4M3 11h18', '4,32 20,25 34,29 48,21 62,24 76,14 90,17 104,8 118,5'],
+      ['AI searches today', '11,264', '+31.2%', true, 'M12 3l1.9 4.9L18.8 9.8l-4.9 1.9L12 16.6l-1.9-4.9L5.2 9.8l4.9-1.9z', '4,34 20,30 34,31 48,24 62,19 76,20 90,12 104,9 118,3']
+    ];
+    v.kpis = kpi.map((k, i) => ({ label: k[0], value: k[1], delta: k[2], d: k[4], spark: k[5],
+      delay: (i * 60) + 'ms', arrow: k[3] ? 'M5 15l7-7 7 7' : 'M5 9l7 7 7-7',
+      deltaInk: k[3] ? 'var(--color-accent-2-800)' : 'var(--color-accent-800)', ...this.tint(i) }));
+
+    const data = s.range === '12m' ? this.rev12 : s.range === '30d' ? this.rev30 : this.rev7;
+    const c = this.chart(data, 1000, 260, 14);
+    const unit = s.range === '12m' ? 'K' : 'K';
+    c.pts = c.pts.map((p, i) => ({ cx: p.cx, cy: p.cy, hx: +(p.cx - (1000 / data.length) / 2).toFixed(1), hw: +(1000 / data.length).toFixed(1),
+      label: p.l, value: '$' + this.num(p.v) + unit, leftPct: (p.cx / 10).toFixed(1) + '%',
+      sub: s.range === '12m' ? (p.v > this.rev12p[i] ? '+' + Math.round((p.v / this.rev12p[i] - 1) * 100) + '% YoY' : Math.round((p.v / this.rev12p[i] - 1) * 100) + '% YoY') : 'commission ' + this.money(Math.round(p.v * 0.14)),
+      go: () => this.setState({ hover: i }) }));
+    v.rev = { line: c.line, area: c.area, pts: c.pts,
+      prevLine: s.range === '12m' ? this.chart(this.rev12p.map((x, i) => ({ l: '', v: x })), 1000, 260, 14).line : '',
+      axis: c.pts.filter((p, i) => i % Math.ceil(data.length / 6) === 0).map(p => ({ label: p.label })) };
+    v.hoverPt = s.hover != null && (s.screen === 'dash' ? c.pts[s.hover] : null) || null;
+    v.revNote = s.range === '12m' ? 'Last 12 months · dashed line is the prior year' : s.range === '30d' ? 'Last 30 days' : 'Last 7 days';
+    v.ranges = [['7d', '7D'], ['30d', '30D'], ['12m', '12M']].map(r => ({ label: r[1], ...this.seg(s.range === r[0]), go: () => this.setState({ range: r[0], hover: null }) }));
+    v.revLegend = [{ label: 'This month', value: '$1.28M' }, { label: 'Commission (14%)', value: '$179.8K' }, { label: 'Host payouts', value: '$1.09M' }, { label: 'Refunds', value: '$21.4K' }];
+
+    const bmax = Math.max.apply(null, this.bookM.map(b => b[0] + b[1])) * 1.1;
+    const slot = 1000 / 12;
+    v.bars = this.bookM.map((b, i) => {
+      const dim = s.bar == null || s.bar === i ? 1 : 0.35;
+      const ch = b[0] / bmax * 220, xh = b[1] / bmax * 220;
+      return { x: +(i * slot + slot * 0.22).toFixed(1), w: +(slot * 0.56).toFixed(1), slot: +slot.toFixed(1),
+        cy: +(240 - ch).toFixed(1), ch: +ch.toFixed(1), xy: +(240 - ch - xh - 3).toFixed(1), xh: +xh.toFixed(1),
+        dim, delay: (i * 45) + 'ms', short: ['A', 'S', 'O', 'N', 'D', 'J', 'F', 'M', 'A', 'M', 'J', 'J'][i],
+        go: () => this.setState({ bar: i }) };
+    });
+    v.barNote = s.bar == null ? '24,474 confirmed this year' : this.num(this.bookM[s.bar][0]) + ' confirmed · ' + this.bookM[s.bar][1] + ' cancelled';
+
+    v.aiMini = [
+      { label: 'Searches today', value: '11,264', delta: '+31.2%', ink: 'var(--color-accent-2-800)' },
+      { label: 'Success rate', value: '86.4%', delta: '+2.1 pts', ink: 'var(--color-accent-2-800)' },
+      { label: 'Avg response', value: '412ms', delta: '−38ms', ink: 'var(--color-accent-2-800)' },
+      { label: 'Search → booking', value: '4.8%', delta: '+0.6 pts', ink: 'var(--color-accent-2-800)' }
+    ];
+    const prompts = [['quiet cabin near a lake, walkable to a village', 1284], ['sea view under $200 with a proper kitchen', 1042], ['dog-friendly, wood stove, October', 868], ['long stay with fast wifi and a desk', 742]];
+    v.topPrompts = prompts.map(p => ({ text: p[0], count: this.num(p[1]), pct: Math.round(p[1] / 1284 * 100) + '%' }));
+    v.keywords = [['sea view', '+34%'], ['wood stove', '+28%'], ['dog friendly', '+22%'], ['walkable', '+19%'], ['sauna', '+17%'], ['pool', '+12%'], ['off-grid', '+11%'], ['long stay', '+9%'], ['near vineyards', '+8%'], ['sleeps 8', '+6%']].map(k => ({ word: k[0], growth: k[1] }));
+    v.cities = [['Lisbon', 214, 3820, '$186', '78%'], ['Amalfi', 186, 1940, '$412', '81%'], ['Marrakesh', 148, 2760, '$164', '74%'], ['Kamakura', 121, 1480, '$268', '69%'], ['Cotswolds', 98, 1220, '$242', '66%']]
+      .map(c => ({ name: c[0], revenue: '$' + c[1] + 'K', pct: Math.round(c[1] / 214 * 100) + '%', bookings: this.num(c[2]), adr: c[3], occ: c[4] }));
+    v.minis = [
+      { label: 'Occupancy rate', value: '74.2%', note: 'Across live listings', state: 'Healthy', tagClass: 'tag-accent-2' },
+      { label: 'Active hosts', value: '2,918', note: '412 verified this month', state: 'Growing', tagClass: 'tag-accent-2' },
+      { label: 'Average rating', value: '4.86', note: '18,204 reviews', state: 'Stable', tagClass: 'tag-neutral' },
+      { label: 'Pending reviews', value: '7', note: '2 flagged as spam', state: 'Needs action', tagClass: 'tag-accent' }
+    ];
+    v.activity = [
+      ['New booking SL-48210 · Cliffside Olive House', '4 minutes ago', 'M4 5h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM8 3v4M16 3v4M3 11h18', 1],
+      ['Cedar & Fog Retreat submitted for approval', '22 minutes ago', 'M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z', 0],
+      ['Payment failed on SL-48206 — guest notified', '1 hour ago', 'M12 9v4M12 17h.01M10.3 3.9L2.4 17.6A2 2 0 0 0 4.1 20.6h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z', 0],
+      ['Yasmine Idrissi passed host verification', '2 hours ago', 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8M16 11l2 2 4-4', 1],
+      ['Review on Alto Nube flagged as spam', '3 hours ago', 'M12 3l2.9 6 6.1.9-4.5 4.3 1.1 6.3L12 17.6 6.4 20.5l1.1-6.3L3 9.9 9.1 9z', 2],
+      ['Embedding index rebuilt · 9,842 listings', '6 hours ago', 'M12 3l1.9 4.9L18.8 9.8l-4.9 1.9L12 16.6l-1.9-4.9L5.2 9.8l4.9-1.9z', 1]
+    ].map(a => ({ text: a[0], time: a[1], d: a[2], ...this.tint(a[3]) }));
+
+    // ── properties
+    const q = s.query.toLowerCase();
+    let rows = this.props_.filter(p => (s.status === 'all' || p.status.toLowerCase() === s.status) &&
+      (!q || (p.name + p.host + p.city + p.country).toLowerCase().indexOf(q) > -1));
+    const key = s.sort.key, dir = s.sort.dir === 'asc' ? 1 : -1;
+    rows = rows.slice().sort((a, b) => {
+      const A = a[key] !== undefined ? a[key] : a[key + 'N'], B = b[key] !== undefined ? b[key] : b[key + 'N'];
+      return (typeof A === 'string' ? A.localeCompare(B) : A - B) * dir;
+    });
+    const per = 6, pages = Math.max(1, Math.ceil(rows.length / per)), page = Math.min(s.page, pages);
+    v.propHeaders = [['name', 'Property', 'flex-start'], ['city', 'Location', 'flex-start'], ['priceN', 'Price', 'flex-start'], ['status', 'Status', 'flex-start'], ['ratingN', 'Rating', 'flex-start'], ['bookings', 'Bookings', 'flex-start']]
+      .map(h => ({ label: h[1], align: h[2], ink: key === h[0] ? 'var(--color-accent-700)' : 'color-mix(in srgb, var(--color-text) 55%, transparent)',
+        op: key === h[0] ? 1 : 0.25, arrow: key === h[0] && s.sort.dir === 'asc' ? 'M12 19V5M5 12l7-7 7 7' : 'M12 5v14M19 12l-7 7-7-7',
+        go: () => this.setState({ sort: { key: h[0], dir: key === h[0] && dir === -1 ? 'asc' : 'desc' } }) }));
+    v.propHeaders.push({ label: '', align: 'flex-start', ink: 'transparent', op: 0, arrow: '', go: v.noop });
+    v.propRows = rows.slice((page - 1) * per, page * per).map((p, i) => ({
+      name: p.name, type: p.type, host: p.host, city: p.city, country: p.country, featured: p.featured,
+      price: '$' + p.priceN, status: p.status, tagClass: this.statusClass(p.status),
+      rating: p.ratingN ? p.ratingN.toFixed(2) : '—', reviews: p.reviews, bookings: p.bookings,
+      created: p.created, slot: 'prop-' + p.id, delay: (i * 40) + 'ms',
+      checked: s.sel.indexOf(p.id) > -1,
+      toggle: () => this.setState(st => ({ sel: st.sel.indexOf(p.id) > -1 ? st.sel.filter(x => x !== p.id) : st.sel.concat([p.id]) })),
+      menuOpen: s.menu === 'p' + p.id,
+      menu: e => { e.stopPropagation(); this.setState(st => ({ menu: st.menu === 'p' + p.id ? null : 'p' + p.id, notif: false })); },
+      actions: [
+        { label: 'View listing', d: 'M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7zM12 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6z', go: v.noop, ink: 'var(--color-text)' },
+        { label: 'Edit details', d: 'M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z', go: v.noop, ink: 'var(--color-text)' },
+        { label: p.featured ? 'Unfeature' : 'Feature', d: 'M12 3l2.9 6 6.1.9-4.5 4.3 1.1 6.3L12 17.6 6.4 20.5l1.1-6.3L3 9.9 9.1 9z', go: v.noop, ink: 'var(--color-text)' },
+        { label: 'Suspend', d: 'M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zM5 5l14 14', go: e => { e.stopPropagation(); this.setState({ menu: null, confirm: { title: 'Suspend this listing?', body: '“' + p.name + '” will be hidden from search and AI recommendations. Upcoming bookings stay intact and ' + p.host + ' will be notified.', action: 'Suspend listing' } }); }, ink: 'var(--color-accent-800)' },
+        { label: 'Delete', d: 'M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6', go: e => { e.stopPropagation(); this.setState({ menu: null, confirm: { title: 'Delete this listing?', body: 'Deleting “' + p.name + '” removes it, its ' + p.reviews + ' reviews and its media permanently. This cannot be undone.', action: 'Delete permanently' } }); }, ink: 'var(--color-accent-800)' }
+      ]
+    }));
+    v.propsEmpty = rows.length === 0;
+    v.query = s.query;
+    v.setQuery = e => this.setState({ query: e.target.value, page: 1 });
+    const counts = { all: this.props_.length, live: 0, pending: 0, suspended: 0 };
+    this.props_.forEach(p => counts[p.status.toLowerCase()]++);
+    v.statusTabs = [['all', 'All'], ['live', 'Live'], ['pending', 'Pending'], ['suspended', 'Suspended']]
+      .map(t => ({ label: t[1], count: counts[t[0]], ...this.seg(s.status === t[0]), go: () => this.setState({ status: t[0], page: 1 }) }));
+    v.pageNote = rows.length ? 'Showing ' + ((page - 1) * per + 1) + '–' + Math.min(page * per, rows.length) + ' of ' + rows.length + ' properties' : 'No results';
+    v.pageBtns = Array.from({ length: pages }, (_, i) => i + 1).map(n => ({ label: n,
+      bg: n === page ? 'var(--color-accent)' : 'transparent', fg: n === page ? 'var(--color-bg)' : 'var(--color-text)',
+      border: n === page ? 'var(--color-accent)' : 'var(--color-divider)', go: () => this.setState({ page: n }) }));
+    v.prevPage = () => this.setState({ page: Math.max(1, page - 1) });
+    v.nextPage = () => this.setState({ page: Math.min(pages, page + 1) });
+    v.hasSelection = s.sel.length > 0;
+    v.selectedCount = s.sel.length;
+    v.clearSelection = () => this.setState({ sel: [] });
+    v.askSuspendMany = () => this.setState({ confirm: { title: 'Suspend ' + s.sel.length + ' listings?', body: 'All selected listings will be hidden from search and AI recommendations until an admin restores them. Hosts are notified by email.', action: 'Suspend all' } });
+
+    // ── bookings
+    v.bookStats = [
+      { label: 'Bookings today', value: '212', delta: '+9.4% vs yesterday', ink: 'var(--color-accent-2-800)' },
+      { label: 'Check-ins this week', value: '1,486', delta: '+4.1%', ink: 'var(--color-accent-2-800)' },
+      { label: 'Cancellation rate', value: '6.2%', delta: '−0.8 pts', ink: 'var(--color-accent-2-800)' },
+      { label: 'Average booking value', value: '$1,214', delta: '+$62', ink: 'var(--color-accent-2-800)' }
+    ];
+    v.bookTabs = [['all', 'All'], ['confirmed', 'Confirmed'], ['pending', 'Pending'], ['cancelled', 'Cancelled']]
+      .map(t => ({ label: t[1], ...this.seg(s.bstatus === t[0]), go: () => this.setState({ bstatus: t[0] }) }));
+    v.bookRows = this.books_.filter(b => s.bstatus === 'all' || b.status.toLowerCase() === s.bstatus)
+      .map((b, i) => ({ ...b, amount: '$' + this.num(b.amountN), initials: b.guest.split(' ').map(x => x[0]).join(''),
+        payClass: this.statusClass(b.payment), statusClass: this.statusClass(b.status), ...this.tint(i) }));
+    const load = [0, 0, 1, 2, 1, 3, 3, 1, 2, 2, 1, 2, 3, 3, 2, 1, 1, 2, 3, 3, 3, 2, 1, 1, 2, 2, 3, 3, 2, 1, 1, 2, 2, 3, 3];
+    const bgs = ['transparent', 'var(--color-accent-100)', 'var(--color-accent-300)', 'var(--color-accent)'];
+    v.calDays = load.map((l, i) => ({ n: i - 2 > 0 && i - 2 < 32 ? i - 2 : '', tip: (i - 2 > 0 ? 'Aug ' + (i - 2) + ' · ' + (l * 14 + 4) + ' check-ins' : ''),
+      bg: i - 2 > 0 && i - 2 < 32 ? bgs[l] : 'transparent', fg: l === 3 ? 'var(--color-bg)' : 'var(--color-text)',
+      border: i - 2 > 0 && i - 2 < 32 ? 'var(--color-divider)' : 'transparent' }));
+
+    // ── users
+    let urows = this.users_.filter(u => (s.role === 'all' || u.role.toLowerCase() === s.role) &&
+      (!q || (u.name + u.email + u.country).toLowerCase().indexOf(q) > -1));
+    v.roleTabs = [['all', 'All'], ['guest', 'Guests'], ['host', 'Hosts'], ['admin', 'Admins']]
+      .map(t => ({ label: t[1], ...this.seg(s.role === t[0]), go: () => this.setState({ role: t[0] }) }));
+    v.userRows = urows.map((u, i) => ({ ...u, initials: u.name.split(' ').map(x => x[0]).join(''), delay: (i * 35) + 'ms',
+      roleClass: u.role === 'Admin' ? 'tag-accent' : u.role === 'Host' ? 'tag-accent-2' : 'tag-neutral',
+      statusClass: this.statusClass(u.status), ...this.tint(i),
+      menuOpen: s.menu === 'u' + u.id,
+      menu: e => { e.stopPropagation(); this.setState(st => ({ menu: st.menu === 'u' + u.id ? null : 'u' + u.id, notif: false })); },
+      actions: [
+        { label: 'View profile', d: 'M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7zM12 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6z', go: v.noop, ink: 'var(--color-text)' },
+        { label: 'Send message', d: 'M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z', go: v.noop, ink: 'var(--color-text)' },
+        { label: 'Suspend', d: 'M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zM5 5l14 14', go: e => { e.stopPropagation(); this.setState({ menu: null, confirm: { title: 'Suspend ' + u.name + '?', body: 'They keep their account but cannot book, host or message until an admin restores access.', action: 'Suspend account' } }); }, ink: 'var(--color-accent-800)' },
+        { label: 'Ban user', d: 'M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6', go: e => { e.stopPropagation(); this.setState({ menu: null, confirm: { title: 'Ban ' + u.name + '?', body: 'A ban blocks sign-in, cancels the ' + u.trips + ' upcoming trips on this account and blocks the email from re-registering.', action: 'Ban user' } }); }, ink: 'var(--color-accent-800)' }
+      ] }));
+    v.usersEmpty = urows.length === 0;
+
+    // ── ai screen
+    v.aiStats = [
+      ['AI searches (24h)', '11,264', '+31.2%'], ['Success rate', '86.4%', '+2.1 pts'],
+      ['Avg latency', '412ms', '−38ms'], ['No-result searches', '1,532', '−12.4%'], ['Embedding calls', '48.2K', '+18.6%']
+    ].map((a, i) => ({ label: a[0], value: a[1], delta: a[2], ink: 'var(--color-accent-2-800)', delay: (i * 50) + 'ms' }));
+    const ac = this.chart(this.aiHourly, 1000, 240, 14);
+    ac.pts = ac.pts.map((p, i) => ({ cx: p.cx, cy: p.cy, hx: +(p.cx - (1000 / 24) / 2).toFixed(1), hw: +(1000 / 24).toFixed(1),
+      label: p.l, value: this.num(p.v) + ' searches', leftPct: (p.cx / 10).toFixed(1) + '%',
+      sub: (320 + (i % 5) * 42) + 'ms median', go: () => this.setState({ hover: i }) }));
+    v.aiChart = { line: ac.line, area: ac.area, pts: ac.pts, axis: ac.pts.filter((p, i) => i % 4 === 0).map(p => ({ label: p.label })) };
+    if (s.screen === 'ai') v.hoverPt = s.hover != null ? ac.pts[s.hover] : null;
+    v.aiP95 = '742ms';
+    const dseg = [['Booked or saved', 4.8, 'var(--color-accent)'], ['Clicked a result', 81.6, 'var(--color-accent-2)'], ['No result returned', 13.6, 'var(--color-neutral-400)']];
+    let off = 0;
+    v.donut = dseg.map(d => {
+      const len = d[1] / 100 * 99.9, o = off; off += len;
+      return { label: d[0], pct: d[1] + '%', color: d[2], dash: len.toFixed(1) + ' ' + (99.9 - len).toFixed(1), offset: (-o).toFixed(1) };
+    });
+    v.promptRows = [
+      ['quiet cabin near a lake, walkable to a village', 1284, 18, '42%', 'High'],
+      ['sea view under $200 with a proper kitchen', 1042, 24, '38%', 'High'],
+      ['dog-friendly, wood stove, October', 868, 11, '31%', 'Medium'],
+      ['long stay with fast wifi and a desk', 742, 32, '29%', 'Medium'],
+      ['somewhere warm, no plans, next weekend', 618, 46, '22%', 'Medium'],
+      ['coastal stay under $120 for four people', 512, 0, '0%', 'None'],
+      ['off-grid with a sauna, reachable by train', 388, 3, '19%', 'Low']
+    ].map(p => ({ text: p[0], runs: this.num(p[1]), results: p[2], ctr: p[3], booked: p[4],
+      tagClass: p[4] === 'High' ? 'tag-accent-2' : p[4] === 'None' ? 'tag-neutral' : 'tag-accent' }));
+    v.recs = [['Cliffside Olive House', 'Amalfi', '4,820', '18.6%'], ['Casa Barranco', 'Lisbon', '4,214', '16.2%'], ['The Salt Cabin', 'Lofoten', '3,688', '14.8%'], ['Juniper Courtyard', 'Marrakesh', '3,102', '12.4%']]
+      .map((r, i) => ({ name: r[0], city: r[1], surfaced: r[2], ctr: r[3], slot: 'rec-' + i }));
+
+    return v;
+  }
+}
+
+</script>
+</body>
+</html>

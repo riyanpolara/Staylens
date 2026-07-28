@@ -29,6 +29,10 @@ export function AiSearchSection() {
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
+    // Hoisted to the effect scope so cleanup can cancel it — otherwise
+    // unmounting mid-typewriter left the setTimeout chain running and calling
+    // setTyped() on an unmounted component.
+    let timer = 0;
     const obs = new IntersectionObserver(
       (entries) => {
         if (!entries.some((e) => e.isIntersecting) || startedRef.current) return;
@@ -41,12 +45,15 @@ export function AiSearchSection() {
           i += 1;
           timer = window.setTimeout(type, 32 + Math.random() * 34);
         };
-        let timer = window.setTimeout(type, 200);
+        timer = window.setTimeout(type, 200);
       },
       { threshold: 0.3 },
     );
     obs.observe(el);
-    return () => obs.disconnect();
+    return () => {
+      obs.disconnect();
+      window.clearTimeout(timer);
+    };
   }, []);
 
   function generate() {
@@ -165,7 +172,7 @@ export function AiSearchSection() {
               }}
             >
               <div className="flex items-center gap-3">
-                <Image src={rec.img} alt="" width={52} height={52} unoptimized className="w-[52px] h-[52px] rounded-[14px] object-cover" />
+                <Image src={rec.img} alt="" width={52} height={52} className="w-[52px] h-[52px] rounded-[14px] object-cover" />
                 <div>
                   <div className="text-white font-bold text-[15px]">{rec.name}</div>
                   <div className="text-[13px]" style={{ color: "rgba(255,255,255,.7)" }}>{rec.loc}</div>

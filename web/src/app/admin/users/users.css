@@ -1,0 +1,179 @@
+/*
+ * Users screen styles.
+ *
+ * Page-scoped (imported by app/admin/users/page.tsx) rather than added to
+ * admin-theme.css, so nothing here can reach the Dashboard, Properties or
+ * Bookings screens. Every selector is prefixed `admin-us-` for the same reason.
+ *
+ * The shared table vocabulary already in admin-theme.css is reused as-is:
+ * .admin-toolbar, .admin-select, .admin-th-sort, .admin-actions-cell,
+ * .admin-row-actions, .admin-menu, .admin-menu-item, .admin-pagination,
+ * .admin-page-num, .admin-skeleton, .admin-toast, .admin-empty. Only what the
+ * Users screen adds on top of those lives below.
+ */
+
+/* ── Toolbar ─────────────────────────────────────────────────────────── */
+
+/* Search box with a leading icon, per the prototype's users toolbar. */
+.admin-scope .admin-us-search { position: relative; flex: 1; min-width: 220px; }
+.admin-scope .admin-us-search .input { padding-inline-start: 36px; }
+.admin-scope .admin-us-search-icon {
+  position: absolute; inset-inline-start: 13px; top: 50%;
+  transform: translateY(-50%); display: grid; opacity: 0.5; pointer-events: none;
+}
+
+/* ── Identity cell ───────────────────────────────────────────────────── */
+
+.admin-scope .admin-us-who { display: flex; align-items: center; gap: 11px; min-width: 0; }
+.admin-scope .admin-us-avatar {
+  width: 36px; height: 36px; flex: none; border-radius: 999px;
+  display: grid; place-items: center; overflow: hidden;
+  background: var(--color-accent-200); color: var(--color-accent-800);
+  font-size: 13px; font-weight: 700; line-height: 1;
+}
+.admin-scope .admin-us-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.admin-scope .admin-us-avatar-lg { width: 52px; height: 52px; font-size: 17px; }
+
+/* Truncation needs a bounded box inside a table cell. */
+.admin-scope .admin-us-name-cell { min-width: 0; display: grid; gap: 1px; max-width: 260px; }
+.admin-scope .admin-us-name {
+  font-size: 14px; font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.admin-scope .admin-us-email {
+  font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.admin-scope .admin-us-name-link { color: inherit; text-decoration: none; }
+.admin-scope .admin-us-name-link:hover { color: var(--color-accent); text-decoration: underline; }
+
+/* Marks the signed-in admin's own row, which has no destructive actions. */
+.admin-scope .admin-us-you { margin-inline-start: 6px; font-size: 10px; padding: 1px 7px; }
+
+/* ── Row menu additions ──────────────────────────────────────────────── */
+
+.admin-scope .admin-us-menu-label {
+  padding: 7px 10px 3px; font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--color-accent);
+}
+.admin-scope .admin-us-menu-sep {
+  height: 1px; margin: 4px 2px; border: 0; background: var(--color-divider);
+}
+/* The active role reads as chosen rather than as an available action. */
+.admin-scope .admin-menu-item[data-current] { font-weight: 700; color: var(--color-accent-800); }
+
+/* ── Details modal ───────────────────────────────────────────────────── */
+
+/* Above the sidebar (40) and the popover scrim (45); matches the confirm
+   dialog's layer so a confirm opened from the modal still lands on top. */
+.admin-scope .admin-us-overlay {
+  position: fixed; inset: 0; z-index: 60;
+  display: grid; place-items: center; padding: var(--space-4);
+  overflow-y: auto; overscroll-behavior: contain;
+}
+.admin-scope .admin-us-scrim {
+  position: fixed; inset: 0; border: 0; padding: 0;
+  background: color-mix(in srgb, var(--color-neutral-900) 52%, transparent);
+  animation: admin-fade 140ms ease both;
+}
+/* The overlay scrolls, not the panel. A tall profile makes the whole overlay
+   scrollable, which keeps the panel free of `overflow`: the confirm dialog and
+   the action toast are position:fixed descendants, and a scroll container that
+   is mid-`transform` (the mount animation) would clip them. */
+.admin-scope .admin-us-panel {
+  position: relative; z-index: 1; margin: auto;
+  width: min(640px, 100%);
+  padding: var(--space-4); gap: var(--space-4);
+  animation: admin-rise 200ms cubic-bezier(.16, 1, .3, 1) both;
+}
+.admin-scope .admin-us-panel-close {
+  position: absolute; top: var(--space-3); inset-inline-end: var(--space-3);
+}
+
+.admin-scope .admin-us-head {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  padding-inline-end: 44px; /* clears the close button */
+}
+.admin-scope .admin-us-head-text { min-width: 0; }
+.admin-scope .admin-us-title { margin: 0; font-size: 22px; overflow-wrap: anywhere; }
+.admin-scope .admin-us-subtitle {
+  margin: 2px 0 0; font-size: 13px; overflow-wrap: anywhere;
+  color: color-mix(in srgb, var(--color-text) 60%, transparent);
+}
+.admin-scope .admin-us-tags {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-block-start: var(--space-2);
+}
+
+/* Booking / engagement counters. */
+.admin-scope .admin-us-stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+  gap: var(--space-2);
+}
+.admin-scope .admin-us-stat {
+  display: grid; gap: 2px; padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-text) 5%, transparent);
+}
+.admin-scope .admin-us-stat dt {
+  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 60%, transparent);
+}
+.admin-scope .admin-us-stat dd {
+  margin: 0; font-family: var(--font-heading); font-size: 19px; line-height: 1.15;
+}
+
+/* Profile facts. */
+.admin-scope .admin-us-facts {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3); margin: 0;
+}
+.admin-scope .admin-us-facts > div { min-width: 0; }
+.admin-scope .admin-us-facts dt {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--color-accent);
+}
+.admin-scope .admin-us-facts dd { margin: 2px 0 0; font-size: 14px; overflow-wrap: anywhere; }
+
+.admin-scope .admin-us-section-title {
+  margin: 0; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 60%, transparent);
+}
+
+/* Recent bookings. */
+.admin-scope .admin-us-bookings { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+.admin-scope .admin-us-booking {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-2) var(--space-3); border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-text) 4%, transparent); font-size: 13px;
+}
+.admin-scope .admin-us-booking-main { flex: 1; min-width: 0; display: grid; gap: 1px; }
+.admin-scope .admin-us-booking-main strong {
+  font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.admin-scope .admin-us-booking-main span {
+  font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+.admin-scope .admin-us-booking-amount { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.admin-scope .admin-us-panel-foot {
+  display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap;
+  padding-block-start: var(--space-3); border-top: 1px solid var(--color-divider);
+}
+.admin-scope .admin-us-panel-foot .admin-us-foot-note {
+  margin: 0; margin-inline-end: auto; font-size: 12px;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+
+/* ── Pager tail ──────────────────────────────────────────────────────── */
+
+/* Rows-per-page sits with the note, left of the page numbers. */
+.admin-scope .admin-us-per-page {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-size: 12px; color: color-mix(in srgb, var(--color-text) 60%, transparent);
+}
+.admin-scope .admin-us-per-page .admin-select { height: 30px; font-size: 13px; padding-block: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-scope .admin-us-panel,
+  .admin-scope .admin-us-scrim { animation: none; }
+}

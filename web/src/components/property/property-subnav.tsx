@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { formatPrice } from "@/lib/currency";
 import { useBooking } from "@/components/property/booking-context";
 import { checkoutHref } from "@/lib/checkout-url";
 
@@ -90,7 +91,7 @@ export function PropertySubNav({ propertyId }: { propertyId: string }) {
             {nights > 0 ? (
               <>
                 <span className="text-sm font-bold text-on-surface">
-                  ${total.toLocaleString()}
+                  {formatPrice(total)}
                 </span>
                 <span className="text-xs text-on-surface-variant">
                   {" "}
@@ -100,7 +101,7 @@ export function PropertySubNav({ propertyId }: { propertyId: string }) {
             ) : (
               <>
                 <span className="text-sm font-bold text-on-surface">
-                  ${price.toLocaleString()}
+                  {formatPrice(price)}
                 </span>
                 <span className="text-xs text-on-surface-variant"> / night</span>
               </>

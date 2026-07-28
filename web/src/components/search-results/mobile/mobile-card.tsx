@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Heart, Star } from "lucide-react";
 import { ImageCarousel } from "@/components/explore/image-carousel";
 import { nightsLabel } from "@/lib/pricing";
+import { formatPrice } from "@/lib/currency";
 import type { ExploreStay } from "@/lib/queries";
 
 /**
@@ -31,8 +32,8 @@ export function MobileCard({
         rel="noopener noreferrer"
         aria-label={`${stay.name}, ${stay.location} — ${
           stayTotal
-            ? `$${stayTotal.toLocaleString()} ${nightsLabel(nights)}`
-            : `$${stay.price} per night`
+            ? `${formatPrice(stayTotal)} ${nightsLabel(nights)}`
+            : `${formatPrice(stay.price)} per night`
         }, rated ${stay.rating.toFixed(2)} (opens in a new tab)`}
         className="block rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2"
       >
@@ -66,12 +67,12 @@ export function MobileCard({
           <p className="mt-1.5 text-[15px] text-on-surface">
             {stayTotal ? (
               <>
-                <span className="font-semibold">${stayTotal.toLocaleString()}</span>{" "}
+                <span className="font-semibold">{formatPrice(stayTotal)}</span>{" "}
                 <span className="text-on-surface-variant">{nightsLabel(nights)}</span>
               </>
             ) : (
               <>
-                <span className="font-semibold">${stay.price.toLocaleString()}</span>{" "}
+                <span className="font-semibold">{formatPrice(stay.price)}</span>{" "}
                 <span className="text-on-surface-variant">night</span>
               </>
             )}

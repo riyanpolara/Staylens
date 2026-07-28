@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { formatPrice, formatPriceCompact } from "@/lib/currency";
 import { MapSurface } from "@/components/shared/map-surface";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -60,7 +61,7 @@ function pricePillEl(pin: GoogleMapPin): HTMLElement {
     "gm-price-pill bg-surface-container-lowest border border-outline-variant/40 " +
     "shadow-tinted rounded-full px-2.5 py-1 text-xs font-bold whitespace-nowrap " +
     "cursor-pointer transition-all hover:scale-110 hover:bg-primary hover:text-white";
-  el.textContent = pin.price != null ? `$${Math.round(pin.price).toLocaleString()}` : pin.name;
+  el.textContent = pin.price != null ? formatPriceCompact(pin.price) : pin.name;
   el.title = pin.name;
   return el;
 }
@@ -91,7 +92,7 @@ function popupCardEl(pin: GoogleMapPin): HTMLElement {
 
   const priceText =
     pin.priceLabel ??
-    (pin.price != null ? `$${Math.round(pin.price).toLocaleString()} / night` : "");
+    (pin.price != null ? `${formatPrice(pin.price)} / night` : "");
 
   el.innerHTML = `
     ${

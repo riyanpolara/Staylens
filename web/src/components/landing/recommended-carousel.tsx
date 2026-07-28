@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { formatPrice } from "@/lib/currency";
 import { ChevronLeft, ChevronRight, Heart, Sparkles, Star } from "lucide-react";
 import { useRef } from "react";
 import { Reveal } from "@/components/shared/reveal";
@@ -72,7 +73,7 @@ export function RecommendedCarousel({ stays }: { stays: ExploreStay[] }) {
               rel="noopener noreferrer"
               className="group block rounded-[26px] overflow-hidden bg-white transition-all duration-500 ease-[cubic-bezier(.16,1,.3,1)] hover:-translate-y-2.5"
               style={{ boxShadow: "0 14px 40px rgba(20,52,42,.1)" }}
-              aria-label={`${stay.name}, ${stay.location} — $${stay.price} per night (opens in a new tab)`}
+              aria-label={`${stay.name}, ${stay.location} — ${formatPrice(stay.price)} per night (opens in a new tab)`}
             >
               <div className="relative h-[270px] overflow-hidden">
                 {stay.images[0] ? (
@@ -121,7 +122,7 @@ export function RecommendedCarousel({ stays }: { stays: ExploreStay[] }) {
                 </div>
                 <div className="text-[15px] mb-[18px] line-clamp-1" style={{ color: LP.inkSoft }}>{stay.location}</div>
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl font-extrabold" style={{ color: LP.ink }}>${stay.price.toLocaleString()}</span>
+                  <span className="text-2xl font-extrabold" style={{ color: LP.ink }}>{formatPrice(stay.price)}</span>
                   <span className="text-[15px]" style={{ color: LP.inkSoft }}>/ night</span>
                 </div>
               </div>

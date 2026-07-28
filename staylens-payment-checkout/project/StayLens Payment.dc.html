@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>
+  body { margin: 0; background: #f7f8fa; color: #1f2421; font-family: Poppins, system-ui, sans-serif; -webkit-font-smoothing: antialiased }
+  * { box-sizing: border-box }
+  a { color: #2b4b34 }
+  a:hover { color: #1e3626 }
+  @keyframes sl-spin { to { transform: rotate(360deg) } }
+  @keyframes sl-rise { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+  @keyframes sl-pop { 0% { transform: scale(.6); opacity: 0 } 60% { transform: scale(1.05) } 100% { transform: scale(1); opacity: 1 } }
+  .sl-grid { display: grid; grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr); gap: 56px; align-items: start }
+  .sl-sum-head { list-style: none; cursor: default }
+  .sl-sum-head::-webkit-details-marker { display: none }
+  .sl-chev { display: none }
+  @media (max-width: 940px) {
+    .sl-grid { grid-template-columns: minmax(0, 1fr); gap: 28px }
+    .sl-aside { order: -1; position: static !important }
+    .sl-sum-head { cursor: pointer }
+    .sl-chev { display: block }
+  }
+</style>
+</helmet>
+
+<div style="min-height: 100vh; background: #f7f8fa; padding-bottom: 72px">
+
+  <header style="background: #f7f8fa; border-bottom: 1px solid #e6e8ec; position: sticky; top: 0; z-index: 20">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 20px clamp(20px, 4vw, 40px); display: flex; align-items: center; gap: 20px">
+      <a href="#" onClick="{{ noop }}" aria-label="Back to reservation" style="display: grid; place-items: center; width: 36px; height: 36px; border-radius: 999px; color: #1f2421; text-decoration: none; transition: background .18s ease" style-hover="background: #eceef1">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
+      </a>
+      <h1 style="font-size: 27px; font-weight: 600; color: #274c33; margin: 0; margin-right: auto; letter-spacing: -0.01em">Secure checkout</h1>
+      <div style="display: flex; align-items: center; gap: 10px; color: #274c33">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 7 11h10z"></path><path d="M12 8 6 17h12z"></path><path d="M12 17v4"></path></svg>
+        <span style="font-size: 21px; font-weight: 600">Staylens</span>
+      </div>
+    </div>
+  </header>
+
+  <sc-if value="{{ isCheckout }}" hint-placeholder-val="{{ true }}">
+  <main style="max-width: 1240px; margin: 0 auto; padding: 32px clamp(20px, 4vw, 40px) 0">
+
+    <nav style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #6b7280; margin-bottom: 30px">
+      <a href="#" onClick="{{ noop }}" style="color: inherit; text-decoration: none" style-hover="color: #274c33">Property</a>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b6bcc4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+      <a href="#" onClick="{{ noop }}" style="color: inherit; text-decoration: none" style-hover="color: #274c33">Reservation</a>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b6bcc4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+      <span style="color: #274c33; font-weight: 600">Payment</span>
+    </nav>
+
+    <div class="sl-grid">
+
+      <!-- ══ left: review ══ -->
+      <div style="display: flex; flex-direction: column; gap: 28px; min-width: 0">
+
+        <section style="background: #ffffff; border: 1px solid #e6e8ec; border-radius: 20px; box-shadow: 0 1px 2px rgba(16,24,40,.04); padding: 32px">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px">
+            <div style="width: 44px; height: 44px; border-radius: 999px; background: #eef3ef; display: grid; place-items: center; flex: none">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#2b4b34" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+            <h2 style="font-size: 27px; font-weight: 600; color: #274c33; margin: 0; letter-spacing: -0.01em">Secure checkout</h2>
+          </div>
+          <p style="font-size: 15.5px; color: #3f4750; margin: 0 0 6px; line-height: 1.6">Your payment is encrypted and securely processed by Razorpay.</p>
+          <p style="font-size: 14.5px; color: #6b7280; margin: 0 0 26px; line-height: 1.6">You'll be redirected to Razorpay's secure payment window to complete your payment. Staylens never sees or stores your card details.</p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px">
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: #3f4750">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2b4b34" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="m5 13 4 4 10-10"></path></svg>
+              Secure payments
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: #3f4750">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2b4b34" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="m5 13 4 4 10-10"></path></svg>
+              UPI · Cards · Net Banking · Wallets
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: #3f4750">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2b4b34" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="m5 13 4 4 10-10"></path></svg>
+              Instant booking confirmation
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: #3f4750">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2b4b34" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="m5 13 4 4 10-10"></path></svg>
+              100% encrypted checkout
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 10px; margin-top: 26px; padding-top: 22px; border-top: 1px solid #eceef1; font-size: 13.5px; color: #6b7280">
+            <span>Powered by</span>
+            <strong style="font-size: 15px; font-weight: 600; color: #274c33">Razorpay</strong>
+            <span style="font-size: 12px; font-weight: 600; color: #274c33; background: #eef3ef; border-radius: 999px; padding: 4px 12px">Test mode</span>
+          </div>
+        </section>
+
+        <!-- failure -->
+        <sc-if value="{{ isFailed }}" hint-placeholder-val="{{ false }}">
+        <section style="animation: sl-rise .26s ease both; background: #fff5f4; border: 1px solid #f3d3d0; border-radius: 20px; padding: 26px 28px">
+          <div style="display: flex; align-items: flex-start; gap: 14px">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b4322c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v6"></path><path d="M12 16.5h.01"></path></svg>
+            <div style="min-width: 0; flex: 1">
+              <div style="font-size: 18px; font-weight: 600; color: #8f2723; margin-bottom: 4px">Payment failed</div>
+              <p style="font-size: 14.5px; color: #7a4b48; margin: 0 0 18px; line-height: 1.55">{{ failMessage }}</p>
+              <div style="display: flex; gap: 12px; flex-wrap: wrap">
+                <button type="button" onClick="{{ onPay }}" style="padding: 13px 28px; font-family: inherit; font-size: 15px; font-weight: 600; color: #fff; background: #2b4b34; border: 0; border-radius: 16px; cursor: pointer; transition: background .2s ease" style-hover="background: #22402b">Try again</button>
+                <button type="button" style="padding: 13px 28px; font-family: inherit; font-size: 15px; font-weight: 600; color: #274c33; background: #fff; border: 1px solid #dfe3e8; border-radius: 16px; cursor: pointer; transition: background .18s ease" style-hover="background: #f2f5f3">Back to reservation</button>
+              </div>
+            </div>
+          </div>
+        </section>
+        </sc-if>
+
+        <!-- cancellation policy -->
+        <div style="display: flex; align-items: flex-start; gap: 14px; background: #f2f4f7; border-radius: 18px; padding: 20px 22px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2b4b34" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+          <p style="font-size: 15px; color: #3f4750; margin: 0; line-height: 1.55"><strong style="font-weight: 600">Free cancellation before check-in.</strong> Get a full refund if you cancel at least 14 days before arrival. Refunds are returned to the source account within 5–7 working days.</p>
+        </div>
+
+        <!-- terms + pay -->
+        <section style="display: flex; flex-direction: column; gap: 20px">
+          <label style="display: flex; align-items: flex-start; gap: 12px; font-size: 14.5px; color: #3f4750; cursor: pointer; line-height: 1.55">
+            <input type="checkbox" checked="{{ terms }}" onChange="{{ onTerms }}" disabled="{{ locked }}" style="width: 18px; height: 18px; margin-top: 2px; accent-color: #2b4b34; flex: none" />
+            <span>I agree to the <a href="#" onClick="{{ noop }}" style="color: #274c33; font-weight: 600">Terms &amp; Conditions</a>, the <a href="#" onClick="{{ noop }}" style="color: #274c33; font-weight: 600">Privacy Policy</a> and the <a href="#" onClick="{{ noop }}" style="color: #274c33; font-weight: 600">Cancellation Policy</a>.</span>
+          </label>
+
+          <button type="button" onClick="{{ onPay }}" disabled="{{ payDisabled }}" style="width: 100%; min-height: 68px; display: flex; align-items: center; justify-content: center; gap: 12px; font-family: inherit; font-size: 19px; font-weight: 600; color: #ffffff; background: #2b4b34; border: 0; border-radius: 16px; cursor: pointer; box-shadow: 0 6px 18px rgba(43,75,52,.18); transition: background .2s ease, transform .18s ease, opacity .2s ease; {{ payBtnStyle }}" style-hover="background: #22402b; transform: translateY(-1px)">
+            <sc-if value="{{ preparing }}" hint-placeholder-val="{{ false }}">
+              <span style="width: 19px; height: 19px; border-radius: 999px; border: 2.5px solid rgba(255,255,255,.35); border-top-color: #fff; animation: sl-spin .7s linear infinite; display: block"></span>
+            </sc-if>
+            {{ payLabel }}
+          </button>
+
+          <button type="button" disabled="{{ locked }}" style="width: 100%; min-height: 56px; font-family: inherit; font-size: 15px; font-weight: 600; color: #274c33; background: transparent; border: 1px solid #dfe3e8; border-radius: 16px; cursor: pointer; transition: background .18s ease, border-color .18s ease" style-hover="background: #f2f5f3; border-color: #c9d3cc">Back to reservation</button>
+
+          <p style="font-size: 13.5px; color: #6b7280; margin: 0; text-align: center">{{ payHint }}</p>
+        </section>
+      </div>
+
+      <!-- ══ sticky summary ══ -->
+      <aside class="sl-aside" style="position: sticky; top: 100px; min-width: 0">
+        <details open="{{ true }}" style="background: #ffffff; border: 1px solid #e6e8ec; border-radius: 20px; box-shadow: 0 4px 20px rgba(16,24,40,.06); padding: 22px">
+          <summary class="sl-sum-head">
+            <div style="width: 100%; height: 168px; border-radius: 16px; overflow: hidden; background: #f2f4f7; margin-bottom: 16px">
+              <image-slot id="sl-property" shape="rounded" radius="16" placeholder="Drop the listing photo"></image-slot>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 12px">
+              <div style="min-width: 0; flex: 1">
+                <div style="font-size: 13px; color: #6b7280">Entire Home</div>
+                <div style="font-size: 17px; font-weight: 600; line-height: 1.3; margin: 2px 0 4px">Extraordinary East Austin Retreat with Sauna and Cold Plunge</div>
+                <div style="font-size: 13.5px; color: #6b7280; margin-bottom: 6px">East Austin, Texas</div>
+                <div style="display: flex; align-items: center; gap: 6px; font-size: 13.5px; color: #3f4750">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#274c33" stroke="none" style="flex: none"><path d="m12 2 3 6.6 7 .7-5.2 4.7 1.5 7L12 17.6 5.7 21l1.5-7L2 9.3l7-.7z"></path></svg>
+                  <strong style="font-weight: 600">5.00</strong> · 650 reviews
+                </div>
+              </div>
+              <svg class="sl-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 4px"><path d="m6 9 6 6 6-6"></path></svg>
+            </div>
+          </summary>
+
+          <div style="padding-top: 20px">
+            <div style="height: 1px; background: #eceef1; margin-bottom: 20px"></div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 14px; margin-bottom: 20px">
+              <div><div style="font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6b7280; margin-bottom: 2px">Check-in</div>Jul 28, 2026</div>
+              <div><div style="font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6b7280; margin-bottom: 2px">Check-out</div>Jul 31, 2026</div>
+              <div><div style="font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6b7280; margin-bottom: 2px">Guests</div>1 guest</div>
+              <div><div style="font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6b7280; margin-bottom: 2px">Nights</div>3 nights</div>
+            </div>
+
+            <div style="height: 1px; background: #eceef1; margin-bottom: 20px"></div>
+
+            <div style="font-size: 19px; font-weight: 600; color: #274c33; margin-bottom: 14px">Price details</div>
+            <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14.5px; color: #3f4750">
+              <div style="display: flex; justify-content: space-between; gap: 14px"><span>₹12,400 × 3 nights</span><span>₹37,200</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 14px"><span>Cleaning fee</span><span>₹1,500</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 14px"><span>Staylens service fee</span><span>₹4,464</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 14px"><span>Taxes (8%)</span><span>₹3,453</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 14px; color: #2b4b34; font-weight: 600"><span>Member discount</span><span>−₹1,860</span></div>
+              <sc-if value="{{ couponApplied }}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; justify-content: space-between; gap: 14px; color: #2b4b34; font-weight: 600"><span>Coupon {{ couponCode }}</span><span>{{ couponAmount }}</span></div>
+              </sc-if>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 18px">
+              <input aria-label="Coupon code" placeholder="Coupon code" value="{{ promo }}" onChange="{{ onPromo }}" disabled="{{ locked }}" style="flex: 1; min-width: 0; padding: 12px 18px; font-family: inherit; font-size: 14px; color: #1f2421; background: #fff; border: 1px solid #dfe3e8; border-radius: 999px; outline: none; transition: border-color .18s ease, box-shadow .18s ease" style-focus="border-color: #2b4b34; box-shadow: 0 0 0 3px rgba(43,75,52,.12)" />
+              <button type="button" onClick="{{ onApplyPromo }}" disabled="{{ locked }}" style="padding: 12px 22px; font-family: inherit; font-size: 14px; font-weight: 600; color: #274c33; background: #fff; border: 1px solid #dfe3e8; border-radius: 999px; cursor: pointer; transition: background .18s ease, border-color .18s ease" style-hover="background: #f2f5f3; border-color: #c9d3cc">Apply</button>
+            </div>
+            <sc-if value="{{ promoMsg }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size: 12.5px; margin-top: 10px; {{ promoMsgStyle }}">{{ promoMsg }}</div>
+            </sc-if>
+
+            <div style="height: 1px; background: #eceef1; margin: 18px 0"></div>
+
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px">
+              <span style="font-size: 19px; font-weight: 600; color: #274c33">Total</span>
+              <span style="font-size: 25px; font-weight: 600; color: #274c33">{{ totalText }}</span>
+            </div>
+
+            <p style="font-size: 13px; color: #6b7280; margin: 16px 0 0">Prices include all fees and GST. Free cancellation until Jul 14, 2026.</p>
+
+            <button type="button" disabled="{{ locked }}" style="width: 100%; margin-top: 18px; min-height: 48px; font-family: inherit; font-size: 14.5px; font-weight: 600; color: #274c33; background: transparent; border: 1px solid #dfe3e8; border-radius: 999px; cursor: pointer; transition: background .18s ease, border-color .18s ease" style-hover="background: #f2f5f3; border-color: #c9d3cc">Edit reservation</button>
+          </div>
+        </details>
+      </aside>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ══ success ══ -->
+  <sc-if value="{{ isSuccess }}" hint-placeholder-val="{{ false }}">
+  <main style="max-width: 660px; margin: 0 auto; padding: 56px clamp(20px, 4vw, 40px)">
+    <div style="background: #ffffff; border: 1px solid #e6e8ec; border-radius: 22px; box-shadow: 0 4px 20px rgba(16,24,40,.06); padding: 48px 36px; display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; animation: sl-rise .3s ease both">
+      <div style="width: 88px; height: 88px; border-radius: 999px; background: #eef3ef; display: grid; place-items: center; animation: sl-pop .45s ease both">
+        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#2b4b34" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4.5 4.5L19 7.5"></path></svg>
+      </div>
+      <div>
+        <h2 style="font-size: 33px; font-weight: 600; color: #274c33; margin: 0 0 8px; letter-spacing: -0.01em">Booking confirmed</h2>
+        <p style="font-size: 15px; color: #6b7280; margin: 0">A receipt and your host's details are on the way to your email.</p>
+      </div>
+
+      <div style="width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 18px; text-align: left; background: #f7f8fa; border-radius: 18px; padding: 24px">
+        <div><div style="font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6b7280; margin-bottom: 3px">Booking ID</div><div style="font-size: 15px; font-weight: 600">{{ bookingId }}</div></div>
+        <div><div style="font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6b7280; margin-bottom: 3px">Payment ID</div><div style="font-size: 14px; font-weight: 600; word-break: break-all">{{ paymentId }}</div></div>
+        <div><div style="font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6b7280; margin-bottom: 3px">Property</div><div style="font-size: 14.5px">East Austin Retreat</div></div>
+        <div><div style="font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6b7280; margin-bottom: 3px">Dates</div><div style="font-size: 14.5px">Jul 28 – 31, 2026 · 3 nights</div></div>
+        <div><div style="font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6b7280; margin-bottom: 3px">Guests</div><div style="font-size: 14.5px">1 guest</div></div>
+        <div><div style="font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6b7280; margin-bottom: 3px">Amount paid</div><div style="font-size: 15px; font-weight: 600">{{ totalText }}</div></div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; width: 100%">
+        <button type="button" style="width: 100%; min-height: 60px; font-family: inherit; font-size: 17px; font-weight: 600; color: #fff; background: #2b4b34; border: 0; border-radius: 16px; cursor: pointer; box-shadow: 0 6px 18px rgba(43,75,52,.18); transition: background .2s ease, transform .18s ease" style-hover="background: #22402b; transform: translateY(-1px)">Download invoice</button>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap">
+          <button type="button" style="flex: 1 1 150px; min-height: 52px; font-family: inherit; font-size: 15px; font-weight: 600; color: #274c33; background: transparent; border: 1px solid #dfe3e8; border-radius: 16px; cursor: pointer; transition: background .18s ease" style-hover="background: #f2f5f3">View my bookings</button>
+          <button type="button" onClick="{{ onRestart }}" style="flex: 1 1 150px; min-height: 52px; font-family: inherit; font-size: 15px; font-weight: 600; color: #274c33; background: transparent; border: 1px solid #dfe3e8; border-radius: 16px; cursor: pointer; transition: background .18s ease" style-hover="background: #f2f5f3">Back to home</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;razorpayKeyId&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;rzp_test_XXXXXXXXXXXXXX&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Razorpay&quot;}}">
+// ── Booking + pricing (mock reservation data, INR) ───────────────────────────
+const BOOKING = {
+  base: 37200, cleaning: 1500, service: 4464, tax: 3453, discount: 1860,
+  property: 'Extraordinary East Austin Retreat with Sauna and Cold Plunge',
+  checkIn: '2026-07-28', checkOut: '2026-07-31', nights: 3, guests: 1
+};
+const SUBTOTAL = BOOKING.base + BOOKING.cleaning + BOOKING.service + BOOKING.tax - BOOKING.discount;
+const COUPONS = { STAYLENS10: 0.1, WELCOME25: 0.25, NATURE50: 0.5 };
+const inr = n => '₹' + Math.round(n).toLocaleString('en-IN');
+
+class Component extends DCLogic {
+  state = {
+    promo: '', couponCode: '', couponRate: 0, promoMsg: '', promoOk: false,
+    terms: false, status: 'idle', failMessage: '', bookingId: '', paymentId: ''
+  };
+
+  get total() { return SUBTOTAL - SUBTOTAL * this.state.couponRate; }
+
+  applyPromo = () => {
+    const code = (this.state.promo || '').trim().toUpperCase();
+    if (!code) return this.setState({ promoMsg: 'Enter a coupon code to continue.', promoOk: false });
+    const rate = COUPONS[code];
+    if (rate) this.setState({ couponCode: code, couponRate: rate, promoOk: true, promoMsg: code + ' applied — ' + Math.round(rate * 100) + '% off your stay.' });
+    else this.setState({ couponCode: '', couponRate: 0, promoOk: false, promoMsg: 'That code isn\'t valid for these dates.' });
+  };
+
+  // ── BACKEND ORDER CREATION ────────────────────────────────────────────────
+  // POST /api/payments/create-order  →  { orderId, amount, currency, keyId, bookingId }
+  // The server calls razorpay.orders.create({ amount: paise, currency: 'INR', receipt })
+  // with the SECRET key; the browser only ever receives the public key_id.
+  async createOrder() {
+    const body = {
+      amount: Math.round(this.total * 100), currency: 'INR',
+      checkIn: BOOKING.checkIn, checkOut: BOOKING.checkOut,
+      guests: BOOKING.guests, coupon: this.state.couponCode || null
+    };
+    try {
+      const res = await fetch('/api/payments/create-order', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+      });
+      if (!res.ok) throw new Error('order_failed');
+      return await res.json();
+    } catch (e) {
+      // Preview fallback: no backend in this prototype — mock the order envelope
+      // so the Razorpay handoff and the success screen can be demonstrated.
+      await new Promise(r => setTimeout(r, 1100));
+      return {
+        orderId: null, amount: body.amount, currency: 'INR',
+        keyId: this.props.razorpayKeyId ?? 'rzp_test_XXXXXXXXXXXXXX',
+        bookingId: 'SL' + Date.now().toString().slice(-8), mock: true
+      };
+    }
+  }
+
+  // ── VERIFY ────────────────────────────────────────────────────────────────
+  // POST /api/payments/verify with { razorpay_order_id, razorpay_payment_id,
+  // razorpay_signature } — the server recomputes the HMAC-SHA256 signature
+  // before marking the booking as paid.
+  succeed(bookingId, paymentId) {
+    this.setState({ status: 'success', bookingId, paymentId });
+  }
+
+  pay = async () => {
+    if (this.state.status === 'preparing' || !this.state.terms) return;
+    this.setState({ status: 'preparing', failMessage: '' });
+    let order;
+    try {
+      order = await this.createOrder();
+    } catch (e) {
+      return this.setState({ status: 'failed', failMessage: 'We couldn\'t start the payment. Please try again.' });
+    }
+    if (!this.mounted) return;
+
+    if (!window.Razorpay || order.mock) {
+      // No Razorpay script / no backend order in this preview — simulate the
+      // checkout result so the flow stays demonstrable. Remove once the
+      // backend returns a real orderId.
+      this.timer = setTimeout(() => this.succeed(order.bookingId, 'pay_' + Math.random().toString(36).slice(2, 16)), 900);
+      return;
+    }
+
+    const rzp = new window.Razorpay({
+      key: order.keyId,
+      order_id: order.orderId,
+      amount: order.amount,
+      currency: order.currency,
+      name: 'Staylens',
+      description: BOOKING.property,
+      theme: { color: '#2b4b34' },
+      prefill: { name: 'Ananya Raghavan', email: 'ananya.r@example.com', contact: '+919820444170' },
+      notes: { bookingId: order.bookingId },
+      handler: r => this.succeed(order.bookingId, r.razorpay_payment_id),
+      modal: { ondismiss: () => this.setState({ status: 'idle' }) }
+    });
+    rzp.on('payment.failed', resp => this.setState({
+      status: 'failed',
+      failMessage: (resp && resp.error && resp.error.description) || 'Your payment was declined. No amount has been charged.'
+    }));
+    rzp.open();
+  };
+
+  componentDidMount() { this.mounted = true; }
+  componentWillUnmount() { this.mounted = false; clearTimeout(this.timer); }
+
+  renderVals() {
+    const s = this.state;
+    const coupon = SUBTOTAL * s.couponRate;
+    const preparing = s.status === 'preparing';
+    return {
+      noop: e => e.preventDefault(),
+      isCheckout: s.status !== 'success',
+      isSuccess: s.status === 'success',
+      isFailed: s.status === 'failed',
+      failMessage: s.failMessage,
+      preparing,
+      locked: preparing,
+      promo: s.promo,
+      onPromo: e => this.setState({ promo: e.target.value.toUpperCase() }),
+      onApplyPromo: this.applyPromo,
+      promoMsg: s.promoMsg,
+      promoMsgStyle: s.promoOk ? 'color: #2b4b34; font-weight: 600' : 'color: #b4322c',
+      couponApplied: s.couponRate > 0,
+      couponCode: s.couponCode,
+      couponAmount: '−' + inr(coupon),
+      totalText: inr(this.total),
+      terms: s.terms,
+      onTerms: e => this.setState({ terms: e.target.checked }),
+      onPay: this.pay,
+      payDisabled: preparing || !s.terms,
+      payBtnStyle: preparing || !s.terms ? 'opacity: .5; cursor: not-allowed; box-shadow: none' : '',
+      payLabel: preparing ? 'Preparing secure payment…' : 'Pay now ' + inr(this.total),
+      payHint: s.terms
+        ? 'You\'ll complete the payment in Razorpay\'s secure window.'
+        : 'Accept the terms above to continue to payment.',
+      bookingId: s.bookingId,
+      paymentId: s.paymentId,
+      onRestart: () => this.setState({ status: 'idle', terms: false })
+    };
+  }
+}
+
+</script>
+</body>
+</html>

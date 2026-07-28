@@ -1,18 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { CircleAlert } from "lucide-react";
 import { AuthField } from "@/components/auth/auth-field";
 import { signInAction } from "@/app/(auth)/actions";
 import { isValidEmail } from "@/lib/auth-validation";
 
-export function LoginForm() {
+/**
+ * Query-string state arrives as props from the server page rather than through
+ * `useSearchParams()`, which would otherwise pull this form into a client-only
+ * Suspense boundary and leave the server rendering an empty page.
+ */
+export function LoginForm({
+  redirect = null,
+  linkExpired = false,
+  justRegistered = false,
+}: {
+  /** `?redirect=` — null when the user opened /login directly, so the server
+   *  stays free to send admins to /admin. */
+  redirect?: string | null;
+  linkExpired?: boolean;
+  justRegistered?: boolean;
+}) {
   const router = useRouter();
-  const params = useSearchParams();
-  const redirect = params.get("redirect") || "/";
-  const linkExpired = params.get("error") === "link_expired";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -42,9 +54,11 @@ export function LoginForm() {
     }
 
     start(async () => {
-      const res = await signInAction(email, password);
+      const res = await signInAction(email, password, redirect);
       if (res.ok) {
-        router.push(redirect);
+        // The server decides the destination — it can read the role, the
+        // client can't. Admins land on /admin, everyone else on the site.
+        router.replace(res.redirectTo ?? redirect ?? "/");
         router.refresh();
       } else {
         setError(res.error);
@@ -81,6 +95,12 @@ export function LoginForm() {
         className="bg-surface-container-lowest/90 backdrop-blur-sm shadow-tinted rounded-[20px] p-6 md:p-8 border border-outline-variant/20 space-y-5"
         noValidate
       >
+        {justRegistered && !error && (
+          <p className="text-sm font-medium text-primary bg-primary-fixed/30 border border-primary/30 rounded-lg px-3 py-2.5">
+            Account created. Sign in to continue.
+          </p>
+        )}
+
         {error && (
           <p role="alert" className="flex items-start gap-2 text-sm font-medium text-destructive bg-destructive/10 border border-destructive/30 rounded-lg px-3 py-2.5">
             <CircleAlert aria-hidden className="size-4 shrink-0 mt-0.5" />

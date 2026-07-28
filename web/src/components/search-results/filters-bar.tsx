@@ -1,9 +1,16 @@
 "use client";
 
 import { Bath, SlidersHorizontal } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { FiltersModal } from "@/components/search-results/filters-modal";
+
+// Only rendered once the user opens Filters — load its chunk on demand instead
+// of shipping the whole modal to every visitor.
+const FiltersModal = dynamic(
+  () => import("@/components/search-results/filters-modal").then((m) => m.FiltersModal),
+  { ssr: false },
+);
 import { QUICK_FILTERS } from "@/components/search-results/filter-config";
 import { useAmenityFilters } from "@/components/search-results/use-amenity-filters";
 

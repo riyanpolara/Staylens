@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Loader2, ShieldCheck } from "lucide-react";
 import { computeBookingBreakdown, formatMoney } from "@/lib/pricing";
 import { validateCoupon } from "@/lib/coupons";
@@ -10,16 +11,17 @@ import {
   guestDetailsValid,
 } from "@/components/checkout/guest-details-form";
 import { CouponField } from "@/components/checkout/coupon-field";
-import { PaymentSection } from "@/components/checkout/payment-section";
 import { BookingSummaryCard } from "@/components/checkout/booking-summary-card";
 import { ConfirmationView } from "@/components/checkout/confirmation-view";
 import type {
   AppliedCoupon,
   CheckoutProperty,
   CheckoutTrip,
+  CreateOrder,
   GuestDetails,
-  SubmitBooking,
+  VerifyPayment,
 } from "@/components/checkout/checkout-types";
+import { writeBookingDraft } from "@/lib/payments/booking-draft";
 
 function guestsLabel(g: CheckoutTrip["guests"]): string {
   const people = g.adults + g.children;
@@ -32,14 +34,18 @@ export function CheckoutClient({
   property,
   trip,
   editHref,
-  submit,
+  createOrder,
+  verifyPayment,
 }: {
   property: CheckoutProperty;
   trip: CheckoutTrip;
   editHref: string;
-  /** server action injected from the route (Stripe-ready boundary) */
-  submit: SubmitBooking;
+  /** Razorpay: create an Order server-side (amount is priced there, not here) */
+  createOrder: CreateOrder;
+  /** Razorpay: verify the signature and persist the booking */
+  verifyPayment: VerifyPayment;
 }) {
+  const router = useRouter();
   const [guest, setGuest] = useState<GuestDetails>({
     firstName: "",
     lastName: "",
@@ -48,7 +54,6 @@ export function CheckoutClient({
   });
   const [applied, setApplied] = useState<AppliedCoupon | null>(null);
   const [couponError, setCouponError] = useState<string | null>(null);
-  const [paymentValid, setPaymentValid] = useState(false);
   const [showErrors, setShowErrors] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
@@ -83,13 +88,34 @@ export function CheckoutClient({
     setCouponError(null);
   }
 
-  async function handleSubmit() {
+  /**
+   * Continue to payment.
+   *
+   * The reservation step validates and hands off; the dedicated payment page
+   * owns the Razorpay call. Guest details travel in sessionStorage rather than
+   * the query string so a name, email and phone never end up in browser
+   * history or server logs.
+   */
+  function handleSubmit() {
     setShowErrors(true);
     setServerError(null);
-    if (!guestDetailsValid(guest) || !paymentValid || trip.nights <= 0) return;
+    // Card details are collected by Razorpay on the next step, so this page
+    // only needs valid contact details and a real date range.
+    if (!guestDetailsValid(guest) || trip.nights <= 0) {
+      // Never fail silently: say why, and put the cursor on the problem.
+      setServerError(
+        trip.nights <= 0
+          ? "Please choose valid dates before continuing."
+          : "Please complete your contact details to continue.",
+      );
+      document
+        .querySelector<HTMLInputElement>('section[aria-labelledby="guest-heading"] input')
+        ?.focus();
+      return;
+    }
 
     setSubmitting(true);
-    const res = await submit({
+    writeBookingDraft({
       propertyId: property.id,
       checkIn: trip.checkInISO,
       checkOut: trip.checkOutISO,
@@ -99,14 +125,15 @@ export function CheckoutClient({
       guest,
       couponCode: applied?.code ?? null,
     });
-    setSubmitting(false);
 
-    if (!res.ok) {
-      setServerError(res.error);
-      return;
-    }
-    setConfirmed({ bookingRef: res.bookingRef, total: res.total, provider: res.provider });
-    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+    const qs = new URLSearchParams({
+      in: trip.checkInISO,
+      out: trip.checkOutISO,
+      adults: String(trip.guests.adults),
+    });
+    if (trip.guests.children) qs.set("children", String(trip.guests.children));
+    if (trip.guests.infants) qs.set("infants", String(trip.guests.infants));
+    router.push(`/property/${property.id}/payment?${qs.toString()}`);
   }
 
   if (confirmed) {
@@ -150,7 +177,6 @@ export function CheckoutClient({
         </section>
         <hr className="border-outline-variant/30" />
 
-        <PaymentSection onValidChange={setPaymentValid} disabled={submitting} />
 
         {/* cancellation policy */}
         <div className="rounded-xl bg-surface-container-low/60 border border-outline-variant/30 p-4 flex gap-3">
@@ -176,11 +202,11 @@ export function CheckoutClient({
           >
             {submitting && <Loader2 aria-hidden className="size-5 animate-spin" />}
             {submitting
-              ? "Confirming…"
-              : `Confirm and pay ${formatMoney(breakdown.total, trip.currency)}`}
+              ? "Continuing…"
+              : `Continue and pay ${formatMoney(breakdown.total, trip.currency)}`}
           </button>
           <p className="text-center text-xs text-on-surface-variant mt-3">
-            You won’t be charged — this is a preview checkout.
+            You won’t be charged yet — you’ll confirm payment on the next step.
           </p>
         </div>
       </div>

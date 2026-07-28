@@ -2,16 +2,16 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { CircleAlert } from "lucide-react";
 import { AuthField } from "@/components/auth/auth-field";
 import { signUpAction } from "@/app/(auth)/actions";
-import { validateSignUp, MIN_AGE } from "@/lib/auth-validation";
+import { validateSignUp } from "@/lib/auth-validation";
 
 /** Fields in visual order — used to focus the first one that fails. */
 const FIELD_ORDER = ["firstName", "lastName", "email", "password", "birthday"] as const;
 
-export function SignupForm() {
+export function SignupForm({ maxBirthday }: { maxBirthday?: string }) {
   const router = useRouter();
   const [values, setValues] = useState({
     firstName: "",
@@ -24,16 +24,7 @@ export function SignupForm() {
   const [error, setError] = useState<string | null>(null);
   const [confirmSent, setConfirmSent] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [maxBirthday, setMaxBirthday] = useState<string | undefined>(undefined);
   const [pending, start] = useTransition();
-
-  // Latest date that still satisfies the 18+ rule, so the picker can't offer an
-  // under-age (or future) date. Set on the client to avoid a hydration mismatch.
-  useEffect(() => {
-    const d = new Date();
-    d.setFullYear(d.getFullYear() - MIN_AGE);
-    setMaxBirthday(d.toISOString().slice(0, 10));
-  }, []);
 
   function set(k: keyof typeof values) {
     return (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,8 +64,10 @@ export function SignupForm() {
         if (res.needsEmailConfirmation) {
           setConfirmSent(true);
         } else {
-          // auto signed-in → home, refresh so the navbar shows the user
-          router.push("/");
+          // Account created. Hand off to sign-in rather than dropping the user
+          // straight into the site: signing in is what establishes which
+          // destination they get (admin dashboard vs. the public home page).
+          router.replace("/login?registered=1");
           router.refresh();
         }
       } else {

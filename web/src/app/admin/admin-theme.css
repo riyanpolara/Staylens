@@ -1,0 +1,630 @@
+/*
+ * Organic design-system tokens + component classes for the admin dashboard.
+ * Ported verbatim from the Claude Design handoff
+ * (staylens-admin-dashboard/project/_ds/organic-<id>/styles.css), with EVERY
+ * selector scoped under `.admin-scope`.
+ *
+ * The source file styles `:root`, `body`, `h1..h6`, `a`, `*` globally; importing
+ * it as-is would restyle the whole public site. Scoping keeps the admin design
+ * pixel-identical while leaving StayLens' public pages untouched.
+ *
+ * Fonts (Caprasimo + Figtree) are loaded via next/font in the admin layout, so
+ * the upstream Google Fonts @import has been removed.
+ */
+/* Organic — design-system tokens and component classes. This file is the source of truth for the system's look; retune it here and see readme.md. */
+.admin-scope {
+  --color-bg: #f5ead8;
+  --color-surface: #ebddc5;
+  --color-text: #201e1d;
+  --color-accent: #c67139;
+  --color-accent-2: #7a8a5e;
+  --color-divider: color-mix(in srgb, #201e1d 16%, transparent);
+
+  /* Tonal ramps — generated in OKLCH on one shared lightness scale, so the
+     same step of any role matches the others in visual value. */
+  --color-neutral-100: #f9f4ed;
+  --color-neutral-200: #eee7db;
+  --color-neutral-300: #dcd3c4;
+  --color-neutral-400: #c0b6a5;
+  --color-neutral-500: #a19786;
+  --color-neutral-600: #82796a;
+  --color-neutral-700: #645c50;
+  --color-neutral-800: #474238;
+  --color-neutral-900: #2e2b25;
+
+  --color-accent-100: #fff2eb;
+  --color-accent-200: #ffe1d0;
+  --color-accent-300: #ffc6a5;
+  --color-accent-400: #f6a06b;
+  --color-accent-500: #d67f48;
+  --color-accent-600: #b2622d;
+  --color-accent-700: #8c491a;
+  --color-accent-800: #643312;
+  --color-accent-900: #402310;
+
+  --color-accent-2-100: #f0fae1;
+  --color-accent-2-200: #e1eecc;
+  --color-accent-2-300: #ccdbb2;
+  --color-accent-2-400: #aebf92;
+  --color-accent-2-500: #8fa073;
+  --color-accent-2-600: #728157;
+  --color-accent-2-700: #56633f;
+  --color-accent-2-800: #3d472b;
+  --color-accent-2-900: #272e1b;
+
+  --font-heading: "Caprasimo", system-ui, sans-serif;
+  --font-heading-weight: 400;
+  --font-body: "Figtree", system-ui, sans-serif;
+
+  --space-1: 4.4px;
+  --space-2: 8.8px;
+  --space-3: 13.2px;
+  --space-4: 17.6px;
+  --space-6: 26.4px;
+  --space-8: 35.2px;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 28px;
+
+  /* Elevation — derived from the ground: soft ink-tinted shadows on a
+     light theme, a hairline edge + ambient darkness on a dark one. */
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #2e2b25 14%, transparent);
+  --shadow-md: 0 3px 10px color-mix(in srgb, #2e2b25 16%, transparent);
+  --shadow-lg: 0 12px 32px color-mix(in srgb, #2e2b25 22%, transparent);
+}
+.admin-scope {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+.admin-scope h1, .admin-scope h2, .admin-scope h3, .admin-scope h4 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); }
+.admin-scope .washed {filter:saturate(0.6) contrast(0.85) brightness(1.1) opacity(0.94)}
+/* ══════════════════════════════════════════════════════════════════════════
+   Components — built with the tokens above. Plain CSS
+   on plain HTML: no JavaScript, no build step. Each class is documented in
+   readme.md and demonstrated in foundations/ and components/.
+   ══════════════════════════════════════════════════════════════════════ */
+.admin-scope *, .admin-scope *::before, .admin-scope *::after { box-sizing: border-box; }
+.admin-scope { margin: 0; font-size: 15px; line-height: 1.55; font-weight: 400; }
+.admin-scope h1, .admin-scope h2, .admin-scope h3, .admin-scope h4, .admin-scope h5, .admin-scope h6 {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 var(--space-2);
+}
+.admin-scope h1 { font-size: 42px; }
+.admin-scope h2 { font-size: 32px; }
+.admin-scope h3 { font-size: 25px; }
+.admin-scope h4 { font-size: 20px; }
+.admin-scope h5 { font-size: 16px; }
+.admin-scope h6 { font-size: 13px; }
+.admin-scope h6 { letter-spacing: 0.08em; text-transform: uppercase; }
+.admin-scope p { margin: 0 0 var(--space-3); }
+.admin-scope a { color: var(--color-accent); text-underline-offset: 3px; }
+.admin-scope img { display: block; max-width: 100%; }
+.admin-scope figure { margin: 0; }
+.admin-scope figcaption {
+  font-size: 11px; margin-top: var(--space-1);
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+.admin-scope .text-muted { color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+.admin-scope :focus { outline: none; }
+.admin-scope :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.admin-scope ::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
+/* — rules — */
+.admin-scope .hr {
+  height: 1px; border: 0; margin: var(--space-4) 0;
+  background: var(--color-divider);
+}
+/* — buttons — */
+.admin-scope .btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  cursor: pointer; text-decoration: none;
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 14px; line-height: 1.2; color: var(--color-text); /* matches the .input's 14px —
+     the pair sits side by side in sign-up rows */
+  background: transparent; border: 1px solid transparent;
+  padding: var(--space-2) calc(var(--space-3) * 1.2);
+  border-radius: var(--radius-md);
+}
+.admin-scope .btn svg { display: block; }
+.admin-scope .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.admin-scope .btn-primary { background: var(--color-accent); color: var(--color-bg); }
+.admin-scope .btn-primary:hover { background: var(--color-accent-600); }
+.admin-scope .btn-primary:active { background: var(--color-accent-700); }
+.admin-scope .btn-secondary { border-color: var(--color-divider); }
+.admin-scope .btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+.admin-scope .btn-secondary:active { background: color-mix(in srgb, var(--color-text) 14%, transparent); }
+.admin-scope .btn-ghost { color: var(--color-accent); padding-inline: var(--space-1); }
+.admin-scope .btn-ghost:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
+.admin-scope .btn-ghost:active { background: color-mix(in srgb, var(--color-accent) 18%, transparent); }
+.admin-scope .btn-icon { width: 36px; height: 36px; padding: 0; }
+.admin-scope .btn-block { width: 100%; margin-top: var(--space-2); }
+/* — forms — */
+.admin-scope .field > label {
+  display: block; font-size: 12px; margin-bottom: 5px;
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+}
+.admin-scope .input {
+  width: 100%; min-height: 36px; padding: 6px 10px; font: inherit;
+  font-size: 14px; color: var(--color-text); caret-color: var(--color-accent);
+  background: var(--color-surface);
+  border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+}
+.admin-scope .input:hover { border-color: color-mix(in srgb, var(--color-text) 45%, transparent); }
+.admin-scope .input:focus-visible { border-color: var(--color-accent); outline-offset: 0; }
+.admin-scope textarea.input { min-height: 90px; resize: vertical; }
+.admin-scope .radio { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; }
+.admin-scope .radio input, .admin-scope .seg-opt input {
+  position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;
+}
+.admin-scope .radio .dot {
+  width: 16px; height: 16px; flex: none; border-radius: 50%;
+  border: 1.5px solid var(--color-divider);
+}
+.admin-scope .radio:hover .dot { border-color: var(--color-accent); }
+.admin-scope .radio input:checked + .dot {
+  border-color: var(--color-accent); background: var(--color-accent);
+  box-shadow: inset 0 0 0 4px var(--color-bg);
+}
+.admin-scope .radio input:focus-visible + .dot { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.admin-scope .seg {
+  display: inline-flex; overflow: hidden;
+  border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+}
+.admin-scope .seg-opt {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px; font-size: 13px; cursor: pointer;
+}
+.admin-scope .seg-opt + .seg-opt { border-left: 1px solid var(--color-divider); }
+.admin-scope .seg-opt:has(input:checked) { background: var(--color-accent); color: var(--color-bg); }
+.admin-scope .seg-opt:not(:has(input:checked)):hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+.admin-scope .seg-opt:has(input:focus-visible) { outline: 2px solid var(--color-accent); outline-offset: -2px; }
+/* — cards — */
+.admin-scope .card {
+  display: flex; flex-direction: column; gap: var(--space-2);
+  padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-surface);
+}
+.admin-scope .card-kicker { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); }
+.admin-scope .card-title {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 17px; line-height: 1.2;
+}
+.admin-scope .card-body { margin: 0; font-size: 13px; opacity: 0.8; flex: 1; }
+.admin-scope .card-meta {
+  display: flex; align-items: center; gap: 6px; font-size: 11px;
+  color: color-mix(in srgb, var(--color-text) 50%, transparent);
+}
+.admin-scope .elev-sm { box-shadow: var(--shadow-sm); }
+.admin-scope .elev-md { box-shadow: var(--shadow-md); }
+.admin-scope .elev-lg { box-shadow: var(--shadow-lg); }
+/* — tags — */
+.admin-scope .tag {
+  display: inline-flex; align-items: center; font-size: 11px;
+  letter-spacing: 0.02em; padding: 3px 10px;
+  border-radius: calc(var(--radius-md) * 0.75);
+}
+.admin-scope .tag-accent { background: var(--color-accent-100); color: var(--color-accent-800); }
+.admin-scope .tag-accent-2 { background: var(--color-accent-2-100); color: var(--color-accent-2-800); }
+.admin-scope .tag-neutral { background: var(--color-neutral-100); color: var(--color-neutral-800); }
+.admin-scope .tag-outline { border: 1px solid var(--color-accent); color: var(--color-accent); }
+/* — navigation — */
+.admin-scope .nav {
+  display: flex; align-items: center; gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: none;
+}
+.admin-scope .nav-brand {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 18px; margin-right: auto;
+}
+.admin-scope .nav a { color: inherit; text-decoration: none; font-size: 14px; }
+.admin-scope .nav a:hover, .admin-scope .nav a[aria-current='page'] { color: var(--color-accent); }
+/* — tables — */
+.admin-scope .table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.admin-scope .table th {
+  text-align: left; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 60%, transparent);
+  padding: var(--space-2); border-bottom: 1px solid var(--color-divider);
+}
+.admin-scope .table td {
+  padding: var(--space-2);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+.admin-scope .table tbody tr:hover { background: color-mix(in srgb, var(--color-text) 4%, transparent); }
+/* — dialog — */
+.admin-scope .dialog-backdrop {
+  position: fixed; inset: 0; display: grid; place-items: center;
+  padding: var(--space-4);
+  background: color-mix(in srgb, var(--color-neutral-900) 50%, transparent);
+}
+.admin-scope .dialog {
+  width: min(440px, 100%); display: flex; flex-direction: column; gap: var(--space-3);
+  padding: var(--space-4); border-radius: var(--radius-lg);
+  background: var(--color-surface); box-shadow: var(--shadow-lg);
+}
+.admin-scope .dialog-title {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 20px;
+}
+.admin-scope .dialog-body { font-size: 14px; opacity: 0.85; }
+.admin-scope .dialog-actions { display: flex; justify-content: flex-end; gap: var(--space-2); margin-top: var(--space-2); }
+/* — rounded frame: everything softens, small controls go pill — */
+.admin-scope .card, .admin-scope .dialog { border-radius: calc(var(--radius-lg) * 1.15); }
+.admin-scope .btn, .admin-scope .tag, .admin-scope .seg, .admin-scope .input { border-radius: 999px; }
+.admin-scope .input { padding-inline: 14px; }
+
+/* ---- dark mode: token override only, no component needs dark styling ---- */
+.admin-scope[data-theme="dark"], [data-theme="dark"] .admin-scope {
+    --color-bg: #1a1817;
+    --color-surface: #262220;
+    --color-text: #f3e8d7;
+    --color-divider: color-mix(in srgb, #f3e8d7 15%, transparent);
+    --color-accent: #f6a06b;
+    --color-accent-2: #aebf92;
+    --color-accent-100: #3d2312;
+    --color-accent-200: #4d2c16;
+    --color-accent-800: #ffc6a5;
+    --color-accent-700: #ffd9bf;
+    --color-accent-2-100: #272e1b;
+    --color-accent-2-200: #313a22;
+    --color-accent-2-800: #ccdbb2;
+    --color-neutral-100: #2e2b25;
+    --color-neutral-200: #383430;
+    --color-neutral-800: #dcd3c4;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+    --shadow-md: 0 4px 14px rgba(0,0,0,.45);
+    --shadow-lg: 0 18px 44px rgba(0,0,0,.55);
+    color-scheme: dark;
+}
+
+/* ---- prototype keyframes (renamed with an admin- prefix to avoid collisions) ---- */
+@keyframes admin-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes admin-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes admin-draw { from { stroke-dashoffset: 1400; } to { stroke-dashoffset: 0; } }
+@keyframes admin-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes admin-slidein { from { transform: translateX(-100%); } to { transform: none; } }
+
+/* ══════════════════════════════════════════════════════════════════════
+   App chrome — sidebar / header / content shell.
+   Reproduces the prototype's layout rules: 236px rail (76px collapsed),
+   overlay drawer < 900px, header search hidden < 1180px. Grids use
+   auto-fit/minmax so tablet + mobile reflow without extra media queries.
+   ══════════════════════════════════════════════════════════════════ */
+
+.admin-scope .admin-shell { min-height: 100dvh; background: var(--color-bg); }
+
+.admin-scope .admin-sidebar {
+  position: fixed; inset-block: 0; inset-inline-start: 0; z-index: 40;
+  display: flex; flex-direction: column; gap: var(--space-4);
+  padding: var(--space-4) var(--space-3);
+  background: var(--color-surface);
+  border-inline-end: 1px solid var(--color-divider);
+  transition: width 200ms ease, transform 220ms ease;
+  overflow-x: hidden; overflow-y: auto;
+}
+.admin-scope .admin-sidebar[data-drawer="closed"] { transform: translateX(-100%); }
+.admin-scope .admin-sidebar[data-drawer="open"] { transform: none; box-shadow: var(--shadow-lg); }
+
+.admin-scope .admin-scrim,
+.admin-scope .admin-popover-scrim {
+  position: fixed; inset: 0; z-index: 35; border: 0; padding: 0;
+  background: color-mix(in srgb, #201e1d 42%, transparent);
+}
+.admin-scope .admin-popover-scrim { background: transparent; z-index: 45; }
+
+.admin-scope .admin-brand {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-2); min-height: 40px;
+}
+.admin-scope .admin-brand-name {
+  font-family: var(--font-heading); font-size: 19px; white-space: nowrap;
+}
+
+.admin-scope .admin-nav { display: flex; flex-direction: column; gap: 2px; }
+.admin-scope .admin-nav-item {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: 10px var(--space-3); border-radius: var(--radius-sm);
+  color: var(--color-text); text-decoration: none; white-space: nowrap;
+  transition: background 160ms ease, color 160ms ease;
+}
+.admin-scope .admin-nav-item:hover { background: color-mix(in srgb, var(--color-text) 6%, transparent); }
+.admin-scope .admin-nav-item[data-active] {
+  background: var(--color-accent-200); color: var(--color-accent-800); font-weight: 600;
+}
+.admin-scope .admin-nav-label { flex: 1; font-size: 14px; }
+.admin-scope .admin-nav-badge { font-size: 11px; padding: 1px 7px; }
+
+.admin-scope .admin-main { transition: margin 200ms ease; min-width: 0; }
+
+.admin-scope .admin-header {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: color-mix(in srgb, var(--color-bg) 82%, transparent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--color-divider);
+}
+.admin-scope .admin-crumb { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+.admin-scope .admin-title { font-size: 20px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.admin-scope .admin-header-actions { margin-inline-start: auto; display: flex; align-items: center; gap: var(--space-2); }
+
+.admin-scope .admin-search { display: none; align-items: center; gap: var(--space-2); margin: 0; }
+.admin-scope .admin-search .input { height: 36px; width: 220px; }
+@media (min-width: 1180px) { .admin-scope .admin-search { display: flex; } }
+
+.admin-scope .admin-notif-wrap { position: relative; }
+.admin-scope .admin-notif-dot {
+  position: absolute; top: 6px; inset-inline-end: 6px; width: 7px; height: 7px;
+  border-radius: 50%; background: var(--color-accent);
+}
+.admin-scope .admin-notif-panel {
+  position: absolute; inset-inline-end: 0; top: calc(100% + 8px);
+  width: min(320px, calc(100vw - 32px)); z-index: 50; padding: var(--space-3);
+}
+.admin-scope .admin-notif-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+.admin-scope .admin-notif-list li { display: grid; gap: 2px; font-size: 13px; }
+
+.admin-scope .admin-avatar {
+  width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--color-accent-300); color: var(--color-accent-900); font-weight: 700; font-size: 13px;
+}
+
+.admin-scope .admin-content { padding: var(--space-6) var(--space-4) var(--space-8); }
+@media (min-width: 900px) { .admin-scope .admin-content { padding: var(--space-6); } }
+
+/* Shared page primitives */
+.admin-scope .admin-grid { display: grid; gap: var(--space-4); }
+.admin-scope .admin-grid-kpi { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.admin-scope .admin-grid-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.admin-scope .admin-grid-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.admin-scope .admin-section { margin-block-end: var(--space-6); }
+.admin-scope .admin-table-scroll { overflow-x: auto; }
+.admin-scope .admin-table-scroll .table { min-width: 900px; }
+.admin-scope .admin-rise { animation: admin-rise 420ms cubic-bezier(.16,1,.3,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-scope .admin-rise { animation: none; }
+  .admin-scope .admin-sidebar, .admin-scope .admin-main { transition: none; }
+}
+
+/* ── Stat / metric / chart / table primitives ─────────────────────── */
+.admin-scope .admin-stat { padding: var(--space-4); display: grid; gap: var(--space-2); transition: transform 200ms ease, box-shadow 200ms ease; }
+.admin-scope .admin-stat:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.admin-scope .admin-stat-top { display: flex; align-items: center; gap: var(--space-2); }
+.admin-scope .admin-stat-icon { width: 32px; height: 32px; border-radius: var(--radius-sm); display: grid; place-items: center; background: var(--color-accent-200); color: var(--color-accent-800); }
+.admin-scope .admin-stat-value { font-family: var(--font-heading); font-size: 28px; line-height: 1.1; margin: 0; }
+.admin-scope .admin-stat-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); flex-wrap: wrap; }
+.admin-scope .admin-spark { max-width: 120px; height: 40px; }
+
+.admin-scope .admin-metric { padding: var(--space-4); display: grid; gap: var(--space-1); justify-items: start; transition: transform 200ms ease, box-shadow 200ms ease; }
+.admin-scope .admin-metric:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.admin-scope .admin-metric-value { font-family: var(--font-heading); font-size: 24px; margin: 0; }
+
+.admin-scope .admin-chart-card { padding: var(--space-4); }
+.admin-scope .admin-chart-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; margin-block-end: var(--space-4); }
+.admin-scope .admin-chart-title { margin: 0; font-size: 17px; }
+.admin-scope .admin-chart-sub { margin: 2px 0 0; font-size: 13px; }
+.admin-scope .admin-chart-foot { margin-block-start: var(--space-3); padding-block-start: var(--space-3); border-top: 1px solid var(--color-divider); display: flex; gap: var(--space-4); flex-wrap: wrap; font-size: 13px; }
+.admin-scope .admin-chart-wrap { display: grid; gap: var(--space-2); }
+.admin-scope .admin-svg { width: 100%; height: auto; display: block; }
+.admin-scope .admin-axis { list-style: none; display: flex; justify-content: space-between; margin: 0; padding: 0; font-size: 11px; color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+
+.admin-scope .admin-bars { display: flex; align-items: flex-end; gap: var(--space-2); }
+.admin-scope .admin-bar-col { flex: 1; display: flex; flex-direction: column-reverse; gap: 2px; height: 100%; justify-content: flex-start; transition: opacity 180ms ease; }
+.admin-scope .admin-bars:hover .admin-bar-col { opacity: .55; }
+.admin-scope .admin-bars .admin-bar-col:hover { opacity: 1; }
+.admin-scope .admin-bar { border-radius: 6px 6px 0 0; transform-origin: bottom; animation: admin-grow 700ms cubic-bezier(.16,1,.3,1) both; }
+.admin-scope .admin-bar-confirmed { background: var(--color-accent-500); }
+.admin-scope .admin-bar-cancelled { background: var(--color-neutral-400); border-radius: 0 0 6px 6px; }
+
+.admin-scope .admin-donut-wrap { display: flex; align-items: center; gap: var(--space-6); flex-wrap: wrap; }
+.admin-scope .admin-donut { width: 140px; height: 140px; flex: none; }
+.admin-scope .admin-legend { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); font-size: 13px; min-width: 160px; }
+.admin-scope .admin-legend li { display: flex; align-items: center; gap: var(--space-2); }
+.admin-scope .admin-legend li span:nth-child(2) { flex: 1; }
+.admin-scope .admin-legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+.admin-scope .admin-timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); position: relative; }
+.admin-scope .admin-timeline-item { display: flex; gap: var(--space-3); align-items: flex-start; }
+.admin-scope .admin-timeline-icon { width: 30px; height: 30px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--color-accent-2-200); color: var(--color-accent-2-800); }
+.admin-scope .admin-timeline-title { margin: 0; font-size: 14px; font-weight: 600; }
+.admin-scope .admin-timeline-meta { margin: 2px 0 0; font-size: 12px; }
+
+.admin-scope .admin-empty { padding: var(--space-8) var(--space-4); text-align: center; display: grid; gap: var(--space-2); justify-items: center; }
+.admin-scope .admin-empty-icon { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--color-accent-200); color: var(--color-accent-800); }
+
+.admin-scope .admin-toolbar { display: flex; gap: var(--space-2); flex-wrap: wrap; align-items: center; margin-block-end: var(--space-4); }
+.admin-scope .admin-toolbar .input { height: 38px; min-width: 200px; }
+.admin-scope .admin-cell-main { display: grid; gap: 2px; }
+.admin-scope .admin-cell-main strong { font-weight: 600; }
+.admin-scope .admin-cell-main span { font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+.admin-scope .admin-num { font-variant-numeric: tabular-nums; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   Data-table controls — filter selects, sortable headers, row menus,
+   pagination and skeletons. Built only from the tokens above, so the
+   Properties screen keeps the Organic look in both themes.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Filter pickers: a native <select> wearing the .btn .btn-secondary pill, so
+   the toolbar reads as designed while being a real, accessible form control. */
+.admin-scope .admin-select {
+  appearance: none; -webkit-appearance: none;
+  padding-inline-end: 30px; height: 38px;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23201e1d' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; background-size: 11px;
+}
+.admin-scope[data-theme="dark"] .admin-select,
+[data-theme="dark"] .admin-scope .admin-select {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f3e8d7' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+.admin-scope .admin-select option { color: var(--color-text); background: var(--color-surface); }
+
+/* Sortable column headers keep the <th> typography; only a caret is added. */
+.admin-scope .admin-th-sort {
+  display: inline-flex; align-items: center; gap: 5px;
+  color: inherit; font: inherit; text-decoration: none; cursor: pointer;
+}
+.admin-scope .admin-th-sort svg { opacity: 0.35; }
+.admin-scope .admin-th-sort:hover { color: var(--color-accent); }
+.admin-scope .admin-th-sort[data-active] { color: var(--color-accent-800); }
+.admin-scope .admin-th-sort[data-active] svg { opacity: 1; }
+.admin-scope .admin-th-sort[data-numeric] { justify-content: flex-end; }
+
+.admin-scope .admin-cell-link { color: inherit; text-decoration: none; }
+.admin-scope .admin-cell-link:hover { color: var(--color-accent); text-decoration: underline; }
+
+/* Row menu */
+.admin-scope .admin-actions-cell { width: 52px; text-align: end; }
+.admin-scope .admin-row-actions { position: relative; display: inline-flex; }
+.admin-scope .admin-menu {
+  position: absolute; inset-inline-end: 0; top: calc(100% + 6px); z-index: 25;
+  width: 184px; padding: 6px; gap: 0; border-radius: var(--radius-md);
+  animation: admin-rise 160ms ease both;
+}
+.admin-scope .admin-menu-item {
+  display: flex; align-items: center; gap: 9px; width: 100%;
+  padding: 8px 10px; border: 0; border-radius: var(--radius-md);
+  background: none; cursor: pointer; font: inherit; font-size: 13px;
+  text-align: start; text-decoration: none; color: var(--color-text);
+}
+.admin-scope .admin-menu-item:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+.admin-scope .admin-menu-item-warn { color: var(--color-accent-800); }
+.admin-scope .admin-btn-danger { color: var(--color-accent-800); }
+
+/* Confirm dialog sits above the sidebar (z 40) and the popover scrim (z 45). */
+.admin-scope .admin-dialog-layer { z-index: 60; }
+
+/* Action result. Fixed, so it is visible wherever the table has scrolled to. */
+.admin-scope .admin-toast {
+  position: fixed; z-index: 70; inset-block-end: var(--space-4); inset-inline-end: var(--space-4);
+  max-width: min(340px, calc(100vw - 32px)); padding: var(--space-3) var(--space-4);
+  font-size: 13px; animation: admin-rise 220ms ease both;
+}
+.admin-scope .admin-toast-error { border: 1px solid var(--color-accent); color: var(--color-accent-800); }
+
+/* Pagination */
+.admin-scope .admin-pagination {
+  display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3);
+  padding-block-start: var(--space-3);
+}
+.admin-scope .admin-page-note { margin: 0; font-size: 12px; }
+.admin-scope .admin-page-controls { display: flex; align-items: center; gap: 6px; margin-inline-start: auto; }
+.admin-scope .admin-page-num { min-width: 34px; height: 34px; padding: 0 10px; text-decoration: none; }
+.admin-scope .admin-page-num[data-active] {
+  background: var(--color-accent); color: var(--color-bg); border-color: var(--color-accent);
+}
+.admin-scope .admin-pagination [aria-disabled="true"] { opacity: 0.4; pointer-events: none; }
+
+/* Skeletons — same radii and rhythm as the real content, so nothing shifts. */
+@keyframes admin-shimmer-fade { from { opacity: 0.45; } to { opacity: 0.85; } }
+.admin-scope .admin-skeleton {
+  display: block; height: 13px; border-radius: 999px;
+  background: color-mix(in srgb, var(--color-text) 12%, transparent);
+  animation: admin-shimmer-fade 1.1s ease-in-out infinite alternate;
+}
+.admin-scope .admin-skeleton-sm { height: 10px; }
+.admin-scope .admin-skeleton-tag { height: 20px; }
+.admin-scope .admin-skeleton-icon { width: 32px; height: 32px; border-radius: 50%; margin-inline-start: auto; }
+.admin-scope .admin-skeleton-control { height: 38px; }
+@media (prefers-reduced-motion: reduce) {
+  .admin-scope .admin-skeleton,
+  .admin-scope .admin-menu,
+  .admin-scope .admin-toast { animation: none; }
+}
+
+.admin-scope .admin-empty-icon-warn { background: var(--color-accent-100); color: var(--color-accent-800); }
+
+/* ══════════════════════════════════════════════════════════════════════
+   Single-property screens (view + edit)
+   ══════════════════════════════════════════════════════════════════ */
+
+.admin-scope .admin-detail { display: flex; flex-direction: column; gap: var(--space-4); }
+.admin-scope .admin-back { align-self: flex-start; text-decoration: none; }
+.admin-scope .admin-detail-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: var(--space-3); flex-wrap: wrap;
+}
+.admin-scope .admin-detail-title { margin: 0; font-size: 26px; }
+.admin-scope .admin-detail-sub { margin: 4px 0 0; font-size: 13px; }
+.admin-scope .admin-detail-tags { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.admin-scope .admin-detail-tags .tag { gap: 4px; }
+
+.admin-scope .admin-moderation-bar {
+  position: relative; display: flex; align-items: center;
+  gap: var(--space-2); flex-wrap: wrap;
+}
+.admin-scope .admin-status-picker { display: inline-flex; }
+
+.admin-scope .admin-note { border-inline-start: 3px solid var(--color-accent); }
+.admin-scope .admin-note-body { margin: 0; font-size: 14px; }
+.admin-scope .admin-note-meta { margin: 0; font-size: 12px; }
+
+.admin-scope .admin-detail-photo {
+  width: 100%; height: auto; border-radius: var(--radius-md); object-fit: cover;
+}
+.admin-scope .admin-self-start { align-self: flex-start; }
+.admin-scope .admin-side-stack { display: flex; flex-direction: column; gap: var(--space-4); }
+
+.admin-scope .admin-host { display: flex; gap: var(--space-3); align-items: flex-start; }
+.admin-scope .admin-host-avatar { width: 48px; height: 48px; border-radius: 50%; flex: none; object-fit: cover; }
+.admin-scope .admin-host-name { margin: 0; font-weight: 700; }
+.admin-scope .admin-host-meta { margin: 2px 0 6px; font-size: 12px; }
+.admin-scope .admin-host-tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 0; }
+
+.admin-scope .admin-facts {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: var(--space-3); margin: 0;
+}
+.admin-scope .admin-facts dt { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+.admin-scope .admin-facts dd { margin: 2px 0 0; font-size: 14px; }
+.admin-scope .admin-address { margin: var(--space-3) 0 0; font-size: 12px; }
+
+.admin-scope .admin-chips { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.admin-scope .admin-reviews { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); }
+.admin-scope .admin-review-head {
+  display: flex; gap: var(--space-2); align-items: baseline; margin: 0 0 2px; font-size: 13px;
+}
+
+/* Edit form */
+.admin-scope .admin-form { padding: var(--space-4); gap: var(--space-6); }
+.admin-scope .admin-fieldset {
+  border: 0; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: var(--space-3);
+}
+.admin-scope .admin-fieldset legend { margin-bottom: var(--space-2); }
+.admin-scope .admin-fieldset:disabled { opacity: 0.6; }
+.admin-scope .admin-field-wide { grid-column: 1 / -1; }
+.admin-scope .admin-form textarea.input { border-radius: var(--radius-md); }
+.admin-scope .admin-form-foot {
+  display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap;
+  padding-block-start: var(--space-3); border-top: 1px solid var(--color-divider);
+}
+.admin-scope .admin-form-foot .tag { margin-inline-end: auto; }
+
+
+/* ── Dashboard states: skeleton / empty / unavailable ────────────────── */
+/* The dashboard reuses the shared `.admin-skeleton` above rather than
+   carrying a second skeleton implementation + its own shimmer keyframe. */
+
+.admin-scope .admin-chart-empty {
+  display: grid; place-items: center; gap: var(--space-2);
+  min-height: 180px; color: color-mix(in srgb, var(--color-text) 45%, transparent);
+  border: 1px dashed var(--color-divider); border-radius: var(--radius-md);
+}
+.admin-scope .admin-chart-empty p { margin: 0; font-size: 13px; }
+
+.admin-scope .admin-metric-na {
+  font-size: 14px; font-style: italic;
+  color: color-mix(in srgb, var(--color-text) 45%, transparent);
+}
+
+.admin-scope .admin-code {
+  text-align: left; font-size: 12px; line-height: 1.6; margin: var(--space-2) 0 0;
+  padding: var(--space-3); border-radius: var(--radius-sm); overflow-x: auto;
+  background: color-mix(in srgb, var(--color-text) 6%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* (reduced-motion for skeletons is handled with the shared .admin-skeleton
+   rule above, so there is nothing extra to disable here.) */

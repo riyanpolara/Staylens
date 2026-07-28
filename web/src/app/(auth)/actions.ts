@@ -1,16 +1,34 @@
 "use server";
 
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { getServerEnv } from "@/lib/env";
+import { postAuthDestination } from "@/lib/auth-redirect";
 import { validateSignUp, isValidEmail, type SignUpInput } from "@/lib/auth-validation";
 
 export type AuthResult =
-  | { ok: true; needsEmailConfirmation?: boolean }
+  | { ok: true; needsEmailConfirmation?: boolean; redirectTo?: string }
   | { ok: false; error: string; fieldErrors?: Record<string, string> };
 
-function siteUrl(): string {
-  return (
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "http://localhost:3000"
-  );
+/**
+ * Absolute origin for links we email (confirmation, password reset).
+ *
+ * Prefers the explicitly configured site URL, but falls back to the real
+ * request host instead of hard-coding localhost — otherwise a deployment that
+ * forgets NEXT_PUBLIC_SITE_URL silently emails users links to their own
+ * machine, which is unrecoverable from the user's side.
+ */
+async function siteUrl(): Promise<string> {
+  const { siteUrl: configured } = getServerEnv();
+  if (configured) return configured;
+
+  const h = await headers();
+  const host = h.get("x-forwarded-host") ?? h.get("host");
+  if (host) {
+    const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
+    return `${proto}://${host}`;
+  }
+  return "http://localhost:3000";
 }
 
 /**
@@ -31,7 +49,7 @@ export async function signUpAction(input: SignUpInput): Promise<AuthResult> {
     email: input.email.trim().toLowerCase(),
     password: input.password,
     options: {
-      emailRedirectTo: `${siteUrl()}/auth/confirm`,
+      emailRedirectTo: `${await siteUrl()}/auth/confirm`,
       data: {
         first_name: input.firstName.trim(),
         last_name: input.lastName.trim(),
@@ -42,9 +60,44 @@ export async function signUpAction(input: SignUpInput): Promise<AuthResult> {
   });
 
   if (error) {
-    // Generic message for "already registered" to avoid account enumeration.
-    if (/registered|exists/i.test(error.message)) {
-      return { ok: false, error: "That email can’t be used. Try signing in instead." };
+    // Supabase surfaces raw service text ("email rate limit exceeded",
+    // "Password should be at least..."). Translate it into something a user can
+    // act on, and attach it to the offending field so the input turns red
+    // instead of only showing a banner at the top of the form.
+    const raw = `${error.message ?? ""} ${(error as { code?: string }).code ?? ""}`.toLowerCase();
+
+    // Signup sends a confirmation email; the built-in mailer is rate limited.
+    if (raw.includes("rate limit") || raw.includes("over_email_send") || raw.includes("429")) {
+      return {
+        ok: false,
+        error:
+          "Too many sign-up emails have been sent from this project in the last hour. " +
+          "Wait a little and try again, or ask an admin to turn off email confirmation.",
+      };
+    }
+    if (/registered|exists|already/i.test(raw)) {
+      return {
+        ok: false,
+        error: "That email can’t be used. Try signing in instead.",
+        fieldErrors: { email: "This email can’t be used." },
+      };
+    }
+    if (raw.includes("password")) {
+      return {
+        ok: false,
+        error: "That password was rejected.",
+        fieldErrors: { password: error.message },
+      };
+    }
+    if (raw.includes("email") && (raw.includes("invalid") || raw.includes("valid"))) {
+      return {
+        ok: false,
+        error: "That email address was rejected.",
+        fieldErrors: { email: "Enter a valid email address." },
+      };
+    }
+    if (raw.includes("signups not allowed") || raw.includes("signup_disabled")) {
+      return { ok: false, error: "New sign-ups are currently disabled for this site." };
     }
     return { ok: false, error: error.message };
   }
@@ -52,11 +105,16 @@ export async function signUpAction(input: SignUpInput): Promise<AuthResult> {
   // Supabase returns a user with an empty identities array when the email is
   // already taken (enumeration-safe). Treat that as a soft duplicate.
   if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
-    return { ok: false, error: "That email can’t be used. Try signing in instead." };
+    return {
+      ok: false,
+      error: "That email can’t be used. Try signing in instead.",
+      fieldErrors: { email: "This email can’t be used." },
+    };
   }
 
-  const needsEmailConfirmation = !data.session;
-  return { ok: true, needsEmailConfirmation };
+  // The form sends the user to /login next; where they finally land is decided
+  // there, from their role. No destination is computed here.
+  return { ok: true, needsEmailConfirmation: !data.session };
 }
 
 /**
@@ -66,6 +124,8 @@ export async function signUpAction(input: SignUpInput): Promise<AuthResult> {
 export async function signInAction(
   email: string,
   password: string,
+  /** optional `?redirect=` the user was sent to /login with */
+  redirectTo?: string | null,
 ): Promise<AuthResult> {
   if (!isValidEmail(email) || !password) {
     return { ok: false, error: "Enter your email and password." };
@@ -93,7 +153,9 @@ export async function signInAction(
       .eq("id", data.user.id);
   }
 
-  return { ok: true };
+  // Decide the landing page on the server, where the role can be trusted:
+  // admins go straight to /admin, everyone else to the public site.
+  return { ok: true, redirectTo: await postAuthDestination(redirectTo) };
 }
 
 /** Clear the session completely. */
@@ -110,7 +172,7 @@ export async function forgotPasswordAction(email: string): Promise<AuthResult> {
   const supabase = await createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(
     email.trim().toLowerCase(),
-    { redirectTo: `${siteUrl()}/reset-password` },
+    { redirectTo: `${await siteUrl()}/reset-password` },
   );
   if (error) {
     // Still return ok to avoid leaking which emails exist.

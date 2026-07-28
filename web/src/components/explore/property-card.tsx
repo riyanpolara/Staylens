@@ -3,6 +3,7 @@ import { Heart, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ImageCarousel } from "@/components/explore/image-carousel";
 import { nightsLabel } from "@/lib/pricing";
+import { formatPrice } from "@/lib/currency";
 import type { ExploreStay } from "@/lib/queries";
 
 type PropertyCardProps = {
@@ -51,8 +52,8 @@ export function PropertyCard({
         rel="noopener noreferrer"
         aria-label={`${stay.name}, ${stay.location} — ${
           stayTotal
-            ? `$${stayTotal.toLocaleString()} ${nightsLabel(nights!)}`
-            : `$${stay.price} per night`
+            ? `${formatPrice(stayTotal)} ${nightsLabel(nights!)}`
+            : `${formatPrice(stay.price)} per night`
         }, rated ${stay.rating.toFixed(2)} from ${stay.reviews} reviews (opens in a new tab)`}
         className="block rounded-[20px] focus-visible:outline-2 focus-visible:outline-offset-4"
       >
@@ -116,12 +117,12 @@ export function PropertyCard({
             )}
             {stayTotal ? (
               <p className="mt-2 text-sm text-primary">
-                <span className="font-bold">${stayTotal.toLocaleString()}</span>{" "}
+                <span className="font-bold">{formatPrice(stayTotal)}</span>{" "}
                 <span className="text-on-surface-variant">{nightsLabel(nights!)}</span>
               </p>
             ) : (
               <p className="mt-2 text-sm text-primary">
-                <span className="font-bold">${stay.price.toLocaleString()}</span> night
+                <span className="font-bold">{formatPrice(stay.price)}</span> night
               </p>
             )}
           </div>
@@ -135,7 +136,7 @@ export function PropertyCard({
             </div>
             <p className={cn(featured ? "text-right shrink-0 ml-4" : "mt-2")}>
               <span className="font-bold text-primary">
-                ${stay.price.toLocaleString()}
+                {formatPrice(stay.price)}
               </span>
               <span className="text-on-surface-variant text-sm"> / night</span>
             </p>

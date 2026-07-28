@@ -1,4 +1,5 @@
 import { nightsBetween } from "@/lib/calendar";
+import { formatInr, formatPrice } from "@/lib/currency";
 
 export type StayPricing = {
   /** whole nights in the selected range (0 when there is no complete range) */
@@ -37,11 +38,18 @@ export function nightsLabel(nights: number): string {
 }
 
 /**
- * Money formatter. The app renders prices with a bare `$` to match the Stitch
- * design; `currency` is accepted for when multi-currency lands.
+ * Money formatter for every user-facing price.
+ *
+ * Amounts flowing through the app are USD (that is what the database stores).
+ * This converts to the display currency and formats with the Indian numbering
+ * system. `storedCurrency` documents what the number came in as — anything
+ * other than USD is already in the display currency and passes through
+ * unconverted, which is what multi-currency support will need.
  */
-export function formatMoney(amount: number, _currency = "USD"): string {
-  return `$${Math.round(amount).toLocaleString()}`;
+export function formatMoney(amount: number, storedCurrency = "USD"): string {
+  return storedCurrency.toUpperCase() === "USD"
+    ? formatPrice(amount)
+    : formatInr(amount);
 }
 
 /* ------------------------------------------------------------------ *

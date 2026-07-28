@@ -92,7 +92,7 @@ export function HeroCarousel() {
               alt={s.name}
               fill
               priority={i === 0}
-              unoptimized
+              loading={i === 0 ? undefined : "lazy"}
               sizes="100vw"
               className="object-cover"
               style={{ animation: "lp-kenburns 14s ease-out infinite alternate" }}

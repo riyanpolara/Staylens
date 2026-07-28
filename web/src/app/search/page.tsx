@@ -16,6 +16,7 @@ import {
 import { searchStaysHybrid } from "@/lib/hybrid-search";
 import type { StaySearchParams } from "@/lib/stay-filters";
 import { nightsBetween, parseISODate } from "@/lib/calendar";
+import { formatPrice } from "@/lib/currency";
 
 type SP = Record<string, string | string[] | undefined>;
 
@@ -140,8 +141,8 @@ export default async function SearchPage({
     bathrooms: s.bathrooms ?? null,
     priceLabel:
       nights > 0
-        ? `$${(s.price * nights).toLocaleString()} for ${nights} night${nights === 1 ? "" : "s"}`
-        : `$${s.price.toLocaleString()} / night`,
+        ? `${formatPrice(s.price * nights)} for ${nights} night${nights === 1 ? "" : "s"}`
+        : `${formatPrice(s.price)} / night`,
   }));
 
   return (
