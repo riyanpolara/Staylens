@@ -45,7 +45,6 @@ export function CollectionsGrid() {
                 src={col.img}
                 alt={col.name}
                 fill
-                unoptimized
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 350px"
                 className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.12]"
               />

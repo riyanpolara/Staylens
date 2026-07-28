@@ -2,7 +2,6 @@
 
 import { Search, X } from "lucide-react";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 import { WhenPanel, WhoPanel } from "@/components/search/search-panels";
 import type {
   DestinationSuggestion,

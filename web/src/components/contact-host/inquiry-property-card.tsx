@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
+import { formatPrice } from "@/lib/currency";
 
 /** "Your inquiry property" hero card at the bottom (Stitch). Links to detail. */
 export function InquiryPropertyCard({
@@ -49,7 +50,7 @@ export function InquiryPropertyCard({
         </div>
         <div className="glass-header bg-white/20 px-4 py-2 rounded-lg border border-white/20 shrink-0">
           <p className="text-white font-bold">
-            ${price.toLocaleString()}
+            {formatPrice(price)}
             <span className="font-normal opacity-80"> / night</span>
           </p>
         </div>

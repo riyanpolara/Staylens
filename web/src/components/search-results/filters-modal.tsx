@@ -3,7 +3,6 @@
 import {
   AirVent,
   Award,
-  Bath,
   ChevronDown,
   CookingPot,
   Gem,
@@ -27,6 +26,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
+import { formatPrice } from "@/lib/currency";
 import { countStays, fetchPriceSample } from "@/lib/search-client";
 import type { StaySearchParams } from "@/lib/stay-filters";
 
@@ -423,11 +423,13 @@ export function FiltersModal({ onClose }: { onClose: () => void }) {
               <div className="flex justify-between mt-3">
                 <div className="border border-outline-variant rounded-full px-5 py-2 text-sm">
                   <span className="block text-[11px] text-on-surface-variant">Minimum</span>
-                  ${draft.priceMin.toLocaleString()}
+                  {/* Displayed in INR; the slider value and the ?price= filter
+                      stay in USD, which is what the database stores. */}
+                  {formatPrice(draft.priceMin)}
                 </div>
                 <div className="border border-outline-variant rounded-full px-5 py-2 text-sm text-right">
                   <span className="block text-[11px] text-on-surface-variant">Maximum</span>
-                  ${draft.priceMax.toLocaleString()}
+                  {formatPrice(draft.priceMax)}
                   {draft.priceMax >= cap ? "+" : ""}
                 </div>
               </div>

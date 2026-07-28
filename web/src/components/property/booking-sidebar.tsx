@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useBooking } from "@/components/property/booking-context";
 import { DateRangeCalendar } from "@/components/property/date-range-calendar";
 import { nightsLabel } from "@/lib/pricing";
+import { formatPrice } from "@/lib/currency";
 import { checkoutHref } from "@/lib/checkout-url";
 
 const DATE_FMT = new Intl.DateTimeFormat("en", {
@@ -98,14 +99,14 @@ export function BookingSidebar({
           {nights > 0 ? (
             <>
               <span className="font-display text-2xl font-bold text-primary">
-                ${subtotal.toLocaleString()}
+                {formatPrice(subtotal)}
               </span>
               <span className="text-on-surface-variant"> {nightsLabel(nights)}</span>
             </>
           ) : (
             <>
               <span className="font-display text-2xl font-bold text-primary">
-                ${price.toLocaleString()}
+                {formatPrice(price)}
               </span>
               <span className="text-on-surface-variant"> / night</span>
             </>
@@ -305,24 +306,24 @@ export function BookingSidebar({
         <div className="space-y-3">
           <div className="flex justify-between text-on-surface-variant">
             <span className="underline">
-              ${price.toLocaleString()} × {nights} night{nights !== 1 ? "s" : ""}
+              {formatPrice(price)} × {nights} night{nights !== 1 ? "s" : ""}
             </span>
-            <span>${subtotal.toLocaleString()}</span>
+            <span>{formatPrice(subtotal)}</span>
           </div>
           {cleaning > 0 && (
             <div className="flex justify-between text-on-surface-variant">
               <span className="underline">Cleaning fee</span>
-              <span>${cleaning.toLocaleString()}</span>
+              <span>{formatPrice(cleaning)}</span>
             </div>
           )}
           <div className="flex justify-between text-on-surface-variant">
             <span className="underline">Staylens service fee</span>
-            <span>${serviceFee.toLocaleString()}</span>
+            <span>{formatPrice(serviceFee)}</span>
           </div>
           <hr className="border-outline-variant/30 my-2" />
           <div className="flex justify-between font-display text-lg font-semibold text-primary">
             <span>Total</span>
-            <span>${total.toLocaleString()}</span>
+            <span>{formatPrice(total)}</span>
           </div>
         </div>
       )}

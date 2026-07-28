@@ -37,3 +37,7 @@ Thumbs.db
 
 # stray nested npm install (misfired --prefix); safe to delete
 web/web/
+
+# Razorpay credentials handed off as a CSV — secret key must never be committed.
+staylens-payment-checkout/rzp-key.csv
+**/rzp-key*.csv

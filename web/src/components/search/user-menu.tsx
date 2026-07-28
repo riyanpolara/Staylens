@@ -10,6 +10,7 @@ import {
   Heart,
   HelpCircle,
   House,
+  LayoutDashboard,
   Menu,
   MessageSquare,
   CircleUser,
@@ -30,7 +31,7 @@ import { signOutAction } from "@/app/(auth)/actions";
 export function UserMenu({ light = false }: { light?: boolean }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const { user, initial, avatarUrl } = useAuth();
+  const { user, initial, avatarUrl, isAdmin } = useAuth();
   const authed = !!user;
   const ref = useRef<HTMLDivElement>(null);
 
@@ -127,7 +128,11 @@ export function UserMenu({ light = false }: { light?: boolean }) {
             className="absolute right-0 top-full mt-3 w-80 max-w-[calc(100vw-2rem)] max-h-[min(80vh,640px)] overflow-y-auto bg-surface-container-lowest rounded-2xl shadow-tinted-lg border border-outline-variant/20 py-2 z-[70]"
           >
             {authed ? (
-              <AuthedItems onLogout={handleLogout} onNavigate={() => setOpen(false)} />
+              <AuthedItems
+                onLogout={handleLogout}
+                onNavigate={() => setOpen(false)}
+                isAdmin={isAdmin}
+              />
             ) : (
               <GuestItems onNavigate={() => setOpen(false)} />
             )}
@@ -148,7 +153,8 @@ function GuestItems({ onNavigate }: { onNavigate: () => void }) {
       <MenuItem label="Refer a host" />
       <MenuItem label="Find a co-host" />
       <Divider />
-      {/* opens the real Create Account page (Stitch design) */}
+      {/* Single entry, as designed: it opens the Create Account page, which
+          links across to sign-in for people who already have an account. */}
       <MenuItem label="Log in or sign up" href="/signup" onClick={onNavigate} />
     </>
   );
@@ -157,12 +163,25 @@ function GuestItems({ onNavigate }: { onNavigate: () => void }) {
 function AuthedItems({
   onLogout,
   onNavigate,
+  isAdmin,
 }: {
   onLogout: () => void;
   onNavigate: () => void;
+  isAdmin: boolean;
 }) {
   return (
     <>
+      {isAdmin && (
+        <>
+          <MenuItem
+            icon={LayoutDashboard}
+            label="Admin dashboard"
+            href="/admin"
+            onClick={onNavigate}
+          />
+          <Divider />
+        </>
+      )}
       <MenuItem icon={Heart} label="Wishlists" />
       <MenuItem icon={Compass} label="Trips" />
       <MenuItem icon={MessageSquare} label="Messages" />

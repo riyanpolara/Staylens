@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createStaticClient } from "@/lib/supabase/static";
 import {
@@ -24,7 +25,7 @@ export type PropertyCard = Pick<
 > & { property_images: { url: string }[] };
 
 /** All cities with their property counts, busiest first. */
-export async function getCities() {
+async function fetchCities() {
   const supabase = createStaticClient();
   const { data, error } = await supabase
     .from("cities")
@@ -35,6 +36,19 @@ export async function getCities() {
     .filter((c) => (c.properties[0]?.count ?? 0) > 0)
     .sort((a, b) => (b.properties[0]?.count ?? 0) - (a.properties[0]?.count ?? 0));
 }
+
+/**
+ * City list with per-city property counts. This drives the search "Where"
+ * suggestions on the landing, search and property pages, so it was previously
+ * re-queried (full table scan + count aggregate) on every single request.
+ * The catalog changes rarely, so it's cached in the Next data cache and shared
+ * across requests — safe because it uses the cookie-free static client and
+ * contains no user-scoped data.
+ */
+export const getCities = unstable_cache(fetchCities, ["cities-with-counts"], {
+  revalidate: 3600,
+  tags: ["cities"],
+});
 
 /** Top-rated, well-reviewed properties for the landing grid. */
 export async function getFeaturedProperties(limit = 8) {

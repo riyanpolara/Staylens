@@ -12,7 +12,6 @@ export function PremiumCta() {
         src={CTA_IMG}
         alt="Mountain panorama"
         fill
-        unoptimized
         sizes="100vw"
         className="object-cover"
         style={{ animation: "lp-kenburns 20s ease-out infinite alternate" }}

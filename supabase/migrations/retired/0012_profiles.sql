@@ -1,0 +1,71 @@
+-- ===========================================================================
+-- 0012_profiles.sql — RETIRED (intentionally a no-op)
+--
+-- WHAT THIS FILE USED TO DO
+--   It declared a second `public.profiles` table for the Edit Profile screen:
+--     create table if not exists public.profiles (
+--       id text primary key default 'profile', full_name text, legal_name text,
+--       location text, identity_verified boolean, phone text, about text,
+--       personality jsonb, languages jsonb, travel_history jsonb,
+--       connected_accounts jsonb, privacy jsonb, ...
+--     );
+--   plus a `profiles_read` policy, a seeded 'profile' demo row, and an
+--   `avatars` storage bucket.
+--
+-- WHY IT WAS RETIRED — it conflicted with the real table
+--   `public.profiles` is created by 0002_core_schema.sql as:
+--       id uuid primary key references auth.users (id) on delete cascade
+--   and extended by 0011_auth_profiles.sql (first_name, last_name, birthday,
+--   email, email_verified, last_login, role).
+--
+--   The two definitions are irreconcilable:
+--
+--   a) PRIMARY KEY TYPE. 0002 uses uuid tied to auth.users; this file used
+--      `text` defaulting to the literal 'profile' (a single-row table).
+--
+--   b) BROKEN FOREIGN KEYS. Five columns already point at profiles(id) as
+--      uuid — reviews.author_user_id (0003), favorites.user_id,
+--      bookmarks.user_id, chat_sessions.user_id and bookings.guest_id (0004).
+--      A text-keyed profiles table cannot satisfy any of them.
+--
+--   c) IT ABORTED A FRESH MIGRATION RUN. Because 0002 already created
+--      `profiles`, the `create table if not exists` here was skipped — so the
+--      follow-up INSERT referenced columns (legal_name, location, phone,
+--      about, personality, …) that do not exist on the real table. Running the
+--      chain top-to-bottom on a new database therefore failed at this file
+--      with `column "legal_name" of relation "profiles" does not exist`.
+--
+--   d) IT RE-OPENED A POLICY WE NOW CLOSE. Its `profiles_read … using (true)`
+--      made every user's email and role world-readable. 0013_admin_rls.sql
+--      replaces that with self-or-admin access.
+--
+-- VERIFIED AGAINST PRODUCTION (2026-07-26)
+--   Live `profiles` has exactly 0002 + 0011_auth_profiles columns:
+--     id, username, full_name, avatar_url, bio, home_currency, created_at,
+--     updated_at, first_name, last_name, birthday, email, email_verified,
+--     last_login, role
+--   None of this file's columns exist, and the storage bucket list is empty —
+--   i.e. this migration was never successfully applied anywhere. Emptying it
+--   is therefore a no-op for existing databases and makes a from-scratch run
+--   converge on the same schema production already has.
+--
+-- IF YOU NEED THE EDIT-PROFILE FIELDS
+--   Do NOT resurrect this table. Either add the columns to the real
+--   `public.profiles` (keyed by auth.users.id), or create a separate
+--   `profile_details` table with `user_id uuid references profiles(id)`.
+--   `/profile/edit` currently falls back to its built-in demo data, so nothing
+--   regresses by leaving this out.
+--
+-- The `avatars` storage bucket is intentionally NOT created here: production
+-- has no buckets, and creating one would make a fresh database diverge from
+-- it. Avatar upload already degrades gracefully. If you want it, create the
+-- bucket in production AND add it as a new migration so both stay in step.
+--
+-- Deliberately contains no schema-changing statements.
+-- ===========================================================================
+
+do $$
+begin
+  raise notice
+    '0012_profiles.sql is retired and does nothing. See 0002_core_schema.sql for the real profiles table and 0011_auth_profiles.sql for its auth columns.';
+end $$;

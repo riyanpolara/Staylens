@@ -6,6 +6,20 @@ import type { Database } from "@/lib/database.types";
 const PROTECTED_PREFIXES = ["/profile", "/trips", "/account"];
 
 /**
+ * Dynamic routes that require a session. The reservation flow ends in a server
+ * action that refuses anonymous users, so gating it here sends the guest to
+ * login *before* they fill the form rather than after they press Pay.
+ */
+const PROTECTED_PATTERNS = [/^\/property\/[^/]+\/(?:checkout|payment)\/?$/];
+
+/** Routes that additionally require profiles.role = 'admin'. */
+const ADMIN_PREFIXES = ["/admin"];
+
+function matches(pathname: string, prefixes: string[]) {
+  return prefixes.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+}
+
+/**
  * Refreshes the Supabase session cookie on every request (so server components
  * always see a valid session) and gates the protected routes. Adapted from the
  * official @supabase/ssr Next.js pattern; invoked from `proxy.ts`.
@@ -42,15 +56,40 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const isProtected = PROTECTED_PREFIXES.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`),
-  );
+  const needsAuth =
+    matches(pathname, PROTECTED_PREFIXES) ||
+    PROTECTED_PATTERNS.some((re) => re.test(pathname));
+  const needsAdmin = matches(pathname, ADMIN_PREFIXES);
 
-  if (isProtected && !user) {
+  // Not signed in → login, preserving where they were headed.
+  if ((needsAuth || needsAdmin) && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
-    url.searchParams.set("redirect", pathname);
+    // Drop the original params first — they are already carried inside
+    // `redirect`, and leaving them duplicated makes the login URL confusing.
+    const target = `${pathname}${request.nextUrl.search}`;
+    url.search = "";
+    url.searchParams.set("redirect", target);
     return NextResponse.redirect(url);
+  }
+
+  // Signed in but not an admin → 403. Turning non-admins away here means the
+  // admin bundle is never even served to them. The layout repeats this check
+  // server-side, so the route stays protected even if middleware is bypassed.
+  if (needsAdmin && user) {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    // Fail closed — a missing profile row or a failed lookup is not admin.
+    if (error || data?.role !== "admin") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/403";
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
   }
 
   return response;

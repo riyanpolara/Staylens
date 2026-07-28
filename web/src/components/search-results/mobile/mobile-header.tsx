@@ -1,10 +1,19 @@
 "use client";
 
 import { ArrowLeft, Search, SlidersHorizontal } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { MobileSearch } from "@/components/search/mobile-search";
-import { FiltersModal } from "@/components/search-results/filters-modal";
+import dynamic from "next/dynamic";
+
+// Both are click-triggered overlays — split them out of the initial bundle.
+const MobileSearch = dynamic(
+  () => import("@/components/search/mobile-search").then((m) => m.MobileSearch),
+  { ssr: false },
+);
+const FiltersModal = dynamic(
+  () => import("@/components/search-results/filters-modal").then((m) => m.FiltersModal),
+  { ssr: false },
+);
 import { useAmenityFilters } from "@/components/search-results/use-amenity-filters";
 import {
   formatGuests,

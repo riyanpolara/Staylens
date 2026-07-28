@@ -1,0 +1,558 @@
+/* ===========================================================================
+   Bookings screen styles.
+
+   A separate stylesheet rather than additions to admin-theme.css: nothing here
+   is shared with another screen, and keeping it out of the theme file means
+   the other admin pages cannot be affected by a change made for this one.
+
+   Every selector is scoped under `.admin-scope` and prefixed `admin-bk-`, so
+   these rules are inert outside the admin area. Colour, spacing, radius and
+   shadow all come from the Organic design tokens — no hard-coded values, per
+   the handoff spec.
+   ======================================================================== */
+
+/* ── Filter bar ───────────────────────────────────────────────────────── */
+
+.admin-scope .admin-bk-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-2) var(--space-3);
+  margin-block-end: var(--space-4);
+  transition: opacity 160ms ease;
+}
+
+/* Navigation is in flight — dim rather than swap in a skeleton, so the
+   operator keeps their place while the next page resolves. */
+.admin-scope .admin-bk-filters[data-pending] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.admin-scope .admin-bk-search {
+  position: relative;
+  flex: 1 1 280px;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+}
+
+.admin-scope .admin-bk-search .input {
+  width: 100%;
+  height: 38px;
+  padding-inline-start: 38px;
+}
+
+.admin-scope .admin-bk-search-icon {
+  position: absolute;
+  inset-inline-start: 14px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.admin-scope .admin-bk-field {
+  display: grid;
+  gap: 4px;
+}
+
+.admin-scope .admin-bk-field-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+
+.admin-scope .admin-bk-field .input {
+  height: 38px;
+  min-width: 132px;
+}
+
+.admin-scope .admin-bk-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+}
+
+/* The design system's .seg wraps radio inputs; keep them wrapping on narrow
+   viewports instead of forcing a horizontal scroll on the whole toolbar. */
+.admin-scope .admin-bk-filters .seg {
+  flex-wrap: wrap;
+}
+
+/* ── Table ────────────────────────────────────────────────────────────── */
+
+.admin-scope .admin-bk-table {
+  min-width: 1040px;
+}
+
+.admin-scope .admin-bk-table th[data-align="end"],
+.admin-scope .admin-bk-table td[data-align="end"] {
+  text-align: end;
+}
+
+.admin-scope .admin-bk-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+}
+
+.admin-scope .admin-bk-sort:hover {
+  color: var(--color-accent);
+}
+
+.admin-scope .admin-bk-sort[data-active] {
+  color: var(--color-accent);
+}
+
+.admin-scope .admin-bk-ref {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  white-space: nowrap;
+  color: inherit;
+  text-decoration: none;
+}
+
+.admin-scope .admin-bk-ref:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.admin-scope .admin-bk-guest {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.admin-scope .admin-bk-avatar {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--color-accent-200);
+  color: var(--color-accent-800);
+}
+
+.admin-scope .admin-bk-avatar-sm {
+  width: 28px;
+  height: 28px;
+  font-size: 11px;
+}
+
+/* Long Airbnb titles must not push the row wider than the scroll container. */
+.admin-scope .admin-bk-property-cell {
+  max-width: 240px;
+}
+
+.admin-scope .admin-bk-property-cell strong,
+.admin-scope .admin-bk-property-cell span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-scope .admin-bk-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+/* ── Pager ────────────────────────────────────────────────────────────── */
+
+.admin-scope .admin-bk-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-block-start: var(--space-4);
+}
+
+.admin-scope .admin-bk-pager-count {
+  margin: 0;
+  font-size: 13px;
+}
+
+.admin-scope .admin-bk-pager-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.admin-scope .admin-bk-pager-pages {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-scope .admin-bk-pager-page {
+  min-width: 36px;
+  height: 36px;
+  padding-inline: 10px;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.admin-scope .admin-bk-pager-page[data-current] {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.admin-scope .admin-bk-pager-gap {
+  padding-inline: 4px;
+  color: color-mix(in srgb, var(--color-text) 45%, transparent);
+}
+
+/* Edge pages render a non-interactive span so focus never lands on a dead
+   control; it still has to look like the button beside it. */
+.admin-scope .admin-bk-pager [data-disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+  display: inline-grid;
+  place-items: center;
+}
+
+/* ── Detail panel ─────────────────────────────────────────────────────── */
+
+.admin-scope .admin-bk-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.admin-scope .admin-bk-scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: color-mix(in srgb, var(--color-neutral-900) 50%, transparent);
+  animation: admin-bk-fade 180ms ease both;
+}
+
+.admin-scope .admin-bk-panel {
+  position: relative;
+  width: min(680px, 100%);
+  max-height: 100dvh;
+  overflow-y: auto;
+  border-radius: 0;
+  padding: var(--space-5) var(--space-4) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: var(--color-surface);
+  animation: admin-bk-slide 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.admin-scope .admin-bk-panel-close {
+  position: absolute;
+  inset-block-start: var(--space-3);
+  inset-inline-end: var(--space-3);
+  background: var(--color-surface);
+}
+
+.admin-scope .admin-bk-panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-inline-end: 44px; /* clears the close button */
+  flex-wrap: wrap;
+}
+
+.admin-scope .admin-bk-panel-title {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  margin: 2px 0 0;
+}
+
+.admin-scope .admin-bk-panel-sub {
+  margin: 2px 0 0;
+  font-size: 12px;
+}
+
+.admin-scope .admin-bk-panel-tags {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.admin-scope .admin-bk-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-4);
+}
+
+.admin-scope .admin-bk-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-lg);
+}
+
+.admin-scope .admin-bk-section-title {
+  font-size: 15px;
+  margin: 0;
+}
+
+.admin-scope .admin-bk-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  font-size: 13px;
+}
+
+.admin-scope .admin-bk-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.admin-scope .admin-bk-row dt {
+  color: color-mix(in srgb, var(--color-text) 58%, transparent);
+  min-width: 0;
+}
+
+.admin-scope .admin-bk-row dd {
+  margin: 0;
+  text-align: end;
+  font-weight: 600;
+}
+
+.admin-scope .admin-bk-row-total {
+  margin-block-start: 4px;
+  padding-block-start: 8px;
+  border-top: 1px solid var(--color-divider);
+  font-size: 15px;
+}
+
+.admin-scope .admin-bk-person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.admin-scope .admin-bk-person-id {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.admin-scope .admin-bk-person-meta {
+  font-size: 12px;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-scope .admin-bk-verified {
+  margin-inline-start: auto;
+  color: var(--color-accent-2-800);
+  display: grid;
+  place-items: center;
+}
+
+.admin-scope .admin-bk-host {
+  margin-block-start: var(--space-2);
+  padding-block-start: var(--space-3);
+  border-top: 1px solid var(--color-divider);
+  display: grid;
+  gap: var(--space-2);
+}
+
+/* Wrapper for a `fill` next/image: it must establish the positioning context
+   and reserve the height, or the slot collapses before the image loads. */
+.admin-scope .admin-bk-property-image {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 132px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-text) 6%, transparent);
+}
+
+.admin-scope .admin-bk-property-title {
+  margin: 0;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.admin-scope .admin-bk-inline-tag {
+  font-size: 10px;
+}
+
+.admin-scope .admin-bk-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.admin-scope .admin-bk-listing-link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.admin-scope .admin-bk-cancelled {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-neutral-500) 12%, transparent);
+  border: 1px solid var(--color-divider);
+}
+
+.admin-scope .admin-bk-cancelled-title {
+  margin: 0 0 2px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.admin-scope .admin-bk-cancelled p:last-child {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* ── Write controls ───────────────────────────────────────────────────── */
+
+.admin-scope .admin-bk-actions {
+  display: grid;
+  gap: var(--space-3);
+  padding-block-start: var(--space-3);
+  border-top: 1px solid var(--color-divider);
+}
+
+.admin-scope .admin-bk-control {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+}
+
+.admin-scope .admin-bk-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.admin-scope .admin-bk-choice[data-current] {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-bg);
+  opacity: 1; /* it is disabled, but it reads as "current", not unavailable */
+}
+
+.admin-scope .admin-bk-hint {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.admin-scope .admin-bk-danger {
+  padding: var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 40%, var(--color-divider));
+  border-radius: var(--radius-lg);
+  width: 100%;
+}
+
+.admin-scope .admin-bk-cancel-form {
+  display: grid;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.admin-scope .admin-bk-reason {
+  display: grid;
+  gap: 4px;
+}
+
+.admin-scope .admin-bk-reason .input {
+  border-radius: var(--radius-md);
+  width: 100%;
+}
+
+.admin-scope .admin-bk-refund {
+  font-size: 13px;
+}
+
+.admin-scope .admin-bk-cancel-actions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.admin-scope .admin-bk-feedback {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.admin-scope .admin-bk-feedback[data-tone="ok"] {
+  color: var(--color-accent-2-800);
+}
+
+.admin-scope .admin-bk-feedback[data-tone="error"] {
+  color: var(--color-accent-800);
+}
+
+/* ── Skeleton ─────────────────────────────────────────────────────────── */
+
+.admin-scope .admin-bk-skeleton {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+/* ── Motion ───────────────────────────────────────────────────────────── */
+
+@keyframes admin-bk-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes admin-bk-slide {
+  from { transform: translateX(24px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-scope .admin-bk-scrim,
+  .admin-scope .admin-bk-panel {
+    animation: none;
+  }
+}
+
+/* Full-width panel on phones; a 680px drawer has nowhere to go. */
+@media (max-width: 720px) {
+  .admin-scope .admin-bk-panel {
+    width: 100%;
+    padding-inline: var(--space-3);
+  }
+}

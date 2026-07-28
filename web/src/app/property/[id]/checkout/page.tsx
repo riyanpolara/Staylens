@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { CheckoutHeader } from "@/components/checkout/checkout-header";
 import { CheckoutClient } from "@/components/checkout/checkout-client";
-import { submitBooking } from "./actions";
+import { createBookingOrder, verifyAndCreateBooking } from "./payment-actions";
 import type {
   CheckoutProperty,
   CheckoutTrip,
@@ -103,7 +103,8 @@ export default async function CheckoutPage({
           property={cp}
           trip={trip}
           editHref={`/property/${id}`}
-          submit={submitBooking}
+          createOrder={createBookingOrder}
+          verifyPayment={verifyAndCreateBooking}
         />
       </main>
     </>

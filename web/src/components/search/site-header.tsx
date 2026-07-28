@@ -11,11 +11,17 @@ import {
 } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
 import { searchHref } from "@/lib/search-query";
 import { SearchBar } from "@/components/search/search-bar";
+
+// Mobile-only, opened on tap — keep it out of the shared header bundle.
+const MobileSearch = dynamic(
+  () => import("@/components/search/mobile-search").then((m) => m.MobileSearch),
+  { ssr: false },
+);
 import { CompactSearch } from "@/components/search/compact-search";
-import { MobileSearch } from "@/components/search/mobile-search";
 import { UserMenu } from "@/components/search/user-menu";
 import {
   WherePanel,
