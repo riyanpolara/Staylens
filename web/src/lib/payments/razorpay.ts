@@ -44,6 +44,44 @@ function authHeader({ keyId, keySecret }: RazorpayConfig): string {
 }
 
 /**
+ * GET with a per-attempt timeout and backoff.
+ *
+ * Only safe for idempotent reads — a retried POST could create a second order.
+ * Worth the extra attempts because the calls that use this run *after* the
+ * guest's money has moved: giving up on a cold TCP connect would leave them
+ * charged with no booking, which is far worse than waiting a few seconds.
+ */
+async function getWithRetry(
+  url: string,
+  auth: string,
+  { attempts = 3, timeoutMs = 15_000 } = {},
+): Promise<Response> {
+  let lastErr: unknown;
+  for (let i = 0; i < attempts; i++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, {
+        headers: { Authorization: auth },
+        cache: "no-store",
+        signal: controller.signal,
+      });
+      // 4xx is a definite answer — retrying cannot change it.
+      if (res.status < 500 && res.status !== 429) return res;
+      lastErr = new Error(`HTTP ${res.status}`);
+    } catch (err) {
+      lastErr = err;
+    } finally {
+      clearTimeout(timer);
+    }
+    if (i < attempts - 1) {
+      await new Promise((r) => setTimeout(r, 1000 * 2 ** i)); // 1s, 2s
+    }
+  }
+  throw lastErr;
+}
+
+/**
  * Creates an order. `amountMinor` is in the currency's smallest unit
  * (paise for INR) and MUST be computed server-side from authoritative data —
  * never taken from the client, or a user could pay ₹1 for a ₹40,000 stay.
@@ -151,10 +189,10 @@ export async function fetchRazorpayPayment(
   if (!cfg) return { ok: false, error: "Payments are not configured." };
 
   try {
-    const res = await fetch(`${API}/payments/${encodeURIComponent(paymentId)}`, {
-      headers: { Authorization: authHeader(cfg) },
-      cache: "no-store",
-    });
+    const res = await getWithRetry(
+      `${API}/payments/${encodeURIComponent(paymentId)}`,
+      authHeader(cfg),
+    );
     const body = (await res.json().catch(() => null)) as {
       status?: string;
       amount?: number;
@@ -163,6 +201,9 @@ export async function fetchRazorpayPayment(
     } | null;
 
     if (!res.ok || !body?.status) {
+      console.error(
+        `[razorpay] payment ${paymentId} lookup returned HTTP ${res.status}`,
+      );
       return { ok: false, error: "Couldn't confirm the payment." };
     }
     return {
@@ -173,7 +214,15 @@ export async function fetchRazorpayPayment(
       orderId: body.order_id ?? "",
     };
   } catch (err) {
-    console.error("[razorpay] payment fetch failed:", err);
-    return { ok: false, error: "Couldn't confirm the payment." };
+    // The guest has already paid at this point, so this needs to be traceable:
+    // log the payment id support will need to reconcile it manually.
+    console.error(`[razorpay] payment ${paymentId} unreachable after retries:`, err);
+    return {
+      ok: false,
+      error:
+        "We couldn't reach the payment provider to confirm your payment. " +
+        `If you were charged, quote payment ID ${paymentId} to support — ` +
+        "your booking will be completed manually.",
+    };
   }
 }

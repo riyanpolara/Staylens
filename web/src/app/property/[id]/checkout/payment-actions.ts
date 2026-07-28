@@ -207,7 +207,8 @@ export async function verifyAndCreateBooking(
     property_id: priced.property.id,
     check_in: payload.booking.checkIn,
     check_out: payload.booking.checkOut,
-    nights: priced.nights,
+    // `nights` is a generated column — Postgres derives it from the dates and
+    // rejects any supplied value, so it must not appear here.
     guests: Math.max(1, payload.booking.adults + payload.booking.children),
     total_price: priced.amountInr,
     currency: DISPLAY_CURRENCY,
