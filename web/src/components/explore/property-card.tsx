@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Heart, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ImageCarousel } from "@/components/explore/image-carousel";
+import { WishlistButton } from "@/components/wishlist/wishlist-button";
 import { nightsLabel } from "@/lib/pricing";
 import { formatPrice } from "@/lib/currency";
 import type { ExploreStay } from "@/lib/queries";
@@ -68,12 +69,7 @@ export function PropertyCard({
           {isResult ? (
             <>
               {/* heart — top-right, per the results design */}
-              <span
-                aria-hidden
-                className="absolute top-4 right-4 z-10 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-colors"
-              >
-                <Heart className="size-5" strokeWidth={2} />
-              </span>
+              <WishlistButton propertyId={stay.id} />
               {/* rating chip — bottom-left, per the results design */}
               <div className="absolute bottom-3 left-3 z-10 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1.5">
                 <Star aria-hidden className="size-3.5 text-primary fill-primary" />

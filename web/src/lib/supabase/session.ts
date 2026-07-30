@@ -3,7 +3,14 @@ import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "@/lib/database.types";
 
 /** Routes that require an authenticated session. */
-const PROTECTED_PREFIXES = ["/profile", "/trips", "/account"];
+const PROTECTED_PREFIXES = [
+  "/profile",
+  "/trips",
+  "/account",
+  "/wishlist",
+  "/messages",
+  "/notifications",
+];
 
 /**
  * Dynamic routes that require a session. The reservation flow ends in a server

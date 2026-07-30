@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Heart, Star } from "lucide-react";
+import { WishlistButton } from "@/components/wishlist/wishlist-button";
+import { Star } from "lucide-react";
 import { ImageCarousel } from "@/components/explore/image-carousel";
 import { nightsLabel } from "@/lib/pricing";
 import { formatPrice } from "@/lib/currency";
@@ -40,12 +41,10 @@ export function MobileCard({
         <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-tinted">
           <ImageCarousel images={stay.images} sizes="100vw" />
           {/* heart overlay — 44px touch target */}
-          <span
-            aria-hidden
-            className="absolute top-3 right-3 z-10 grid place-items-center w-11 h-11 rounded-full text-white/95 hover:text-white transition-colors"
-          >
-            <Heart className="size-6 drop-shadow-[0_1px_3px_rgba(0,0,0,0.45)]" strokeWidth={2} />
-          </span>
+          <WishlistButton
+            propertyId={stay.id}
+            className="top-3 right-3 grid place-items-center w-11 h-11 p-0 bg-transparent backdrop-blur-none text-white/95 hover:bg-transparent hover:text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.45)]"
+          />
         </div>
 
         <div className="pt-3">

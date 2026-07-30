@@ -29,27 +29,56 @@ export function PropertySubNav({ propertyId }: { propertyId: string }) {
   const [showBooking, setShowBooking] = useState(false);
 
   useEffect(() => {
-    const gallery = document.getElementById("photos");
-    const card = document.getElementById("booking-card");
-    const observers: IntersectionObserver[] = [];
+    /**
+     * Measure the gallery's bottom edge directly rather than observing
+     * intersection.
+     *
+     * IntersectionObserver reported "not intersecting" for the gallery before
+     * its images had given the section any height — a 0px-tall box intersects
+     * nothing — so the bar slid in at the top of the page while the photo was
+     * still fully on screen. Comparing edges cannot be fooled that way: a
+     * gallery that has not laid out yet has bottom ≈ 0 relative to a viewport
+     * that has not scrolled, and the guard below keeps it hidden.
+     */
+    let frame = 0;
 
-    if (gallery) {
-      const o = new IntersectionObserver(
-        ([e]) => setVisible(!e.isIntersecting),
-        { rootMargin: `-${HEADER_OFFSET + 1}px 0px 0px 0px`, threshold: 0 },
-      );
-      o.observe(gallery);
-      observers.push(o);
-    }
-    if (card) {
-      const o = new IntersectionObserver(
-        ([e]) => setShowBooking(!e.isIntersecting),
-        { rootMargin: `-${HEADER_OFFSET + 60}px 0px 0px 0px`, threshold: 0 },
-      );
-      o.observe(card);
-      observers.push(o);
-    }
-    return () => observers.forEach((o) => o.disconnect());
+    const measure = () => {
+      frame = 0;
+      const gallery = document.getElementById("photos");
+      const card = document.getElementById("booking-card");
+
+      if (gallery) {
+        const { bottom, height } = gallery.getBoundingClientRect();
+        // height > 0 guards against measuring before layout settles.
+        setVisible(height > 0 && bottom <= HEADER_OFFSET);
+      }
+      if (card) {
+        const { bottom, height } = card.getBoundingClientRect();
+        setShowBooking(height > 0 && bottom <= HEADER_OFFSET + 60);
+      }
+    };
+
+    const onScroll = () => {
+      // Coalesce to one measurement per frame — scroll fires far more often.
+      if (!frame) frame = requestAnimationFrame(measure);
+    };
+
+    measure(); // set the correct state for a page restored mid-scroll
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
+    // Images arrive after first paint and change the gallery's height, so
+    // re-measure once the layout actually settles.
+    const ro = new ResizeObserver(onScroll);
+    const gallery = document.getElementById("photos");
+    if (gallery) ro.observe(gallery);
+
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      ro.disconnect();
+    };
   }, []);
 
   function toBooking() {

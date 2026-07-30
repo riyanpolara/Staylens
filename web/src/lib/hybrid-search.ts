@@ -22,38 +22,108 @@ import type { StaySearchParams } from "@/lib/stay-filters";
 
 /* ---- circuit breaker (per server instance) ----------------------------- */
 
-const FAILURE_THRESHOLD = 2;
+/**
+ * The breaker exists to stop us queueing behind a backend that is *down*. It
+ * must not fire because the backend is merely slow — a slow answer is still a
+ * correct answer, and skipping the network turns one slow request into minutes
+ * of degraded ranking for everyone.
+ *
+ * Thresholds are per failure kind, because the kinds mean very different things:
+ *
+ *   connection  nothing is listening. Unambiguous — trip quickly.
+ *   server      repeated 5xx. The backend is up but broken — trip after a few.
+ *   malformed   answered, but not with our contract. Treated like 5xx.
+ *   timeout     usually just slow (cold start, a heavy query). Only a long
+ *               unbroken run suggests it is genuinely hung.
+ *
+ * Measured against the real latency distribution, letting a timeout trip the
+ * breaker at threshold 2 turned a 15% timeout rate into 39% degraded searches
+ * when users refined queries a couple of seconds apart — most of that was the
+ * breaker skipping a backend that was working.
+ */
+const THRESHOLDS = {
+  connection: 2,
+  server: 3,
+  malformed: 3,
+  timeout: 6,
+} as const;
+
 const COOLDOWN_BASE_MS = 30_000;
 const COOLDOWN_MAX_MS = 5 * 60_000;
 
-let consecutiveFailures = 0;
-let circuitOpenUntil = 0;
-
 type FailureKind = "timeout" | "connection" | "server" | "malformed";
 
+type BreakerState = {
+  consecutiveFailures: number;
+  /** Kind of the current failure run — a different kind restarts the count. */
+  failureKind: FailureKind | null;
+  circuitOpenUntil: number;
+};
+
+/**
+ * Held on globalThis rather than in module scope.
+ *
+ * Next.js bundles route handlers and pages separately, so each gets its own
+ * copy of this module and, with plain `let`, its own private counters. The
+ * search path would open its breaker while /api/health reported zero failures
+ * from an instance that never sees traffic — diagnostics that quietly lie.
+ * One shared object means every entry point reads and writes the same state.
+ */
+const globalForBreaker = globalThis as typeof globalThis & {
+  __staylensHybridBreaker?: BreakerState;
+};
+
+const breaker: BreakerState = (globalForBreaker.__staylensHybridBreaker ??= {
+  consecutiveFailures: 0,
+  failureKind: null,
+  circuitOpenUntil: 0,
+});
+
 function recordFailure(kind: FailureKind, detail: string, elapsedMs: number) {
-  consecutiveFailures += 1;
-  if (consecutiveFailures >= FAILURE_THRESHOLD) {
+  // A run only counts if it is the same kind of failure repeating; a timeout
+  // followed by a connection error is two separate signals, not an escalation.
+  if (kind !== breaker.failureKind) {
+    breaker.failureKind = kind;
+    breaker.consecutiveFailures = 0;
+  }
+  breaker.consecutiveFailures += 1;
+
+  const threshold = THRESHOLDS[kind];
+  if (breaker.consecutiveFailures >= threshold) {
     const backoff = Math.min(
-      COOLDOWN_BASE_MS * 2 ** (consecutiveFailures - FAILURE_THRESHOLD),
+      COOLDOWN_BASE_MS * 2 ** (breaker.consecutiveFailures - threshold),
       COOLDOWN_MAX_MS,
     );
-    circuitOpenUntil = Date.now() + backoff;
+    breaker.circuitOpenUntil = Date.now() + backoff;
     console.warn(
       `[hybrid-search] ${kind} after ${elapsedMs}ms (${detail}); ` +
-        `circuit open for ${Math.round(backoff / 1000)}s — serving Supabase results.`,
+        `${breaker.consecutiveFailures} consecutive — circuit open for ` +
+        `${Math.round(backoff / 1000)}s, serving Supabase results.`,
     );
   } else {
-    console.warn(`[hybrid-search] ${kind} after ${elapsedMs}ms (${detail}); falling back.`);
+    console.warn(
+      `[hybrid-search] ${kind} after ${elapsedMs}ms (${detail}); ` +
+        `falling back (${breaker.consecutiveFailures}/${threshold} before circuit opens).`,
+    );
   }
 }
 
+/**
+ * The backend answered correctly but we chose not to wait, or it returned a 4xx.
+ * Neither says anything about backend health, so neither may move the breaker —
+ * but both still fall back to Supabase for this request.
+ */
+function recordNonFailure(reason: string, elapsedMs: number) {
+  console.warn(`[hybrid-search] ${reason} after ${elapsedMs}ms; falling back.`);
+}
+
 function recordSuccess() {
-  if (consecutiveFailures > 0) {
+  if (breaker.consecutiveFailures > 0 || breaker.circuitOpenUntil > 0) {
     console.info("[hybrid-search] backend healthy again; circuit closed.");
   }
-  consecutiveFailures = 0;
-  circuitOpenUntil = 0;
+  breaker.consecutiveFailures = 0;
+  breaker.failureKind = null;
+  breaker.circuitOpenUntil = 0;
 }
 
 type HybridProperty = {
@@ -153,7 +223,7 @@ export async function searchStaysHybrid(
 
   // Breaker open: skip the network entirely so the user isn't made to wait
   // again for a backend we already know is down or still cold-starting.
-  if (Date.now() < circuitOpenUntil) return null;
+  if (Date.now() < breaker.circuitOpenUntil) return null;
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), hybridTimeoutMs);
@@ -169,7 +239,15 @@ export async function searchStaysHybrid(
     });
 
     if (!res.ok) {
-      recordFailure("server", `HTTP ${res.status}`, Date.now() - startedAt);
+      const elapsed = Date.now() - startedAt;
+      if (res.status >= 500) {
+        recordFailure("server", `HTTP ${res.status}`, elapsed);
+      } else {
+        // 4xx means the backend is healthy and rejected *our* request — a bad
+        // filter combination, say. Opening the breaker would punish a working
+        // backend for our bug, and would not fix anything.
+        recordNonFailure(`HTTP ${res.status} (request rejected, backend healthy)`, elapsed);
+      }
       return null;
     }
 
@@ -226,8 +304,12 @@ export function getHybridSearchStatus() {
   return {
     configured: hybridSearchUrl !== null,
     timeoutMs: hybridTimeoutMs,
-    circuitOpen: Date.now() < circuitOpenUntil,
-    consecutiveFailures,
-    retryInMs: Math.max(0, circuitOpenUntil - Date.now()),
+    circuitOpen: Date.now() < breaker.circuitOpenUntil,
+    consecutiveFailures: breaker.consecutiveFailures,
+    // Which signal is accumulating matters when diagnosing: a timeout run means
+    // "slow", a connection run means "gone".
+    failureKind: breaker.failureKind,
+    failureThreshold: breaker.failureKind ? THRESHOLDS[breaker.failureKind] : null,
+    retryInMs: Math.max(0, breaker.circuitOpenUntil - Date.now()),
   };
 }

@@ -6,7 +6,7 @@ import { useFormContext } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import type { ProfileFormValues } from "@/lib/profile-schema";
 
-type RowName = "legalName" | "email" | "phone" | "emergencyContact";
+type RowName = "legalName" | "email" | "phone" | "location" | "emergencyContact";
 
 const ROWS: {
   name: RowName;
@@ -14,10 +14,13 @@ const ROWS: {
   type?: string;
   empty?: string;
   addLabel?: string;
+  /** Shown but not editable here (changing it is an auth flow, not a form post). */
+  readOnly?: boolean;
   col: 0 | 1;
 }[] = [
   { name: "legalName", label: "Legal Name", col: 0 },
-  { name: "email", label: "Email Address", type: "email", col: 0 },
+  { name: "email", label: "Email Address", type: "email", readOnly: true, col: 0 },
+  { name: "location", label: "Location", empty: "Not specified", addLabel: "Add", col: 0 },
   { name: "phone", label: "Phone Number", type: "tel", col: 1 },
   { name: "emergencyContact", label: "Emergency Contact", empty: "Not provided", addLabel: "Add", col: 1 },
 ];
@@ -28,13 +31,20 @@ export function BasicInformationCard() {
     legalName: false,
     email: false,
     phone: false,
+    location: false,
     emergencyContact: false,
   });
-  const allOn = Object.values(editing).every(Boolean);
+  const allOn = ROWS.filter((r) => !r.readOnly).every((r) => editing[r.name]);
 
   const toggleAll = () => {
     const next = !allOn;
-    setEditing({ legalName: next, email: next, phone: next, emergencyContact: next });
+    setEditing({
+      legalName: next,
+      email: false, // never editable — see ROWS
+      phone: next,
+      location: next,
+      emergencyContact: next,
+    });
   };
 
   return (
@@ -83,6 +93,7 @@ function EditableRow({
   type = "text",
   empty,
   addLabel,
+  readOnly,
   editing,
   onEdit,
 }: {
@@ -91,6 +102,7 @@ function EditableRow({
   type?: string;
   empty?: string;
   addLabel?: string;
+  readOnly?: boolean;
   editing: boolean;
   onEdit: () => void;
 }) {
@@ -110,7 +122,7 @@ function EditableRow({
       >
         {label}
       </label>
-      {editing ? (
+      {editing && !readOnly ? (
         <div>
           <input
             id={`field-${name}`}
@@ -131,13 +143,19 @@ function EditableRow({
           <span className={cn("text-base", !value && "text-on-surface-variant")}>
             {value || empty}
           </span>
-          <button
-            type="button"
-            onClick={onEdit}
-            className="text-primary text-sm font-semibold hover:underline"
-          >
-            {value ? "Edit" : (addLabel ?? "Edit")}
-          </button>
+          {readOnly ? (
+            // No control at all rather than one that quietly does nothing:
+            // email changes have to go through Supabase's verification flow.
+            <span className="text-xs text-on-surface-variant">Verified sign-in</span>
+          ) : (
+            <button
+              type="button"
+              onClick={onEdit}
+              className="text-primary text-sm font-semibold hover:underline"
+            >
+              {value ? "Edit" : (addLabel ?? "Edit")}
+            </button>
+          )}
         </div>
       )}
     </div>

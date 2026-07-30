@@ -103,6 +103,7 @@ export default async function PropertyPage({
             images={property.images}
             rating={property.rating}
             isRareFind={property.rating >= 4.95}
+            propertyId={property.id}
           />
         </section>
 

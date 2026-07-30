@@ -33,12 +33,15 @@ function guestsLabel(g: CheckoutTrip["guests"]): string {
 export function CheckoutClient({
   property,
   trip,
+  initialGuest,
   editHref,
   createOrder,
   verifyPayment,
 }: {
   property: CheckoutProperty;
   trip: CheckoutTrip;
+  /** Name and email from the signed-in account, resolved on the server. */
+  initialGuest: GuestDetails;
   editHref: string;
   /** Razorpay: create an Order server-side (amount is priced there, not here) */
   createOrder: CreateOrder;
@@ -46,12 +49,10 @@ export function CheckoutClient({
   verifyPayment: VerifyPayment;
 }) {
   const router = useRouter();
-  const [guest, setGuest] = useState<GuestDetails>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-  });
+  // Seeded from the account so the form is never blank for a signed-in guest.
+  // Kept editable — the billing contact for a trip is not always the account
+  // holder, and a read-only field would leave them no way to correct it.
+  const [guest, setGuest] = useState<GuestDetails>(initialGuest);
   const [applied, setApplied] = useState<AppliedCoupon | null>(null);
   const [couponError, setCouponError] = useState<string | null>(null);
   const [showErrors, setShowErrors] = useState(false);
