@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { WishlistProvider } from "@/components/wishlist/wishlist-provider";
 import "./globals.css";
 
 const inter = Inter({
@@ -65,7 +66,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        {children}
+        <WishlistProvider>{children}</WishlistProvider>
       </body>
     </html>
   );

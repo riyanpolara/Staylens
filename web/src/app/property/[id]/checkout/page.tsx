@@ -8,6 +8,7 @@ import type {
   CheckoutTrip,
 } from "@/components/checkout/checkout-types";
 import { getPropertyDetail } from "@/lib/queries";
+import { getGuestDefaults } from "@/lib/auth/guest-defaults";
 import { nightsBetween, parseISODate, toISODate } from "@/lib/calendar";
 
 const DATE_FMT = new Intl.DateTimeFormat("en", {
@@ -66,6 +67,10 @@ export default async function CheckoutPage({
     redirect(`/property/${id}`);
   }
 
+  // The proxy guarantees a session on this route, so this resolves to the
+  // signed-in guest's own details.
+  const initialGuest = await getGuestDefaults();
+
   const cp: CheckoutProperty = {
     id: property.id,
     name: property.name,
@@ -102,6 +107,7 @@ export default async function CheckoutPage({
         <CheckoutClient
           property={cp}
           trip={trip}
+          initialGuest={initialGuest}
           editHref={`/property/${id}`}
           createOrder={createBookingOrder}
           verifyPayment={verifyAndCreateBooking}

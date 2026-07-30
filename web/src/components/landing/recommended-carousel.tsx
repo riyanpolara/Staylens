@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/currency";
-import { ChevronLeft, ChevronRight, Heart, Sparkles, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Sparkles, Star } from "lucide-react";
+import { WishlistButton } from "@/components/wishlist/wishlist-button";
 import { useRef } from "react";
 import { Reveal } from "@/components/shared/reveal";
 import { LP } from "@/components/landing/landing-data";
@@ -102,13 +103,10 @@ export function RecommendedCarousel({ stays }: { stays: ExploreStay[] }) {
                     {matchPct(stay.rating)}% Match
                   </span>
                 </div>
-                <span
-                  aria-hidden
-                  className="absolute top-4 right-4 w-[42px] h-[42px] rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
-                  style={{ background: "rgba(255,255,255,.88)" }}
-                >
-                  <Heart className="size-[19px]" style={{ color: LP.green }} strokeWidth={2.2} />
-                </span>
+                <WishlistButton
+                  propertyId={stay.id}
+                  className="top-4 right-4 w-[42px] h-[42px] p-0 flex items-center justify-center bg-white/[.88] backdrop-blur-none text-primary hover:bg-white transition-transform duration-300 group-hover:scale-110"
+                />
               </div>
               <div className="px-6 pt-[22px] pb-[26px]">
                 <div className="flex items-center justify-between mb-1.5">

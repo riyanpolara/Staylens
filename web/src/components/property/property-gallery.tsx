@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Grip, Star, X } from "lucide-react";
+import { WishlistButton } from "@/components/wishlist/wishlist-button";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
@@ -18,10 +19,13 @@ export function PropertyGallery({
   images,
   rating,
   isRareFind,
+  propertyId,
 }: {
   images: GalleryImage[];
   rating: number;
   isRareFind: boolean;
+  /** enables the Save control overlaid on the hero */
+  propertyId: string;
 }) {
   const [lightbox, setLightbox] = useState(false);
   const many = images.length > 1;
@@ -41,6 +45,8 @@ export function PropertyGallery({
   const Overlay = (
     <>
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+      {/* Save — top-right of the hero, the conventional place for it */}
+      <WishlistButton propertyId={propertyId} />
       <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 flex items-center gap-2">
         {isRareFind && (
           <span className="bg-primary-container text-white px-3 py-1 rounded-full text-xs font-bold backdrop-blur-md">

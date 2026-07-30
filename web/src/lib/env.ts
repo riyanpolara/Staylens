@@ -128,11 +128,24 @@ export function getServerEnv(): ServerEnv {
   });
   if (site.problem) problems.push({ ...site.problem, severity: "warning" });
 
-  // 2.5s: long enough for a warm backend (measured well under 1s), short enough
-  // that a cold/unreachable one never dominates the page response.
+  /**
+   * 6s, chosen from measured latency rather than a guess.
+   *
+   * The previous 2.5s was below the p95 of every dataset we have, so it was
+   * cancelling healthy requests that the backend went on to answer 200 OK:
+   *
+   *   154 logged production searches  median 1227 · p90 2824 · p95 3370 · max 13068
+   *   30 fresh warm requests          median  993 · p90 1638 · p95 2490 · max  2584
+   *   cold start (first after boot)   3133 ms — over the old limit every time
+   *
+   * 6000 ms is ~1.8x the production p95 and ~2x cold start, and cancels ~3% of
+   * real requests instead of ~15%. The remainder is a genuinely pathological
+   * tail (8-13s) that a user should not be made to wait for — the Supabase
+   * fallback answers those immediately.
+   */
   const rawTimeout = Number(process.env.HYBRID_SEARCH_TIMEOUT_MS);
   const hybridTimeoutMs =
-    Number.isFinite(rawTimeout) && rawTimeout > 0 ? rawTimeout : 2500;
+    Number.isFinite(rawTimeout) && rawTimeout > 0 ? rawTimeout : 6000;
 
   cached = {
     supabaseUrl: supabase.url?.toString().replace(/\/$/, "") ?? null,

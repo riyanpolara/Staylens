@@ -15,20 +15,22 @@ import { LanguagesCard } from "@/components/profile/languages-card";
 import { TravelHistoryCard } from "@/components/profile/travel-history-card";
 import { ConnectedAccountsCard } from "@/components/profile/connected-accounts-card";
 import { PrivacySettingsCard } from "@/components/profile/privacy-settings-card";
+import { ProfileCompletionCard } from "@/components/profile/profile-completion-card";
 import { profileFormSchema, type ProfileFormValues } from "@/lib/profile-schema";
 import { saveProfile } from "@/app/profile/edit/actions";
-import type { Profile } from "@/lib/profile";
+import type { Profile, ProfileCompletion, ProfileStats, Trip } from "@/lib/profile";
 
 function toDefaults(p: Profile): ProfileFormValues {
   return {
     legalName: p.legalName,
     email: p.email,
     phone: p.phone,
+    location: p.location,
     emergencyContact: p.emergencyContact ?? "",
     about: p.about,
     personality: p.personality,
+    travelPreferences: p.travelPreferences,
     languages: p.languages,
-    connectedAccounts: p.connectedAccounts,
     privacy: p.privacy,
   };
 }
@@ -39,8 +41,19 @@ type Status =
   | { kind: "saved"; msg: string }
   | { kind: "error"; msg: string };
 
-/** Client form wrapper for the editable profile area (col-span-9). */
-export function ProfileEditor({ profile }: { profile: Profile }) {
+/** Client form wrapper for the editable profile area. */
+export function ProfileEditor({
+  profile,
+  stats,
+  trips,
+  completion,
+}: {
+  profile: Profile;
+  /** Counted from bookings/favorites/reviews on the server — read-only here. */
+  stats: ProfileStats;
+  trips: Trip[];
+  completion: ProfileCompletion;
+}) {
   const methods = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: toDefaults(profile),
@@ -57,12 +70,7 @@ export function ProfileEditor({ profile }: { profile: Profile }) {
       return;
     }
     methods.reset(values);
-    setStatus({
-      kind: "saved",
-      msg: res.persisted
-        ? "All changes saved."
-        : "Saved — apply the profiles migration to persist to Supabase.",
-    });
+    setStatus({ kind: "saved", msg: "All changes saved." });
   }
 
   function onInvalid() {
@@ -74,14 +82,18 @@ export function ProfileEditor({ profile }: { profile: Profile }) {
       <form
         noValidate
         onSubmit={methods.handleSubmit(onSubmit, onInvalid)}
-        className="lg:col-span-9 space-y-16"
+        className="space-y-16"
       >
         <Reveal>
           <ProfileHeaderCard profile={profile} saving={saving} />
         </Reveal>
 
         <Reveal>
-          <AchievementsGrid />
+          <AchievementsGrid stats={stats} />
+        </Reveal>
+
+        <Reveal>
+          <ProfileCompletionCard completion={completion} />
         </Reveal>
 
         <Reveal>
@@ -98,13 +110,13 @@ export function ProfileEditor({ profile }: { profile: Profile }) {
         <Reveal>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <LanguagesCard />
-            <TravelHistoryCard history={profile.travelHistory} />
+            <TravelHistoryCard trips={trips} />
           </div>
         </Reveal>
 
         <Reveal>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <ConnectedAccountsCard />
+            <ConnectedAccountsCard accounts={profile.connectedAccounts} />
             <PrivacySettingsCard />
           </div>
         </Reveal>

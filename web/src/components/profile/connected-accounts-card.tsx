@@ -1,9 +1,7 @@
 "use client";
 
-import { useFormContext } from "react-hook-form";
 import { cn } from "@/lib/utils";
-import type { ProfileFormValues } from "@/lib/profile-schema";
-import type { ConnectedProvider } from "@/lib/profile";
+import type { ConnectedAccount, ConnectedProvider } from "@/lib/profile";
 
 const META: Record<
   ConnectedProvider,
@@ -29,23 +27,20 @@ const META: Record<
   },
 };
 
-/** Connected accounts with Connect / Disconnect toggles. */
-export function ConnectedAccountsCard() {
-  const { watch, setValue } = useFormContext<ProfileFormValues>();
-  const accounts = watch("connectedAccounts") ?? [];
-
-  const toggle = (index: number) => {
-    const next = accounts.map((a, i) =>
-      i === index ? { ...a, connected: !a.connected } : a,
-    );
-    setValue("connectedAccounts", next, { shouldDirty: true });
-  };
-
+/**
+ * Connected accounts, reflecting the guest's actual Supabase Auth identities.
+ *
+ * This used to be a form field: the Connect button simply flipped a boolean, so
+ * clicking it made the profile claim a linked Google account when no OAuth had
+ * happened. Linking is an auth operation, not a profile field, so the state is
+ * now read from auth and shown as fact.
+ */
+export function ConnectedAccountsCard({ accounts }: { accounts: ConnectedAccount[] }) {
   return (
     <section className="bg-white rounded-[20px] p-6 md:p-10 shadow-tinted border border-outline-variant/10">
       <h3 className="font-display text-2xl font-semibold text-on-surface mb-6">Connected Accounts</h3>
       <div className="space-y-6">
-        {accounts.map((account, i) => {
+        {accounts.map((account) => {
           const meta = META[account.provider];
           return (
             <div key={account.provider} className="flex items-center justify-between">
@@ -60,16 +55,14 @@ export function ConnectedAccountsCard() {
                   </p>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => toggle(i)}
+              <span
                 className={cn(
-                  "text-sm font-semibold hover:underline transition-all",
-                  account.connected ? "text-destructive" : "text-primary",
+                  "text-sm font-semibold",
+                  account.connected ? "text-primary" : "text-on-surface-variant",
                 )}
               >
-                {account.connected ? "Disconnect" : "Connect"}
-              </button>
+                {account.connected ? "Linked" : "—"}
+              </span>
             </div>
           );
         })}

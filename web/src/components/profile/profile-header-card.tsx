@@ -18,20 +18,26 @@ export function ProfileHeaderCard({
 
       <div className="text-center md:text-left flex-1">
         <h1 className="font-display text-[32px] leading-10 font-bold text-on-surface">
-          {profile.fullName}
+          {profile.fullName || "Your name"}
         </h1>
         <p className="flex items-center justify-center md:justify-start gap-2 text-on-surface-variant mt-1">
           <MapPin aria-hidden className="size-5 text-primary" />
-          {profile.location}
+          <span className={profile.location ? undefined : "opacity-70"}>
+            {profile.location || "Not specified"}
+          </span>
         </p>
-        {profile.identityVerified && (
-          <div className="mt-4 flex flex-wrap justify-center md:justify-start gap-2">
-            <span className="bg-surface-container-high px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 text-primary">
-              <BadgeCheck aria-hidden className="size-4" />
-              Identity Verified
-            </span>
-          </div>
-        )}
+        <div className="mt-4 flex flex-wrap justify-center md:justify-start gap-2">
+          <span
+            className={
+              profile.identityVerified
+                ? "bg-surface-container-high px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 text-primary"
+                : "bg-surface-container px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 text-on-surface-variant"
+            }
+          >
+            <BadgeCheck aria-hidden className="size-4" />
+            {profile.identityVerified ? "Identity Verified" : "Not verified"}
+          </span>
+        </div>
       </div>
 
       <div className="flex gap-4">

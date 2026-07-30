@@ -169,6 +169,29 @@ function AuthedItems({
   onNavigate: () => void;
   isAdmin: boolean;
 }) {
+  // Lazy by construction: this component only mounts when a signed-in user
+  // opens the menu, so guests and unopened menus cost nothing.
+  const [unread, setUnread] = useState<{ messages: number; notifications: number }>({
+    messages: 0,
+    notifications: 0,
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/unread")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d: { messages?: number; notifications?: number } | null) => {
+        if (cancelled || !d) return;
+        setUnread({ messages: d.messages ?? 0, notifications: d.notifications ?? 0 });
+      })
+      .catch(() => {
+        /* a failed count must not break the menu — badges just stay hidden */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <>
       {isAdmin && (
@@ -182,12 +205,12 @@ function AuthedItems({
           <Divider />
         </>
       )}
-      <MenuItem icon={Heart} label="Wishlists" />
-      <MenuItem icon={Compass} label="Trips" />
-      <MenuItem icon={MessageSquare} label="Messages" />
+      <MenuItem icon={Heart} label="Wishlists" href="/wishlist" onClick={onNavigate} />
+      <MenuItem icon={Compass} label="Trips" href="/trips" onClick={onNavigate} />
+      <MenuItem icon={MessageSquare} label="Messages" href="/messages" badge={unread.messages} onClick={onNavigate} />
       <MenuItem icon={CircleUser} label="Profile" href="/profile/edit" onClick={onNavigate} />
       <Divider />
-      <MenuItem icon={Bell} label="Notifications" />
+      <MenuItem icon={Bell} label="Notifications" href="/notifications" badge={unread.notifications} onClick={onNavigate} />
       <Divider />
       <MenuItem icon={HelpCircle} label="Help Centre" />
       <Divider />
@@ -225,11 +248,14 @@ function MenuItem({
   icon: Icon,
   label,
   href,
+  badge,
   onClick,
 }: {
   icon?: LucideIcon;
   label: string;
   href?: string;
+  /** Unread count. Hidden at 0 — a "0" badge is noise, not information. */
+  badge?: number;
   onClick?: () => void;
 }) {
   const className = cn(
@@ -239,6 +265,14 @@ function MenuItem({
     <>
       {Icon && <Icon aria-hidden className="size-5 text-on-surface shrink-0" strokeWidth={1.8} />}
       <span>{label}</span>
+      {badge !== undefined && badge > 0 && (
+        <span
+          aria-label={`${badge} unread`}
+          className="ml-auto min-w-5 h-5 px-1.5 grid place-items-center rounded-full bg-primary text-white text-xs font-bold"
+        >
+          {badge > 99 ? "99+" : badge}
+        </span>
+      )}
     </>
   );
   if (href) {

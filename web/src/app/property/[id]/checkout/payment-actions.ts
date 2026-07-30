@@ -5,7 +5,8 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { getPropertyDetail } from "@/lib/queries";
 import { computeBookingBreakdown } from "@/lib/pricing";
 import { validateCoupon } from "@/lib/coupons";
-import { convertFromUsd, DISPLAY_CURRENCY } from "@/lib/currency";
+import { convertFromUsd, DISPLAY_CURRENCY, formatInr } from "@/lib/currency";
+import { raiseNotification } from "@/lib/notifications";
 import { nightsBetween, parseISODate } from "@/lib/calendar";
 import { isValidEmail } from "@/lib/validation";
 import {
@@ -237,11 +238,95 @@ export async function verifyAndCreateBooking(
     };
   }
 
+  const reference = data?.reference ?? payload.bookingRef;
+
+  // --- 5. tell the guest, and open the thread with their host ---------------
+  // Everything below is best-effort: the booking is already paid for and saved,
+  // so a failure here must never turn a successful booking into an error.
+  await Promise.allSettled([
+    raiseNotification({
+      userId: user.id,
+      type: "booking.confirmed",
+      title: "Booking confirmed",
+      description: `${priced.property.name} · ${payload.booking.checkIn} to ${payload.booking.checkOut}`,
+      link: "/trips",
+      metadata: { reference, propertyId: priced.property.id },
+    }),
+    raiseNotification({
+      userId: user.id,
+      type: "payment.succeeded",
+      title: "Payment successful",
+      description: `${formatInr(priced.amountInr)} paid for ${priced.property.name}.`,
+      link: "/trips",
+      metadata: {
+        reference,
+        amount: priced.amountInr,
+        currency: DISPLAY_CURRENCY,
+        paymentId: payload.razorpayPaymentId,
+      },
+    }),
+    ensureBookingConversation({
+      guestId: user.id,
+      propertyId: priced.property.id,
+      bookingRef: reference,
+    }),
+  ]);
+
   return {
     ok: true,
-    bookingRef: data?.reference ?? payload.bookingRef,
+    bookingRef: reference,
     total: priced.amountInr,
     currency: DISPLAY_CURRENCY,
     provider: "razorpay",
   };
+}
+
+/**
+ * Opens the guest↔host thread for a fresh booking.
+ *
+ * Created here rather than lazily on first visit so the conversation is already
+ * waiting in Messages when the guest looks — and so the access rule ("you may
+ * message a host you have booked with") is satisfied by a row, not a check
+ * scattered through the UI.
+ *
+ * Uses the service role because it needs the booking id and host, both of which
+ * were written moments ago on this same request.
+ */
+async function ensureBookingConversation(input: {
+  guestId: string;
+  propertyId: string;
+  bookingRef: string;
+}): Promise<void> {
+  try {
+    const db = createAdminClient();
+
+    const { data: booking } = await db
+      .from("bookings")
+      .select("id")
+      .eq("reference", input.bookingRef)
+      .maybeSingle();
+    if (!booking) return;
+
+    const { data: property } = await db
+      .from("properties")
+      .select("host_id")
+      .eq("id", input.propertyId)
+      .maybeSingle();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (db.from("conversations") as any).upsert(
+      {
+        guest_id: input.guestId,
+        property_id: input.propertyId,
+        booking_id: (booking as { id: string }).id,
+        host_profile_id: (property as { host_id: string | null } | null)?.host_id ?? null,
+      },
+      // Re-running verification for the same booking must not open a second
+      // thread; the partial unique index on (guest_id, property_id) catches it.
+      { onConflict: "guest_id,property_id", ignoreDuplicates: true },
+    );
+    if (error) console.error("[booking] conversation create failed:", error.message);
+  } catch (err) {
+    console.error("[booking] conversation create skipped:", err);
+  }
 }

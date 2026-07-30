@@ -4,8 +4,8 @@ import { Menu, TreePine } from "lucide-react";
 
 const LINKS = [
   { label: "Explore", href: "/" },
-  { label: "Wishlist", href: "#" },
-  { label: "Trips", href: "#" },
+  { label: "Wishlist", href: "/wishlist" },
+  { label: "Trips", href: "/trips" },
 ];
 
 /** Sticky top navigation for the profile area (Stitch). */
