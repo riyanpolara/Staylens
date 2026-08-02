@@ -754,6 +754,190 @@
         </div>
       </sc-if>
 
+      <!-- ══ REVENUE ══ -->
+      <sc-if value="{{ isRevenue }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+
+          <div style="display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2);">
+            <div class="seg">
+              <sc-for list="{{ grainTabs }}" as="g" hint-placeholder-count="4">
+                <label class="seg-opt" style="background: {{ g.bg }}; color: {{ g.fg }}; font-weight: 600;">
+                  <input type="radio" name="grain" checked="{{ g.on }}" onChange="{{ g.go }}">{{ g.label }}
+                </label>
+              </sc-for>
+            </div>
+            <span style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">{{ grainNote }}</span>
+            <div style="display: flex; gap: var(--space-2); margin-left: auto;">
+              <button class="btn btn-secondary" onClick="{{ noop }}">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"></path></svg>
+                Export
+              </button>
+              <button class="btn btn-primary" onClick="{{ noop }}">Payout run</button>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(196px, 1fr)); gap: var(--space-3);">
+            <sc-for list="{{ revCards }}" as="r" hint-placeholder-count="6">
+              <div class="card elev-sm" style="padding: var(--space-4); gap: 4px; animation: rise .4s ease both; animation-delay: {{ r.delay }}; transition: transform .2s ease, box-shadow .2s ease;" style-hover="transform: translateY(-3px); box-shadow: var(--shadow-md);">
+                <div style="display: flex; align-items: center; gap: 7px;">
+                  <span style="width: 8px; height: 8px; border-radius: 999px; background: {{ r.dot }}; flex: none;"></span>
+                  <div style="font-size: 12px; font-weight: 600; color: color-mix(in srgb, var(--color-text) 62%, transparent);">{{ r.label }}</div>
+                </div>
+                <div style="font-family: var(--font-heading); font-size: 26px; line-height: 1.1;">{{ r.value }}</div>
+                <div style="display: flex; align-items: baseline; gap: 6px; font-size: 12px;">
+                  <span style="font-weight: 700; color: {{ r.ink }};">{{ r.delta }}</span>
+                  <span style="color: color-mix(in srgb, var(--color-text) 45%, transparent);">{{ r.note }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+            <div style="display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2);">
+              <div style="margin-right: auto;">
+                <div style="font-family: var(--font-heading); font-size: 19px;">Revenue over time</div>
+                <div style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">Gross booking value · dashed line is the prior period</div>
+              </div>
+              <span class="tag tag-accent-2" style="gap: 5px;"><span>Trend</span>{{ trendLabel }}</span>
+            </div>
+            <div style="position: relative;" onMouseLeave="{{ clearHover }}">
+              <svg viewBox="0 0 1000 260" width="100%" height="250" preserveAspectRatio="none" style="display: block; overflow: visible;">
+                <defs>
+                  <linearGradient id="revtabfill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="var(--color-accent)" stop-opacity="0.30"></stop>
+                    <stop offset="100%" stop-color="var(--color-accent)" stop-opacity="0"></stop>
+                  </linearGradient>
+                </defs>
+                <path d="{{ revTab.area }}" fill="url(#revtabfill)" style="animation: fade .7s ease both;"></path>
+                <path d="{{ revTab.prevLine }}" fill="none" stroke="color-mix(in srgb, var(--color-text) 26%, transparent)" stroke-width="1.75" stroke-dasharray="5 6" vector-effect="non-scaling-stroke"></path>
+                <path d="{{ revTab.line }}" fill="none" stroke="var(--color-accent)" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" stroke-dasharray="1400" style="animation: draw 1.1s cubic-bezier(.4,0,.2,1) both;"></path>
+                <sc-for list="{{ revTab.pts }}" as="p" hint-placeholder-count="12">
+                  <rect x="{{ p.hx }}" y="0" width="{{ p.hw }}" height="260" fill="transparent" onMouseEnter="{{ p.go }}"></rect>
+                </sc-for>
+                <sc-if value="{{ hoverPt }}" hint-placeholder-val="{{ false }}">
+                  <g>
+                    <line x1="{{ hoverPt.cx }}" y1="0" x2="{{ hoverPt.cx }}" y2="260" stroke="var(--color-accent)" stroke-width="1" stroke-opacity=".4" vector-effect="non-scaling-stroke"></line>
+                    <circle cx="{{ hoverPt.cx }}" cy="{{ hoverPt.cy }}" r="5" fill="var(--color-bg)" stroke="var(--color-accent)" stroke-width="3" vector-effect="non-scaling-stroke"></circle>
+                  </g>
+                </sc-if>
+              </svg>
+              <sc-if value="{{ hoverPt }}" hint-placeholder-val="{{ false }}">
+                <div class="card elev-lg" style="position: absolute; top: 0; left: {{ hoverPt.leftPct }}; transform: translateX(-50%); padding: 8px 12px; gap: 2px; pointer-events: none; white-space: nowrap; border-radius: var(--radius-md);">
+                  <div style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 55%, transparent);">{{ hoverPt.label }}</div>
+                  <div style="font-family: var(--font-heading); font-size: 17px;">{{ hoverPt.value }}</div>
+                  <div style="font-size: 11px; color: var(--color-accent-700);">{{ hoverPt.sub }}</div>
+                </div>
+              </sc-if>
+              <div style="display: flex; justify-content: space-between; font-size: 11px; margin-top: 6px; color: color-mix(in srgb, var(--color-text) 50%, transparent);">
+                <sc-for list="{{ revTab.axis }}" as="a" hint-placeholder-count="6"><span>{{ a.label }}</span></sc-for>
+              </div>
+            </div>
+            <div style="display: flex; gap: var(--space-4) var(--space-6); flex-wrap: wrap; padding-top: var(--space-2); border-top: 1px solid var(--color-divider);">
+              <sc-for list="{{ revSplit }}" as="l" hint-placeholder-count="5">
+                <div>
+                  <div style="font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 50%, transparent);">{{ l.label }}</div>
+                  <div style="font-family: var(--font-heading); font-size: 18px;">{{ l.value }}</div>
+                  <div style="font-size: 11px; color: color-mix(in srgb, var(--color-text) 50%, transparent);">{{ l.share }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: var(--space-3); align-items: start;">
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+              <div>
+                <div style="font-family: var(--font-heading); font-size: 19px;">Revenue by city</div>
+                <div style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">Top 8 markets, {{ grainNote }}</div>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 11px;">
+                <sc-for list="{{ cityRev }}" as="c" hint-placeholder-count="8">
+                  <div style="display: grid; grid-template-columns: 104px 1fr auto; align-items: center; gap: var(--space-3);">
+                    <div style="font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ c.name }}</div>
+                    <div style="height: 10px; border-radius: 999px; background: color-mix(in srgb, var(--color-text) 8%, transparent); overflow: hidden;">
+                      <div style="height: 100%; width: {{ c.pct }}; border-radius: 999px; background: var(--color-accent); transition: width .5s ease;"></div>
+                    </div>
+                    <div style="text-align: right;">
+                      <div style="font-family: var(--font-heading); font-size: 15px;">{{ c.value }}</div>
+                      <div style="font-size: 10px; color: {{ c.ink }}; font-weight: 700;">{{ c.delta }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+              <div>
+                <div style="font-family: var(--font-heading); font-size: 19px;">Revenue by property type</div>
+                <div style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">Share of gross booking value</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap;">
+                <svg width="152" height="152" viewBox="0 0 42 42" style="flex: none; transform: rotate(-90deg);">
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="color-mix(in srgb, var(--color-text) 8%, transparent)" stroke-width="6.5"></circle>
+                  <sc-for list="{{ typeDonut }}" as="d" hint-placeholder-count="5">
+                    <circle cx="21" cy="21" r="15.9" fill="none" stroke="{{ d.color }}" stroke-width="6.5" stroke-dasharray="{{ d.dash }}" stroke-dashoffset="{{ d.offset }}"></circle>
+                  </sc-for>
+                </svg>
+                <div style="display: flex; flex-direction: column; gap: 9px; flex: 1; min-width: 160px;">
+                  <sc-for list="{{ typeDonut }}" as="d" hint-placeholder-count="5">
+                    <div style="display: flex; align-items: baseline; gap: 9px; font-size: 13px;">
+                      <span style="width: 10px; height: 10px; border-radius: 999px; background: {{ d.color }}; flex: none;"></span>
+                      <span style="flex: 1;">{{ d.label }}</span>
+                      <span style="font-family: var(--font-heading); font-size: 14px;">{{ d.value }}</span>
+                      <span style="font-size: 11px; opacity: .55; width: 38px; text-align: right;">{{ d.pct }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="font-size: 12px; padding-top: var(--space-2); border-top: 1px solid var(--color-divider); color: color-mix(in srgb, var(--color-text) 60%, transparent);">Villas are 11% of inventory but a third of revenue — the highest ADR of any type.</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: var(--space-3); align-items: start;">
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+              <div style="display: flex; align-items: flex-end; flex-wrap: wrap; gap: var(--space-2);">
+                <div style="margin-right: auto;">
+                  <div style="font-family: var(--font-heading); font-size: 19px;">Booking value distribution</div>
+                  <div style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">Bookings per value band · median {{ medianBooking }}</div>
+                </div>
+                <span class="tag tag-neutral" style="gap: 5px;"><span>Avg</span>{{ avgBooking }}</span>
+              </div>
+              <svg viewBox="0 0 1000 220" width="100%" height="200" preserveAspectRatio="none" style="display: block; overflow: visible;" onMouseLeave="{{ clearDist }}">
+                <sc-for list="{{ dist }}" as="d" hint-placeholder-count="8">
+                  <g onMouseEnter="{{ d.go }}">
+                    <rect x="{{ d.slotX }}" y="0" width="{{ d.slot }}" height="220" fill="transparent"></rect>
+                    <rect x="{{ d.x }}" y="{{ d.y }}" width="{{ d.w }}" height="{{ d.h }}" rx="7" fill="{{ d.fill }}" fill-opacity="{{ d.dim }}" style="transform-origin: 50% 220px; animation: grow .55s cubic-bezier(.2,.8,.3,1) both; animation-delay: {{ d.delay }};"></rect>
+                  </g>
+                </sc-for>
+              </svg>
+              <div style="display: flex; justify-content: space-between; font-size: 11px; color: color-mix(in srgb, var(--color-text) 50%, transparent);">
+                <sc-for list="{{ dist }}" as="d" hint-placeholder-count="8"><span>{{ d.band }}</span></sc-for>
+              </div>
+              <div style="font-size: 12px; font-weight: 700; padding-top: var(--space-2); border-top: 1px solid var(--color-divider);">{{ distNote }}</div>
+            </div>
+
+            <div class="card elev-sm" style="padding: var(--space-4); gap: var(--space-3);">
+              <div style="font-family: var(--font-heading); font-size: 19px;">Ledger</div>
+              <div style="overflow-x: auto;">
+                <table class="table" style="min-width: 420px;">
+                  <thead><tr><th>Line</th><th style="text-align: right;">{{ grainShort }}</th><th style="text-align: right;">Prior</th><th style="text-align: right;">Change</th></tr></thead>
+                  <tbody>
+                    <sc-for list="{{ ledger }}" as="l" hint-placeholder-count="8">
+                      <tr>
+                        <td style="font-weight: {{ l.weight }};">{{ l.label }}</td>
+                        <td style="text-align: right; font-weight: {{ l.weight }};">{{ l.now }}</td>
+                        <td style="text-align: right; color: color-mix(in srgb, var(--color-text) 55%, transparent);">{{ l.prior }}</td>
+                        <td style="text-align: right; font-weight: 700; color: {{ l.ink }};">{{ l.change }}</td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+              <div style="font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">Taxes are collected and remitted by StayLens in 14 jurisdictions; the rest are host-remitted.</div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
       <!-- ══ NOT YET DESIGNED ══ -->
       <sc-if value="{{ isStub }}" hint-placeholder-val="{{ false }}">
         <div class="card elev-sm" style="align-items: center; text-align: center; gap: var(--space-3); padding: var(--space-8); border-radius: var(--radius-lg);">
@@ -813,7 +997,12 @@
 class Component extends DCLogic {
   state = { screen: 'dash', theme: null, rail: true, drawer: false, notif: false, range: '12m',
     hover: null, bar: null, sort: { key: 'bookings', dir: 'desc' }, status: 'all', page: 1,
-    query: '', sel: [], menu: null, confirm: null, role: 'all', bstatus: 'all', w: 1400 };
+    query: '', sel: [], menu: null, confirm: null, role: 'all', bstatus: 'all', w: 1400,
+    grain: 'monthly', dist: null };
+
+  revDaily = [38.2, 41.6, 44.1, 39.8, 46.2, 52.4, 55.1, 48.6, 43.2, 47.9, 51.2, 58.4, 61.2, 54.8, 49.1, 52.6, 57.3, 63.8, 66.4, 59.2, 53.6, 58.1, 64.2, 69.8, 71.4, 62.8, 57.2, 61.6, 67.4, 74.2].map((v, i) => ({ l: 'Jul ' + (i + 1), v }));
+  revWeekly = [268, 292, 314, 286, 341, 368, 392, 356, 378, 412, 438, 464].map((v, i) => ({ l: 'W' + (i + 27), v }));
+  revYearly = [1840, 3120, 5480, 8240, 11260].map((v, i) => ({ l: String(2022 + i), v }));
 
   nav = [
     ['dash', 'Dashboard', 'M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z'],
@@ -898,7 +1087,7 @@ class Component extends DCLogic {
   }
   componentWillUnmount() { window.removeEventListener('resize', this._r); document.removeEventListener('click', this._c); }
 
-  money(k) { return k >= 1000 ? '$' + (k / 1000).toFixed(2) + 'M' : '$' + k + 'K'; }
+  money(k) { return k >= 1000 ? '$' + (k / 1000).toFixed(2) + 'M' : '$' + k.toFixed(1) + 'K'; }
   num(n) { return n.toLocaleString('en-US'); }
 
   chart(data, w, h, pad) {
@@ -947,8 +1136,8 @@ class Component extends DCLogic {
       title: this.titles[s.screen],
       crumb: this.titles[s.screen],
       isDash: s.screen === 'dash', isProps: s.screen === 'props', isBookings: s.screen === 'bookings',
-      isUsers: s.screen === 'users', isAi: s.screen === 'ai',
-      isStub: ['hosts', 'reviews', 'cities', 'amenities', 'revenue', 'messages', 'reports', 'settings'].indexOf(s.screen) > -1,
+      isUsers: s.screen === 'users', isAi: s.screen === 'ai', isRevenue: s.screen === 'revenue',
+      isStub: ['hosts', 'reviews', 'cities', 'amenities', 'messages', 'reports', 'settings'].indexOf(s.screen) > -1,
       stubIcon: (this.nav.find(n => n[0] === s.screen) || [, , ''])[2],
       showAi: this.props.showAiSection !== false,
       navItems: this.nav.map(n => {
@@ -1152,6 +1341,86 @@ class Component extends DCLogic {
       tagClass: p[4] === 'High' ? 'tag-accent-2' : p[4] === 'None' ? 'tag-neutral' : 'tag-accent' }));
     v.recs = [['Cliffside Olive House', 'Amalfi', '4,820', '18.6%'], ['Casa Barranco', 'Lisbon', '4,214', '16.2%'], ['The Salt Cabin', 'Lofoten', '3,688', '14.8%'], ['Juniper Courtyard', 'Marrakesh', '3,102', '12.4%']]
       .map((r, i) => ({ name: r[0], city: r[1], surfaced: r[2], ctr: r[3], slot: 'rec-' + i }));
+
+    // ── revenue
+    const G = {
+      daily: { data: this.revDaily, prior: 0.88, gross: 74.2, label: 'Yesterday · Jul 29', short: 'Today', note: 'Last 30 days', axisEvery: 5 },
+      weekly: { data: this.revWeekly, prior: 0.91, gross: 464, label: 'Week 38', short: 'This week', note: 'Last 12 weeks', axisEvery: 2 },
+      monthly: { data: this.rev12, prior: 0.86, gross: 1284, label: 'July 2026', short: 'This month', note: 'Last 12 months', axisEvery: 2 },
+      yearly: { data: this.revYearly, prior: 0.73, gross: 11260, label: '2026 YTD', short: 'This year', note: 'Since launch', axisEvery: 1 }
+    };
+    const g = G[s.grain], gross = g.gross;
+    v.grainTabs = [['daily', 'Daily'], ['weekly', 'Weekly'], ['monthly', 'Monthly'], ['yearly', 'Yearly']]
+      .map(t => ({ label: t[1], ...this.seg(s.grain === t[0]), go: () => this.setState({ grain: t[0], hover: null }) }));
+    v.grainNote = g.note;
+    v.grainShort = g.short;
+    v.trendLabel = '+' + Math.round((1 / g.prior - 1) * 1000) / 10 + '%';
+    v.medianBooking = '$984';
+    v.avgBooking = '$1,214';
+
+    const up = 'var(--color-accent-2-800)';
+    v.revCards = [
+      ['Daily revenue', this.money(74.2), '+8.6%', 'vs prior day', 'var(--color-accent)'],
+      ['Weekly revenue', this.money(464), '+6.4%', 'vs prior week', 'var(--color-accent)'],
+      ['Monthly revenue', this.money(1284), '+12.4%', 'vs prior month', 'var(--color-accent)'],
+      ['Yearly revenue', this.money(11260), '+37.1%', 'vs 2025', 'var(--color-accent)'],
+      ['Average booking value', '$1,214', '+$62', 'trailing 30 days', 'var(--color-accent-2)'],
+      ['Revenue trend', v.trendLabel, 'Accelerating', '4 periods running', 'var(--color-accent-2)']
+    ].map((r, i) => ({ label: r[0], value: r[1], delta: r[2], note: r[3], dot: r[4], ink: up, delay: (i * 50) + 'ms' }));
+
+    const rc = this.chart(g.data, 1000, 260, 14);
+    const unitFmt = x => this.money(Math.round(x * 10) / 10);
+    rc.pts = rc.pts.map((p, i) => ({ cx: p.cx, cy: p.cy, hx: +(p.cx - (1000 / g.data.length) / 2).toFixed(1),
+      hw: +(1000 / g.data.length).toFixed(1), label: p.l, value: unitFmt(p.v), leftPct: (p.cx / 10).toFixed(1) + '%',
+      sub: 'commission ' + unitFmt(p.v * 0.14), go: () => this.setState({ hover: i }) }));
+    v.revTab = { line: rc.line, area: rc.area, pts: rc.pts,
+      prevLine: this.chart(g.data.map(d => ({ l: '', v: d.v * g.prior })), 1000, 260, 14).line,
+      axis: rc.pts.filter((p, i) => i % g.axisEvery === 0).map(p => ({ label: p.label })) };
+    if (s.screen === 'revenue') v.hoverPt = s.hover != null ? rc.pts[s.hover] : null;
+
+    v.revSplit = [
+      ['Gross booking value', gross, 1], ['Platform commission', gross * 0.14, 0.14],
+      ['Host payouts', gross * 0.848, 0.848], ['Refunds', gross * 0.0167, 0.0167], ['Taxes collected', gross * 0.061, 0.061]
+    ].map(r => ({ label: r[0], value: unitFmt(r[1]), share: (r[2] * 100).toFixed(1) + '% of gross' }));
+
+    const cityMax = 214;
+    v.cityRev = [['Lisbon', 214, '+14%'], ['Amalfi', 186, '+9%'], ['Marrakesh', 148, '+22%'], ['Kamakura', 121, '+6%'], ['Cotswolds', 98, '+4%'], ['Lofoten', 86, '+18%'], ['Mexico City', 74, '+11%'], ['Tofino', 52, '−3%']]
+      .map(c => ({ name: c[0], value: '$' + c[1] + 'K', pct: Math.round(c[1] / cityMax * 100) + '%', delta: c[2],
+        ink: c[2].charAt(0) === '+' ? up : 'var(--color-accent-800)' }));
+
+    const types = [['Villa', 412, 'var(--color-accent)'], ['Cabin', 286, 'var(--color-accent-2)'], ['Apartment', 241, 'var(--color-accent-300)'], ['Cottage', 184, 'var(--color-accent-2-300)'], ['Other', 161, 'var(--color-neutral-400)']];
+    const tTotal = types.reduce((a, t) => a + t[1], 0);
+    let toff = 0;
+    v.typeDonut = types.map(t => {
+      const len = t[1] / tTotal * 99.9, o = toff; toff += len;
+      return { label: t[0], value: '$' + t[1] + 'K', pct: Math.round(t[1] / tTotal * 100) + '%', color: t[2],
+        dash: len.toFixed(1) + ' ' + (99.9 - len).toFixed(1), offset: (-o).toFixed(1) };
+    });
+
+    const bands = [['<$250', 386], ['$250–500', 742], ['$500–1K', 1284], ['$1–1.5K', 964], ['$1.5–2.5K', 618], ['$2.5–4K', 312], ['$4–6K', 148], ['$6K+', 62]];
+    const dmax = Math.max.apply(null, bands.map(b => b[1])) * 1.1, dslot = 1000 / bands.length;
+    v.dist = bands.map((b, i) => {
+      const h = b[1] / dmax * 200;
+      return { band: b[0], slotX: +(i * dslot).toFixed(1), slot: +dslot.toFixed(1),
+        x: +(i * dslot + dslot * 0.18).toFixed(1), w: +(dslot * 0.64).toFixed(1),
+        y: +(220 - h).toFixed(1), h: +h.toFixed(1), delay: (i * 45) + 'ms',
+        fill: i === 2 ? 'var(--color-accent)' : 'var(--color-accent-2)',
+        dim: s.dist == null || s.dist === i ? 1 : 0.35, go: () => this.setState({ dist: i }) };
+    });
+    v.clearDist = () => this.setState({ dist: null });
+    v.distNote = s.dist == null ? '4,516 bookings · 62% fall between $500 and $2,500'
+      : this.num(bands[s.dist][1]) + ' bookings in ' + bands[s.dist][0] + ' · ' + Math.round(bands[s.dist][1] / 4516 * 100) + '% of volume';
+
+    v.ledger = [
+      ['Gross booking value', gross, 1, true], ['Platform commission (14%)', gross * 0.14, 1, true],
+      ['Host payouts', gross * 0.848, 1, false], ['Refunds issued', gross * 0.0167, 1, false],
+      ['Taxes collected', gross * 0.061, 1, false], ['Payment processing', gross * 0.029, 1, false],
+      ['Host referral credits', gross * 0.004, 1, false], ['Net platform revenue', gross * 0.107, 1, true]
+    ].map((l, i) => {
+      const prior = l[1] * g.prior * (1 + (i % 3) * 0.02), ch = (l[1] / prior - 1) * 100;
+      return { label: l[0], now: unitFmt(l[1]), prior: unitFmt(prior), weight: l[3] ? 700 : 400,
+        change: (ch >= 0 ? '+' : '−') + Math.abs(ch).toFixed(1) + '%', ink: ch >= 0 ? up : 'var(--color-accent-800)' };
+    });
 
     return v;
   }

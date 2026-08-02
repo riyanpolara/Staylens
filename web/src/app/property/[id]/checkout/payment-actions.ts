@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getPropertyDetail } from "@/lib/queries";
-import { computeBookingBreakdown } from "@/lib/pricing";
+import { computeBookingBreakdown, SERVICE_RATE } from "@/lib/pricing";
 import { validateCoupon } from "@/lib/coupons";
 import { convertFromUsd, DISPLAY_CURRENCY, formatInr } from "@/lib/currency";
 import { raiseNotification } from "@/lib/notifications";
@@ -213,6 +213,19 @@ export async function verifyAndCreateBooking(
     guests: Math.max(1, payload.booking.adults + payload.booking.children),
     total_price: priced.amountInr,
     currency: DISPLAY_CURRENCY,
+    // The revenue ledger needs the split, not just the gross. Written here
+    // because it cannot be recovered afterwards: the room subtotal and cleaning
+    // fee are not stored, so a total alone cannot be decomposed into commission
+    // and payout. Rates are recorded alongside the amounts so a future rate
+    // change cannot silently rewrite what these bookings earned.
+    commission: Math.round(convertFromUsd(priced.breakdown.serviceFee)),
+    commission_rate: SERVICE_RATE,
+    tax_amount: Math.round(convertFromUsd(priced.breakdown.taxes)),
+    tax_rate: priced.breakdown.taxRate,
+    host_payout:
+      priced.amountInr -
+      Math.round(convertFromUsd(priced.breakdown.serviceFee)) -
+      Math.round(convertFromUsd(priced.breakdown.taxes)),
     status: "confirmed",
     payment_status: "paid",
     payment_provider: "razorpay",

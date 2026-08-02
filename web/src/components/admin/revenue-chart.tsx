@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AreaChart, ChartCard, Segmented } from "@/components/admin/ui";
+import { formatInr } from "@/lib/currency";
 import type { RevenuePoint } from "@/lib/admin/dashboard";
 
 const RANGES = ["3m", "6m", "12m"] as const;
@@ -26,8 +27,8 @@ export function RevenueChart({ series }: { series: RevenuePoint[] }) {
       actions={<Segmented options={[...RANGES]} value={range} onChange={setRange} />}
       footer={
         <span className="text-muted">
-          {points.length} month{points.length === 1 ? "" : "s"} · $
-          {Math.round(total).toLocaleString()} total
+          {points.length} month{points.length === 1 ? "" : "s"} ·{" "}
+          {formatInr(total)} total
         </span>
       }
     >

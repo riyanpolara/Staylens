@@ -1,0 +1,106 @@
+/*
+ * Reviews screen styles.
+ *
+ * Page-scoped (imported by app/admin/reviews/page.tsx) rather than added to
+ * admin-theme.css, so nothing here can reach the Dashboard, Properties, Bookings
+ * or Users screens. Every selector is prefixed `admin-rv-` for the same reason.
+ *
+ * The shared vocabulary is reused as-is: .admin-toolbar, .admin-select,
+ * .admin-th-sort, .admin-row-actions, .admin-menu, .admin-menu-item,
+ * .admin-pagination, .admin-page-num, .admin-skeleton, .admin-toast,
+ * .admin-empty, .admin-table-scroll, .admin-cell-main, .admin-cell-link, and the
+ * Users screen's .admin-us-avatar / .admin-us-head / .admin-us-stats /
+ * .admin-us-panel-foot / .admin-us-search / .admin-us-per-page. Only what the
+ * Reviews screen adds on top of those lives below.
+ */
+
+/* ── Table cells ─────────────────────────────────────────────────────── */
+
+/* A review's text is the point of the row, so it gets more room than a name
+   would: two clamped lines at the muted size. */
+.admin-scope .admin-rv-excerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 46ch;
+  line-height: 1.45;
+}
+
+.admin-scope .admin-rv-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.admin-scope .admin-rv-rating svg {
+  color: var(--color-accent);
+  fill: var(--color-accent);
+}
+
+.admin-scope .admin-rv-superhost {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--color-accent-2);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+/* ── Detail panel ────────────────────────────────────────────────────── */
+
+/* The full comment. A quote block rather than a paragraph because it is someone
+   else's words, and a long review scrolls inside the panel instead of pushing
+   the moderation actions off the bottom. */
+.admin-scope .admin-rv-quote {
+  margin: var(--space-4) 0;
+  padding: var(--space-4);
+  border-inline-start: 3px solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  background: var(--color-neutral-100);
+  color: var(--color-text);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+/* Footer stacks the note above the buttons, so a long note does not squeeze the
+   actions onto one cramped line. */
+.admin-scope .admin-rv-foot {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.admin-scope .admin-rv-note {
+  display: grid;
+  gap: var(--space-1);
+  font-size: 0.8125rem;
+}
+
+.admin-scope .admin-rv-note textarea {
+  resize: vertical;
+  min-height: 3.25rem;
+  font: inherit;
+}
+
+.admin-scope .admin-rv-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+/* Reject and delete read as destructive wherever they appear — same token the
+   Users screen uses for its danger affordances. */
+.admin-scope .admin-rv-action-row .btn[data-danger] {
+  color: var(--color-accent-800);
+}
+
+.admin-scope .admin-menu-item[data-danger] {
+  color: var(--color-accent-800);
+}

@@ -1,7 +1,7 @@
 /**
- * Sidebar navigation. The five built screens route to real pages; the rest
- * resolve to the shared stub screen (handoff spec: "The other 8 sidebar entries
- * route to an empty-state stub").
+ * Sidebar navigation. The built screens route to real pages; the rest resolve to
+ * the shared stub screen (handoff spec: "The other sidebar entries route to an
+ * empty-state stub").
  */
 export type AdminNavItem = {
   href: string;
@@ -19,7 +19,8 @@ export const ADMIN_NAV: AdminNavItem[] = [
   { href: "/admin/users", label: "Users", icon: "Users", built: true },
   { href: "/admin/ai-search", label: "AI Search", icon: "Sparkles", built: true },
   { href: "/admin/hosts", label: "Hosts", icon: "BadgeCheck", built: false },
-  { href: "/admin/reviews", label: "Reviews", icon: "Star", built: false },
+  { href: "/admin/reviews", label: "Reviews", icon: "Star", built: true },
+  { href: "/admin/revenue", label: "Revenue", icon: "TrendingUp", built: true },
   { href: "/admin/payouts", label: "Payouts", icon: "Wallet", built: false },
   { href: "/admin/messages", label: "Messages", icon: "MessageSquare", badge: 3, built: false },
   { href: "/admin/reports", label: "Reports", icon: "FileBarChart", built: false },

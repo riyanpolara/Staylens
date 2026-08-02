@@ -1,0 +1,342 @@
+/*
+ * Revenue screen styles, built to the `staylens-admin-dashboard` handoff.
+ *
+ * Page-scoped (imported by app/admin/revenue/page.tsx) rather than added to
+ * admin-theme.css, so nothing here can reach the other admin screens. Every
+ * selector is prefixed `admin-rev-` for the same reason.
+ *
+ * Reused as-is from the shared theme: .card, .elev-sm, .btn, .seg, .seg-opt,
+ * .tag, .tag-accent-2, .tag-neutral, .table, .admin-table-scroll, .admin-empty,
+ * .admin-skeleton, .admin-rise. Only what the design adds lives below, with the
+ * prototype's own sizes (26px figures, 19px card titles, 12px captions).
+ */
+
+.admin-scope .admin-rev {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────────────── */
+
+.admin-scope .admin-rev-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.admin-scope .admin-rev-note {
+  font-size: 12px;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+
+.admin-scope .admin-rev-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+/*
+ * The shared `.seg-opt` highlights via `:has(input:checked)`, which needs a
+ * radio. These tabs are links so the view stays in the URL, so the active state
+ * comes from `data-active` instead. Same visual result, shareable address.
+ */
+.admin-scope .admin-rev-seg .seg-opt {
+  text-decoration: none;
+  color: inherit;
+  font-weight: 600;
+}
+.admin-scope .admin-rev-seg .seg-opt[data-active] {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+.admin-scope .admin-rev-seg .seg-opt:not([data-active]):hover {
+  background: color-mix(in srgb, var(--color-text) 7%, transparent);
+}
+
+/* ── KPI cards ───────────────────────────────────────────────────────── */
+
+.admin-scope .admin-rev-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(196px, 1fr));
+  gap: var(--space-3);
+}
+
+.admin-scope .admin-rev-kpi {
+  padding: var(--space-4);
+  gap: 4px;
+  animation: rise 0.4s ease both;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.admin-scope .admin-rev-kpi:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.admin-scope .admin-rev-kpi-top {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.admin-scope .admin-rev-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  flex: none;
+}
+
+.admin-scope .admin-rev-kpi-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--color-text) 62%, transparent);
+}
+
+.admin-scope .admin-rev-kpi-value {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  line-height: 1.1;
+}
+
+.admin-scope .admin-rev-kpi-foot {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.admin-scope .admin-rev-kpi-note {
+  color: color-mix(in srgb, var(--color-text) 45%, transparent);
+}
+
+/* Direction is carried by data attributes, not by parsing the string — a "New"
+   or "—" delta has no direction and must stay neutral. */
+.admin-scope .admin-rev-delta {
+  font-weight: 700;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+.admin-scope .admin-rev-delta[data-up] { color: var(--color-accent-2-800); }
+.admin-scope .admin-rev-delta[data-down] { color: var(--color-accent-800); }
+.admin-scope .admin-rev-delta-sm { font-size: 10px; }
+
+/* ── Cards ───────────────────────────────────────────────────────────── */
+
+.admin-scope .admin-rev-card {
+  padding: var(--space-4);
+  gap: var(--space-3);
+}
+
+.admin-scope .admin-rev-card-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.admin-scope .admin-rev-card-head > div:first-child { margin-right: auto; }
+
+.admin-scope .admin-rev-card-title {
+  font-family: var(--font-heading);
+  font-size: 19px;
+}
+
+.admin-scope .admin-rev-card-sub {
+  font-size: 12px;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+
+.admin-scope .admin-rev-card-foot {
+  font-size: 12px;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-divider);
+  color: color-mix(in srgb, var(--color-text) 60%, transparent);
+}
+.admin-scope .admin-rev-card-foot-strong {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.admin-scope .admin-rev-trend-tag { gap: 5px; }
+
+.admin-scope .admin-rev-empty {
+  font-size: 13px;
+  padding: var(--space-6) 0;
+  text-align: center;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+
+.admin-scope .admin-rev-caveat {
+  font-size: 12px;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-100);
+  color: var(--color-accent-900);
+}
+
+.admin-scope .admin-rev-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: var(--space-3);
+  align-items: start;
+}
+
+/* ── Trend chart ─────────────────────────────────────────────────────── */
+
+.admin-scope .admin-rev-chart { position: relative; }
+.admin-scope .admin-rev-chart svg { display: block; overflow: visible; }
+
+/* Labels are absolutely positioned at their point's x, so they stay aligned to
+   the data rather than being spread evenly and drifting out of step. */
+.admin-scope .admin-rev-axis {
+  position: relative;
+  height: 1.2em;
+  margin-top: 6px;
+  font-size: 11px;
+  color: color-mix(in srgb, var(--color-text) 50%, transparent);
+}
+.admin-scope .admin-rev-axis span {
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.admin-scope .admin-rev-axis span:first-child { transform: none; }
+.admin-scope .admin-rev-axis span:last-child { transform: translateX(-100%); }
+
+.admin-scope .admin-rev-split {
+  display: flex;
+  gap: var(--space-4) var(--space-6);
+  flex-wrap: wrap;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-divider);
+}
+
+.admin-scope .admin-rev-split-label {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 50%, transparent);
+}
+.admin-scope .admin-rev-split-value {
+  font-family: var(--font-heading);
+  font-size: 18px;
+}
+.admin-scope .admin-rev-split-share {
+  font-size: 11px;
+  color: color-mix(in srgb, var(--color-text) 50%, transparent);
+}
+
+/* ── Revenue by city ─────────────────────────────────────────────────── */
+
+.admin-scope .admin-rev-city-list {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.admin-scope .admin-rev-city-row {
+  display: grid;
+  grid-template-columns: 104px 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.admin-scope .admin-rev-city-name {
+  font-size: 13px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-scope .admin-rev-city-track {
+  height: 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-text) 8%, transparent);
+  overflow: hidden;
+}
+.admin-scope .admin-rev-city-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--color-accent);
+  transition: width 0.5s ease;
+}
+
+.admin-scope .admin-rev-city-figures { text-align: right; }
+.admin-scope .admin-rev-city-value {
+  font-family: var(--font-heading);
+  font-size: 15px;
+}
+
+/* ── Donut ───────────────────────────────────────────────────────────── */
+
+.admin-scope .admin-rev-donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+.admin-scope .admin-rev-donut {
+  flex: none;
+  transform: rotate(-90deg);
+}
+
+.admin-scope .admin-rev-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  flex: 1;
+  min-width: 160px;
+}
+.admin-scope .admin-rev-legend-row {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  font-size: 13px;
+}
+.admin-scope .admin-rev-legend-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.admin-scope .admin-rev-legend-value {
+  font-family: var(--font-heading);
+  font-size: 14px;
+}
+.admin-scope .admin-rev-legend-pct {
+  font-size: 11px;
+  opacity: 0.55;
+  width: 38px;
+  text-align: right;
+}
+
+/* ── Distribution ────────────────────────────────────────────────────── */
+
+.admin-scope .admin-rev-dist { display: block; overflow: visible; }
+
+.admin-scope .admin-rev-dist-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: color-mix(in srgb, var(--color-text) 50%, transparent);
+}
+
+/* ── Ledger ──────────────────────────────────────────────────────────── */
+
+.admin-scope .admin-rev-ledger { min-width: 420px; }
+.admin-scope .admin-rev-ledger td[data-strong],
+.admin-scope .admin-rev-ledger th { font-weight: 700; }
+.admin-scope .admin-rev-ledger td[data-numeric],
+.admin-scope .admin-rev-ledger th[data-numeric] {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.admin-scope .admin-rev-ledger-prior {
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-scope .admin-rev-kpi { animation: none; }
+  .admin-scope .admin-rev-kpi:hover { transform: none; }
+  .admin-scope .admin-rev-city-fill { transition: none; }
+}

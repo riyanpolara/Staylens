@@ -1,6 +1,6 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
-import { formatPriceCompact } from "@/lib/currency";
+import { formatInrCompact } from "@/lib/currency";
 
 /**
  * Dashboard-home data access.
@@ -115,10 +115,12 @@ export async function getDashboardData(months = 12): Promise<DashboardResult> {
 
 /* ── formatting helpers (shared by the cards) ─────────────────────────── */
 
-export function formatCurrency(usd: number): string {
-  // Revenue is stored in USD; the whole app displays INR, so the admin uses the
-  // same conversion + Indian units (K / L / Cr) as the public site.
-  return formatPriceCompact(usd);
+export function formatCurrency(inr: number): string {
+  // `bookings.total_price` is charged and stored in INR (Razorpay settles in
+  // INR), so this must NOT convert. It previously called the USD formatter,
+  // which multiplied every figure by the exchange rate and turned ₹5.9L of
+  // bookings into "₹5.2Cr" on the dashboard.
+  return formatInrCompact(inr);
 }
 
 export function formatCount(n: number): string {

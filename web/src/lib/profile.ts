@@ -69,6 +69,17 @@ export type Trip = {
   paymentStatus: string | null;
   totalPaid: number | null;
   currency: string;
+  /** Set once cancelled: how much is coming back and where that refund is. */
+  refundAmount: number | null;
+  refundStatus: string | null;
+  cancelledAt: string | null;
+  /**
+   * Whether the guest may still cancel this themselves. False once the stay has
+   * started, and once it is already cancelled or completed — the same rule the
+   * database enforces, mirrored here so the button is not offered and then
+   * refused.
+   */
+  canCancel: boolean;
 };
 
 export type ProfileStats = {
@@ -217,6 +228,9 @@ type BookingRow = {
   payment_status: string | null;
   total_price: number | null;
   currency: string | null;
+  refunded_amount: number | null;
+  refund_status: string | null;
+  cancelled_at: string | null;
   properties: {
     name: string | null;
     city: string | null;
@@ -239,6 +253,7 @@ export async function getTrips(): Promise<Trip[]> {
     .select(
       `id, reference, property_id, check_in, check_out, created_at, status,
        guests, payment_status, total_price, currency,
+       refunded_amount, refund_status, cancelled_at,
        properties ( name, city, country,
                     hosts ( name ),
                     property_images ( url ) )`,
@@ -269,6 +284,12 @@ export async function getTrips(): Promise<Trip[]> {
     paymentStatus: b.payment_status,
     totalPaid: b.total_price,
     currency: b.currency ?? "INR",
+    refundAmount: b.refunded_amount,
+    refundStatus: b.refund_status,
+    cancelledAt: b.cancelled_at,
+    // `check_in > today` rather than the derived status, so the rule reads the
+    // same way it does in the database.
+    canCancel: b.status !== "cancelled" && b.status !== "completed" && b.check_in > today,
   }));
 }
 
