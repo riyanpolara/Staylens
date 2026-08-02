@@ -56,7 +56,20 @@ export function formatPrice(amountUsd: number, rate: number = USD_TO_INR): strin
  * marker. Uses Indian units: ₹13.1K, ₹1.2L, ₹1.4Cr.
  */
 export function formatPriceCompact(amountUsd: number, rate: number = USD_TO_INR): string {
-  const n = Math.round(convertFromUsd(amountUsd, rate));
+  return formatInrCompact(convertFromUsd(amountUsd, rate));
+}
+
+/**
+ * Compact form for an amount that is ALREADY in rupees.
+ *
+ * Separate from `formatPriceCompact` because the difference is not cosmetic:
+ * catalogue prices are stored in USD and must be converted, while booking
+ * totals are charged and stored in INR and must not be. Passing an INR amount
+ * to the USD formatter multiplies it by the exchange rate — that is how the
+ * admin dashboard came to report ₹5.2Cr for ₹5.9L of bookings.
+ */
+export function formatInrCompact(amountInr: number): string {
+  const n = Math.round(amountInr);
   if (n >= 10_000_000) return `₹${(n / 10_000_000).toFixed(n % 10_000_000 === 0 ? 0 : 1)}Cr`;
   if (n >= 100_000) return `₹${(n / 100_000).toFixed(n % 100_000 === 0 ? 0 : 1)}L`;
   if (n >= 1_000) return `₹${(n / 1_000).toFixed(n % 1_000 === 0 ? 0 : 1)}K`;

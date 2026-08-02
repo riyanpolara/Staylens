@@ -7,6 +7,7 @@ import { ProfileFooter } from "@/components/profile/profile-footer";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { formatInr } from "@/lib/currency";
 import { cn } from "@/lib/utils";
+import { CancelBooking } from "@/components/trips/cancel-booking";
 
 /**
  * Travel log — every booking the signed-in guest has made, grouped by where the
@@ -45,6 +46,14 @@ const GROUPS: { key: TripStatus; title: string }[] = [
   { key: "cancelled", title: "Cancelled" },
 ];
 
+/** Refund states as a guest reads them, not as the enum spells them. */
+const REFUND_LABEL: Record<string, string> = {
+  pending: "Pending",
+  processing: "Processing",
+  completed: "Completed",
+  failed: "Failed — contact support",
+};
+
 function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div>
@@ -56,18 +65,28 @@ function Detail({ label, value }: { label: string; value: string }) {
   );
 }
 
-function TripCard({ trip }: { trip: Trip }) {
+/** Booking totals are stored in the currency they were charged in. */
+function paidFmt(amount: number, currency: string): string {
+  return currency === "INR" ? formatInr(amount) : `${amount} ${currency}`;
+}
+
+function TripCard({ trip, focused }: { trip: Trip; focused: boolean }) {
   const place = [trip.city, trip.country].filter(Boolean).join(", ");
   // Booking totals are stored in the currency they were charged in.
-  const paid =
-    trip.totalPaid === null
-      ? "—"
-      : trip.currency === "INR"
-        ? formatInr(trip.totalPaid)
-        : `${trip.totalPaid} ${trip.currency}`;
+  const paid = trip.totalPaid === null ? "—" : paidFmt(trip.totalPaid, trip.currency);
 
   return (
-    <li className="bg-white rounded-[20px] shadow-tinted border border-outline-variant/10 overflow-hidden">
+    <li
+      // The hash target a notification links to. `scroll-mt` clears the sticky
+      // header so the card is not hidden underneath it on arrival.
+      id={`booking-${trip.id}`}
+      className={cn(
+        "bg-white rounded-[20px] shadow-tinted overflow-hidden scroll-mt-28 transition-shadow",
+        focused
+          ? "border-2 border-primary ring-4 ring-primary/15"
+          : "border border-outline-variant/10",
+      )}
+    >
       <div className="flex flex-col sm:flex-row">
         <div className="relative w-full sm:w-56 h-44 sm:h-auto shrink-0 bg-surface-container">
           {trip.image && (
@@ -119,13 +138,49 @@ function TripCard({ trip }: { trip: Trip }) {
             <Detail label="Booking ID" value={trip.reference || "—"} />
           </dl>
 
-          <div className="mt-5 flex flex-wrap gap-4">
+          {/* Cancellation and refund, as labelled fields alongside the rest —
+              a guest checking "did my money come back?" should not have to
+              read a sentence to find out. */}
+          {trip.status === "cancelled" && (
+            <dl className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-3 text-sm pt-4 border-t border-outline-variant/20">
+              {trip.cancelledAt && (
+                <Detail label="Cancelled on" value={fmt(trip.cancelledAt)} />
+              )}
+              {trip.refundAmount !== null && trip.refundAmount > 0 ? (
+                <>
+                  <Detail
+                    label="Refund"
+                    value={paidFmt(trip.refundAmount, trip.currency)}
+                  />
+                  <Detail
+                    label="Refund status"
+                    value={REFUND_LABEL[trip.refundStatus ?? ""] ?? "Pending"}
+                  />
+                </>
+              ) : (
+                <Detail label="Refund" value="None due" />
+              )}
+            </dl>
+          )}
+
+          <div className="mt-5 flex flex-wrap items-center gap-4">
             <Link
               href={`/property/${trip.propertyId}`}
               className="text-sm font-semibold text-primary hover:underline"
             >
               View booking
             </Link>
+
+            {/* Only while the stay is still ahead and not already cancelled —
+                the same rule cancel_my_booking enforces, so the button is never
+                offered and then refused. */}
+            {trip.canCancel && (
+              <CancelBooking
+                bookingId={trip.id}
+                propertyName={trip.propertyName}
+              />
+            )}
+
             {/* Reviews open only after checkout — there is nothing to review
                 before the stay has happened. No review form exists yet, so the
                 control is not rendered rather than shown as a dead link. */}
@@ -136,7 +191,17 @@ function TripCard({ trip }: { trip: Trip }) {
   );
 }
 
-export default async function TripsPage() {
+export default async function TripsPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const sp = await searchParams;
+  // `?booking=<id>` from a notification. Only used to highlight — the hash in
+  // the same link is what scrolls, so this needs no client JavaScript.
+  const focusedId =
+    typeof sp.booking === "string" && sp.booking.length ? sp.booking : null;
+
   const [profile, trips] = await Promise.all([getProfile(), getTrips()]);
   const groups = GROUPS.map((g) => ({
     ...g,
@@ -171,7 +236,7 @@ export default async function TripsPage() {
                 </h2>
                 <ul className="space-y-6">
                   {g.items.map((t) => (
-                    <TripCard key={t.id} trip={t} />
+                    <TripCard key={t.id} trip={t} focused={t.id === focusedId} />
                   ))}
                 </ul>
               </section>

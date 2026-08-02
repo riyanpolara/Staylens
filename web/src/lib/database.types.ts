@@ -1205,6 +1205,41 @@ export type Database = {
         Args: { p_id: string; p_status: string }
         Returns: Json
       }
+      admin_revenue_dashboard: {
+        Args: { p_bucket?: string; p_from?: string; p_to?: string }
+        Returns: Json
+      }
+      booking_cancellation_quote: { Args: { p_id: string }; Returns: Json }
+      cancel_my_booking: { Args: { p_id: string; p_reason?: string }; Returns: Json }
+      refund_percent_for: {
+        Args: {
+          p_booked_at: string
+          p_check_in: string
+          p_now?: string
+          p_policy: string
+        }
+        Returns: number
+      }
+      settle_refund: { Args: { p_id: string }; Returns: Json }
+      admin_review_detail: { Args: { p_id: string }; Returns: Json }
+      admin_review_set_status: {
+        Args: { p_id: string; p_note?: string; p_status: string }
+        Returns: Json
+      }
+      admin_reviews_list: {
+        Args: {
+          p_dir?: string
+          p_page?: number
+          p_page_size?: number
+          p_rating?: number
+          p_search?: string
+          p_sort?: string
+          p_source?: string
+          p_status?: string
+        }
+        Returns: Json
+      }
+      admin_reviews_status_counts: { Args: never; Returns: Json }
       admin_users_list: {
         Args: {
           p_dir?: string

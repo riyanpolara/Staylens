@@ -12,18 +12,38 @@ import { createAdminClient } from "@/lib/supabase/admin";
  * `raiseNotification` below using the service role.
  */
 
-export type NotificationType =
-  | "account.welcome"
-  | "account.profile_updated"
-  | "booking.confirmed"
-  | "booking.cancelled"
-  | "booking.reminder"
-  | "payment.succeeded"
-  | "payment.failed"
-  | "message.received"
-  | "review.reminder"
-  | "wishlist.price_drop"
-  | (string & {});
+/**
+ * Every notification kind the app can raise.
+ *
+ * A closed set, not a free-text field: this used to end in `(string & {})`,
+ * which accepted any string and let a typo create a kind nothing renders an
+ * icon for and no query can find. Adding a kind now means adding it here, which
+ * is the point.
+ *
+ * The `<family>.<event>` shape is load-bearing — `iconFor()` in the
+ * notifications UI switches on the family, so a new `booking.*` kind gets the
+ * right icon with no further work.
+ *
+ * The database column stays `text` rather than an enum: new kinds ship with a
+ * code deploy, and an enum would make every addition a migration for no
+ * integrity gain that this constant does not already provide.
+ */
+export const NOTIFICATION_TYPES = [
+  "account.welcome",
+  "account.profile_updated",
+  "booking.confirmed",
+  "booking.cancelled",
+  "booking.reminder",
+  "payment.succeeded",
+  "payment.failed",
+  "refund.completed",
+  "message.received",
+  "review.reminder",
+  "wishlist.price_drop",
+  "system",
+] as const;
+
+export type NotificationType = (typeof NOTIFICATION_TYPES)[number];
 
 export type Notification = {
   id: string;
@@ -52,9 +72,22 @@ type Row = {
   created_at: string;
 };
 
+/**
+ * Narrows a stored `text` type to the known set.
+ *
+ * The column is text, so a row written by an older deploy could hold a kind
+ * this build does not know. Falling back to `system` keeps such a row visible
+ * with a sensible icon instead of crashing the page or lying about what it is.
+ */
+function asNotificationType(value: string): NotificationType {
+  return (NOTIFICATION_TYPES as readonly string[]).includes(value)
+    ? (value as NotificationType)
+    : "system";
+}
+
 const toNotification = (r: Row): Notification => ({
   id: r.id,
-  type: r.type,
+  type: asNotificationType(r.type),
   title: r.title,
   description: r.description,
   link: r.link,

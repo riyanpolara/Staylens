@@ -23,26 +23,24 @@ import {
   markNotificationRead,
 } from "@/app/notifications/actions";
 
-/** Icon per family, falling back to the bell for kinds added later. */
-function iconFor(type: string): LucideIcon {
-  const family = type.split(".")[0];
-  switch (family) {
-    case "booking":
-      return CalendarCheck;
-    case "payment":
-      return CreditCard;
-    case "message":
-      return MessageSquare;
-    case "review":
-      return Star;
-    case "wishlist":
-      return Heart;
-    case "account":
-      return UserCheck;
-    default:
-      return Bell;
-  }
-}
+/**
+ * Icon per notification family, keyed on the part before the dot — so a new
+ * `booking.*` kind picks up the right icon with no change here.
+ *
+ * A static map rather than a function that returns a component: React's
+ * static-components rule flags the latter, and a lookup is what this always
+ * was anyway. Unknown families fall back to the bell.
+ */
+const FAMILY_ICON: Record<string, LucideIcon> = {
+  booking: CalendarCheck,
+  payment: CreditCard,
+  // A refund is money moving, so it belongs with payments.
+  refund: CreditCard,
+  message: MessageSquare,
+  review: Star,
+  wishlist: Heart,
+  account: UserCheck,
+};
 
 function timeAgo(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime();
@@ -71,7 +69,7 @@ function Row({
   onDelete: (id: string) => void;
   busy: boolean;
 }) {
-  const Icon = iconFor(n.type);
+  const Icon = FAMILY_ICON[n.type.split(".")[0]] ?? Bell;
 
   const inner = (
     <>
@@ -102,8 +100,11 @@ function Row({
             />
           )}
         </span>
+        {/* pre-line: the refund confirmation is deliberately multi-line
+            (property, dates, amount). Three lines keeps the list tidy while
+            still showing the figures that matter. */}
         {n.description && (
-          <span className="block text-sm text-on-surface-variant mt-0.5 line-clamp-2">
+          <span className="block text-sm text-on-surface-variant mt-0.5 line-clamp-3 whitespace-pre-line">
             {n.description}
           </span>
         )}
