@@ -108,7 +108,8 @@ export default async function CheckoutPage({
           property={cp}
           trip={trip}
           initialGuest={initialGuest}
-          editHref={`/property/${id}`}
+          maxGuests={Math.max(1, property.accommodates ?? 16)}
+          minNights={Math.max(1, property.minimumNights ?? 1)}
           createOrder={createBookingOrder}
           verifyPayment={verifyAndCreateBooking}
         />

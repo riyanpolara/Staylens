@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -170,6 +170,24 @@ export function NotificationsClient({
   const [readIds, setReadIds] = useState<Set<string>>(() => new Set());
   const [clearedAll, setClearedAll] = useState(false);
 
+  /**
+   * What was unread when this page opened.
+   *
+   * Frozen at mount, before anything is marked. Opening the page marks
+   * everything read, so without this snapshot the highlight would vanish the
+   * instant the refresh landed and the visitor would never get to see which
+   * notifications were actually new — the one thing the styling exists to say.
+   * They stay highlighted for this visit and come back read on the next one.
+   */
+  const [openedUnread] = useState<Set<string>>(
+    () =>
+      new Set(
+        initialGroups.flatMap((g) =>
+          g.items.filter((n) => !n.isRead).map((n) => n.id),
+        ),
+      ),
+  );
+
   const groups = clearedAll
     ? []
     : initialGroups
@@ -177,14 +195,43 @@ export function NotificationsClient({
           ...g,
           items: g.items
             .filter((n) => !removed.has(n.id))
-            .map((n) => (readIds.has(n.id) ? { ...n, isRead: true } : n)),
+            .map((n) => ({
+              ...n,
+              // An explicit click wins over the snapshot; otherwise anything
+              // that was new on arrival keeps looking new until you leave.
+              isRead: readIds.has(n.id)
+                ? true
+                : openedUnread.has(n.id)
+                  ? false
+                  : n.isRead,
+            })),
         }))
         .filter((g) => g.items.length > 0);
 
-  const unreadNow = groups.reduce(
-    (sum, g) => sum + g.items.filter((n) => !n.isRead).length,
+  const newOnArrival = groups.reduce(
+    (sum, g) => sum + g.items.filter((n) => openedUnread.has(n.id)).length,
     0,
   );
+
+  /**
+   * Opening the notifications tab IS the acknowledgement.
+   *
+   * There is no "mark all as read" button: needing to click one to tell the app
+   * you have seen what you are looking at is busywork. `router.refresh()`
+   * re-renders the bell on the server, so the badge clears with it.
+   *
+   * Runs once. `markedRef` guards the double effect invocation in development —
+   * the update is idempotent, but a second refresh is wasted work.
+   */
+  const markedRef = useRef(false);
+  useEffect(() => {
+    if (markedRef.current || unread === 0) return;
+    markedRef.current = true;
+    startTransition(async () => {
+      await markAllNotificationsRead();
+      router.refresh();
+    });
+  }, [unread, router, startTransition]);
 
   function onRead(id: string) {
     setReadIds((prev) => new Set(prev).add(id));
@@ -208,16 +255,6 @@ export function NotificationsClient({
         });
       }
       setBusyId(null);
-      router.refresh();
-    });
-  }
-
-  function onMarkAll() {
-    const all = new Set(readIds);
-    groups.forEach((g) => g.items.forEach((n) => all.add(n.id)));
-    setReadIds(all);
-    startTransition(async () => {
-      await markAllNotificationsRead();
       router.refresh();
     });
   }
@@ -246,18 +283,13 @@ export function NotificationsClient({
   return (
     <>
       <div className="flex flex-wrap items-center gap-4 mb-6">
+        {/* "new", not "unread": by the time this renders they have been marked
+            read, and the count describes what arrived since the last visit. */}
         <p className="text-on-surface-variant text-sm mr-auto">
-          {unreadNow > 0 ? `${unreadNow} unread` : "All read"}
-          {unread !== unreadNow ? "" : ""}
+          {newOnArrival > 0
+            ? `${newOnArrival} new since your last visit`
+            : "All caught up"}
         </p>
-        <button
-          type="button"
-          onClick={onMarkAll}
-          disabled={pending || unreadNow === 0}
-          className="text-sm font-semibold text-primary hover:underline disabled:opacity-50 disabled:no-underline"
-        >
-          Mark all as read
-        </button>
         <button
           type="button"
           onClick={onClearAll}

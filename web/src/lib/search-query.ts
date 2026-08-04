@@ -1,5 +1,11 @@
 import type { SearchState } from "@/components/search/search-types";
 import { EMPTY_SEARCH } from "@/components/search/search-types";
+import {
+  EMPTY_FLEXIBLE,
+  buildFlexibleQuery,
+  parseFlexibleQuery,
+  type FlexibleSearch,
+} from "@/components/search/flexible-search-state";
 
 /** yyyy-mm-dd for the search URL (local date, not UTC). */
 function toParam(d: Date | null): string | null {
@@ -12,10 +18,19 @@ function toParam(d: Date | null): string | null {
 export function buildSearchQuery(state: SearchState): URLSearchParams {
   const qs = new URLSearchParams();
   if (state.where.trim()) qs.set("where", state.where.trim());
-  const ci = toParam(state.checkIn);
-  const co = toParam(state.checkOut);
-  if (ci) qs.set("in", ci);
-  if (co) qs.set("out", co);
+
+  // Flexible and exact dates are alternatives, not additions: emitting `in`/
+  // `out` alongside `flexible=1` would hand the backend two different answers
+  // to the same question.
+  if (state.flexible.mode === "flexible") {
+    buildFlexibleQuery(state.flexible, qs);
+  } else {
+    const ci = toParam(state.checkIn);
+    const co = toParam(state.checkOut);
+    if (ci) qs.set("in", ci);
+    if (co) qs.set("out", co);
+  }
+
   for (const key of ["adults", "children", "infants", "pets"] as const) {
     if (state.guests[key] > 0) qs.set(key, String(state.guests[key]));
   }
@@ -37,7 +52,21 @@ export type SeedSearch = {
   children?: number;
   infants?: number;
   pets?: number;
+  /** Already-parsed flexible state, so the seed stays serializable. */
+  flexible?: FlexibleSearch;
 };
+
+/**
+ * Reads the flexible half of a `/search` URL.
+ *
+ * Separate from `seedSearchState` because the page has the raw params and the
+ * seed takes a plain object — this is the one step that needs both.
+ */
+export function seedFlexibleFromParams(
+  get: (k: string) => string | null,
+): FlexibleSearch {
+  return parseFlexibleQuery(get);
+}
 
 function parseISO(v?: string | null): Date | null {
   if (!v) return null;
@@ -59,5 +88,6 @@ export function seedSearchState(init?: SeedSearch): SearchState {
       infants: init.infants ?? 0,
       pets: init.pets ?? 0,
     },
+    flexible: init.flexible ?? EMPTY_FLEXIBLE,
   };
 }

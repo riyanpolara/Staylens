@@ -7,6 +7,7 @@ import {
   type StaySearchParams,
 } from "@/lib/stay-filters";
 import type { Tables } from "@/lib/database.types";
+import { cleanListingText, cleanListingTextOrNull } from "@/lib/listing-text";
 
 export type City = Tables<"cities"> & { properties: { count: number }[] };
 export type PropertyCard = Pick<
@@ -189,9 +190,12 @@ export async function getPropertyDetail(id: string): Promise<PropertyDetail | nu
   return {
     id: d.id,
     name: d.name,
-    description: d.description,
-    summary: d.summary,
-    neighborhoodOverview: d.neighborhood_overview,
+    // Stripped here rather than in each component: the import left literal
+    // `<br />` in 2,328 of the 6,480 rows, and anything reading these fields
+    // wants prose, not markup.
+    description: cleanListingTextOrNull(d.description),
+    summary: cleanListingTextOrNull(d.summary),
+    neighborhoodOverview: cleanListingTextOrNull(d.neighborhood_overview),
     propertyType: d.property_type,
     roomType: d.room_type,
     price: Math.round(d.price ?? 0),
@@ -231,12 +235,14 @@ export async function getPropertyDetail(id: string): Promise<PropertyDetail | nu
       .map((r: { reviewer_name: string | null; review_date: string | null; comments: string }) => ({
         reviewerName: r.reviewer_name,
         date: r.review_date,
-        comment: r.comments,
+        // Guests typed these into the same rich-text box: 4,106 of the 43,307
+        // review rows carry `<br/>`, and they render on this page too.
+        comment: cleanListingText(r.comments),
       })),
     host: host
       ? {
           name: host.name,
-          about: host.about,
+          about: cleanListingTextOrNull(host.about),
           pictureUrl: host.picture_url ?? host.thumbnail_url,
           isSuperhost: host.is_superhost ?? false,
           identityVerified: host.identity_verified ?? false,
@@ -293,6 +299,34 @@ export async function getSimilarProperties(propertyId: string, count = 10) {
  * ------------------------------------------------------------------ */
 
 /** Card-ready stay: DB fields mapped to what the Stitch card displays. */
+/**
+ * The AI Match for one stay against one search.
+ *
+ * Every number here is produced by the hybrid ranking engine
+ * (`backend/app/ranking/ranking_engine.py`) — a weighted sum of normalized
+ * signals, not a generated figure. `signals` is the same breakdown the engine
+ * scored with, so the percentage can always be decomposed.
+ *
+ * Null whenever there is nothing to match against: no query, no embeddings, or
+ * the Supabase fallback path. The badge is hidden rather than invented.
+ */
+export type MatchScore = {
+  /** 0–100, rounded from the engine's weighted total. */
+  score: number;
+  /** Per-signal contributions, 0–1, as scored. */
+  signals: {
+    semantic: number;
+    text: number;
+    rating: number;
+    reviews: number;
+    superhost: number;
+    amenity: number;
+    popularity: number;
+  };
+  /** "✓ …" and "✗ …" lines straight from the engine. */
+  explanation: string[];
+};
+
 export type ExploreStay = {
   id: string;
   name: string;
@@ -313,6 +347,8 @@ export type ExploreStay = {
   /** shown in the map popup card ("1 bed · 1 bathroom") */
   beds?: number | null;
   bathrooms?: number | null;
+  /** Present only for hybrid-search results with a real query. */
+  match?: MatchScore | null;
 };
 
 const STAY_SELECT = `id, name, price, suburb, government_area,

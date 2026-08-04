@@ -27,7 +27,11 @@ export default async function EditProfilePage() {
 
   return (
     <>
-      <ProfileTopNav avatarUrl={profile.avatarUrl} name={profile.fullName} />
+      <ProfileTopNav
+        avatarUrl={profile.avatarUrl}
+        name={profile.fullName}
+        email={profile.email}
+      />
       {/* Without the settings sidebar the form is the only column, so it is
           capped and centred rather than stretched across the full 1280px —
           form fields that wide are hard to scan. */}

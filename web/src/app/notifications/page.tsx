@@ -26,6 +26,7 @@ export default async function NotificationsPage() {
       <ProfileTopNav
         avatarUrl={profile?.avatarUrl ?? ""}
         name={profile?.fullName ?? ""}
+        email={profile?.email ?? ""}
       />
       <main id="main-content" className="max-w-[760px] mx-auto px-4 md:px-16 py-16">
         <h1 className="font-display text-3xl font-semibold text-on-surface mb-8">

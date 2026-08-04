@@ -3,12 +3,11 @@
 import { Search, X } from "lucide-react";
 import { useState } from "react";
 import { WhenPanel, WhoPanel } from "@/components/search/search-panels";
+import { formatWhen } from "@/components/search/search-types";
 import type {
   DestinationSuggestion,
   SearchState,
 } from "@/components/search/search-types";
-
-const DATE_FMT = new Intl.DateTimeFormat("en", { day: "numeric", month: "short" });
 
 type Section = "where" | "when" | "who";
 
@@ -49,12 +48,9 @@ export function MobileSearch({
 
   const guestTotal =
     state.guests.adults + state.guests.children + state.guests.infants;
-  const whenLabel =
-    state.checkIn && state.checkOut
-      ? `${DATE_FMT.format(state.checkIn)} – ${DATE_FMT.format(state.checkOut)}`
-      : state.checkIn
-        ? DATE_FMT.format(state.checkIn)
-        : "Add dates";
+  // Same helper the desktop bar uses, so the two labels cannot drift — and so
+  // mobile picks up the flexible summary without a second implementation.
+  const whenLabel = formatWhen(state, "Add dates");
   const whoLabel = guestTotal > 0 ? `${guestTotal} guest${guestTotal === 1 ? "" : "s"}` : "Add guests";
 
   function toggle(s: Section) {

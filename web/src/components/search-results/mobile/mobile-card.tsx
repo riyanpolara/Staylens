@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { WishlistButton } from "@/components/wishlist/wishlist-button";
+import { AiMatchBadge, matchReason } from "@/components/search/ai-match-badge";
 import { Star } from "lucide-react";
 import { ImageCarousel } from "@/components/explore/image-carousel";
 import { nightsLabel } from "@/lib/pricing";
@@ -45,6 +46,7 @@ export function MobileCard({
             propertyId={stay.id}
             className="top-3 right-3 grid place-items-center w-11 h-11 p-0 bg-transparent backdrop-blur-none text-white/95 hover:bg-transparent hover:text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.45)]"
           />
+          <AiMatchBadge match={stay.match} className="absolute top-3 left-3 z-10" />
         </div>
 
         <div className="pt-3">
@@ -57,6 +59,14 @@ export function MobileCard({
               {stay.rating.toFixed(2)}
             </span>
           </div>
+          {/* On touch there is no hover and no `title`, so the badge's reason
+              is shown outright rather than behind an interaction that mobile
+              cannot perform. */}
+          {matchReason(stay.match) ? (
+            <p className="text-primary text-xs font-medium mt-1 line-clamp-1">
+              {matchReason(stay.match)}
+            </p>
+          ) : null}
           <p className="text-on-surface-variant text-sm mt-0.5 line-clamp-1">
             {stay.location}
           </p>
