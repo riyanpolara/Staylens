@@ -53,7 +53,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         ["--font-body" as string]: "var(--admin-font-body)",
       }}
     >
-      <AdminShell>{children}</AdminShell>
+      <AdminShell identity={check.identity}>{children}</AdminShell>
     </div>
   );
 }

@@ -1,3 +1,9 @@
+import {
+  EMPTY_FLEXIBLE,
+  flexibleSummary,
+  type FlexibleSearch,
+} from "@/components/search/flexible-search-state";
+
 export type SearchField = "where" | "when" | "who";
 
 export type GuestCounts = {
@@ -12,6 +18,12 @@ export type SearchState = {
   checkIn: Date | null;
   checkOut: Date | null;
   guests: GuestCounts;
+  /**
+   * Flexible-search fields. Part of this object rather than a parallel state so
+   * the "when" tab, duration and months travel with `where` and `guests`
+   * through the same flow the exact-date path already uses.
+   */
+  flexible: FlexibleSearch;
 };
 
 export type DestinationSuggestion = {
@@ -25,11 +37,15 @@ export const EMPTY_SEARCH: SearchState = {
   checkIn: null,
   checkOut: null,
   guests: { adults: 0, children: 0, infants: 0, pets: 0 },
+  flexible: EMPTY_FLEXIBLE,
 };
 
 const fmt = new Intl.DateTimeFormat("en", { day: "numeric", month: "short" });
 
 export function formatWhen(s: SearchState, fallback: string): string {
+  // Flexible mode describes the intent ("Weekend in Oct"), not the dates it
+  // resolved to — those are an implementation detail the guest never chose.
+  if (s.flexible.mode === "flexible") return flexibleSummary(s.flexible);
   if (s.checkIn && s.checkOut) return `${fmt.format(s.checkIn)} – ${fmt.format(s.checkOut)}`;
   if (s.checkIn) return fmt.format(s.checkIn);
   return fallback;

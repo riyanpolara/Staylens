@@ -3,6 +3,7 @@ import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ImageCarousel } from "@/components/explore/image-carousel";
 import { WishlistButton } from "@/components/wishlist/wishlist-button";
+import { AiMatchBadge } from "@/components/search/ai-match-badge";
 import { nightsLabel } from "@/lib/pricing";
 import { formatPrice } from "@/lib/currency";
 import type { ExploreStay } from "@/lib/queries";
@@ -75,6 +76,9 @@ export function PropertyCard({
                 <Star aria-hidden className="size-3.5 text-primary fill-primary" />
                 <span className="text-xs font-bold">{stay.rating.toFixed(2)}</span>
               </div>
+              {/* AI Match — renders nothing when the engine had no query to
+                  score against, so a browse never shows an invented figure. */}
+              <AiMatchBadge match={stay.match} className="absolute top-4 left-4 z-10" />
             </>
           ) : (
             <>

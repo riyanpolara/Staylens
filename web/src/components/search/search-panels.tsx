@@ -14,6 +14,11 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { FlexibleDateSelector } from "@/components/search/flexible-date-selector";
+import type {
+  FlexibleSearch,
+  SearchMode,
+} from "@/components/search/flexible-search-state";
 import type {
   DestinationSuggestion,
   GuestCounts,
@@ -179,7 +184,9 @@ export function WhenPanel({
 }) {
   const now = new Date();
   const [offset, setOffset] = useState(0);
-  const [tab, setTab] = useState<"dates" | "flexible">("dates");
+  const tab = state.flexible.mode;
+  const setTab = (mode: SearchMode) =>
+    onChange({ flexible: { ...state.flexible, mode } });
 
   const m0 = new Date(now.getFullYear(), now.getMonth() + offset, 1);
   const m1 = new Date(now.getFullYear(), now.getMonth() + offset + 1, 1);
@@ -253,16 +260,15 @@ export function WhenPanel({
           />
         </div>
       ) : (
-        <div className="flex gap-3 justify-center py-10 w-[640px]">
-          {["A weekend", "A week", "A month"].map((label) => (
-            <button
-              key={label}
-              type="button"
-              className="px-5 py-3 rounded-full border border-outline-variant/50 font-semibold text-sm hover:border-on-surface transition-colors"
-            >
-              {label}
-            </button>
-          ))}
+        // Width matches the two-month calendar beside it so switching tabs does
+        // not resize the popover under the pointer.
+        <div className="w-full md:w-[640px]">
+          <FlexibleDateSelector
+            value={state.flexible}
+            onChange={(patch: Partial<FlexibleSearch>) =>
+              onChange({ flexible: { ...state.flexible, ...patch } })
+            }
+          />
         </div>
       )}
     </div>

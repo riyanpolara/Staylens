@@ -14,6 +14,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
 import { searchHref } from "@/lib/search-query";
+import {
+  EMPTY_FLEXIBLE,
+  type FlexibleSearch,
+} from "@/components/search/flexible-search-state";
 import { SearchBar } from "@/components/search/search-bar";
 
 // Mobile-only, opened on tap — keep it out of the shared header bundle.
@@ -55,6 +59,8 @@ export type InitialSearch = {
   children?: number;
   infants?: number;
   pets?: number;
+  /** Parsed from the /search URL, so the panel reopens on the right tab. */
+  flexible?: FlexibleSearch;
 };
 
 function parseDate(v?: string | null): Date | null {
@@ -94,6 +100,9 @@ export function SiteHeader({
             infants: initialSearch.infants ?? 0,
             pets: initialSearch.pets ?? 0,
           },
+          // Carried through from the /search URL so re-opening the panel shows
+          // the flexible choice the results are actually for.
+          flexible: initialSearch.flexible ?? EMPTY_FLEXIBLE,
         }
       : EMPTY_SEARCH,
   );

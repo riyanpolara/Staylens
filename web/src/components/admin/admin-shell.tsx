@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import * as Icons from "lucide-react";
 import { ADMIN_NAV } from "@/components/admin/nav-items";
 import { useMediaQuery } from "@/components/admin/use-media-query";
+import { hasRealAvatar, initialOf } from "@/lib/avatar";
+import type { AdminIdentity } from "@/lib/admin/auth";
 
 /**
  * Admin chrome: sidebar + sticky header + <main>. Owns theme and rail state.
@@ -22,7 +24,14 @@ function Icon({ name, ...props }: { name: string } & Icons.LucideProps) {
   return <C {...props} />;
 }
 
-export function AdminShell({ children }: { children: React.ReactNode }) {
+export function AdminShell({
+  children,
+  identity,
+}: {
+  children: React.ReactNode;
+  /** Signed-in admin, for the header avatar. Supplied by the admin layout. */
+  identity?: AdminIdentity;
+}) {
   const pathname = usePathname();
   /** null = follow the viewport; true/false = user overrode via the toggle. */
   const [manualCollapsed, setManualCollapsed] = useState<boolean | null>(null);
@@ -48,6 +57,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   );
   const railW = isMobile ? 236 : collapsed ? 76 : 236;
   const showLabels = isMobile ? true : !collapsed;
+  /** An uploaded picture, or null — the letter is the fallback. */
+  const photo = hasRealAvatar(identity?.avatarUrl) ? identity!.avatarUrl : null;
 
   return (
     <div className="admin-shell">
@@ -64,10 +75,18 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         data-drawer={isMobile ? (drawerOpen ? "open" : "closed") : undefined}
         style={{ width: railW }}
       >
-        <div className="admin-brand">
+        {/* The wordmark is the way back to the public site — the convention
+            everywhere else, and the only exit from /admin that does not go
+            through the browser's back button. */}
+        <Link
+          href="/"
+          className="admin-brand"
+          aria-label="StayLens home"
+          title="Back to StayLens"
+        >
           <Icons.TreePine aria-hidden size={24} style={{ color: "var(--color-accent)" }} />
           {showLabels && <span className="admin-brand-name">StayLens</span>}
-        </div>
+        </Link>
 
         <nav aria-label="Admin" className="admin-nav">
           {ADMIN_NAV.map((item) => {
@@ -165,7 +184,29 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               )}
             </div>
 
-            <span className="admin-avatar" aria-label="Signed in as admin">R</span>
+            {/* Was a hardcoded "R" that did nothing. The initial is the signed-in
+                admin's, and it goes to the profile — the public site's avatar
+                behaves the same way, so the gesture carries across. */}
+            <Link
+              href="/profile/edit"
+              className="admin-avatar"
+              aria-label={
+                identity?.name.trim()
+                  ? `Your profile, ${identity.name.trim()}`
+                  : "Your profile"
+              }
+              title="Your profile"
+            >
+              {photo ? (
+                // Avatars come from arbitrary provider hosts; next/image would
+                // need each one whitelisted in next.config, and this is a 34px
+                // thumbnail. Same call the admin users table already makes.
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={photo} alt="" />
+              ) : (
+                <span aria-hidden>{initialOf(identity?.name ?? "", identity?.email)}</span>
+              )}
+            </Link>
           </div>
         </header>
 

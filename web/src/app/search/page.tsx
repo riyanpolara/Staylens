@@ -1,3 +1,4 @@
+import { parseFlexibleQuery } from "@/components/search/flexible-search-state";
 import type { Metadata } from "next";
 import { SiteHeader, type InitialSearch } from "@/components/search/site-header";
 import { FALLBACK_SUGGESTIONS } from "@/components/search/search-types";
@@ -104,6 +105,9 @@ export default async function SearchPage({
     children: num(sp.children),
     infants: num(sp.infants),
     pets: num(sp.pets),
+    // Round-trips the flexible choice so reopening the panel shows the search
+    // the results are actually for, rather than resetting to exact dates.
+    flexible: parseFlexibleQuery((k) => str(sp[k]) ?? null),
   };
 
   // string-only params for pagination links
@@ -116,8 +120,13 @@ export default async function SearchPage({
   const nights = nightsBetween(parseISODate(str(sp.in)), parseISODate(str(sp.out)));
 
   // carry the chosen dates + guests onto each property link so the detail
-  // page opens with the booking card pre-filled (and still editable there)
+  // page opens with the booking card pre-filled (and still editable there),
+  // plus the query itself so the detail page can re-derive this property's AI
+  // Match. The score is deliberately NOT put in the URL — a number the guest
+  // can edit is not a number we can stand behind.
   const bookingQs = new URLSearchParams();
+  if (where) bookingQs.set("where", where);
+  if ((num(sp.page) ?? 1) > 1) bookingQs.set("page", String(num(sp.page)));
   if (str(sp.in)) bookingQs.set("in", str(sp.in)!);
   if (str(sp.out)) bookingQs.set("out", str(sp.out)!);
   for (const k of ["adults", "children", "infants"] as const) {

@@ -34,7 +34,8 @@ export function CheckoutClient({
   property,
   trip,
   initialGuest,
-  editHref,
+  maxGuests,
+  minNights,
   createOrder,
   verifyPayment,
 }: {
@@ -42,7 +43,9 @@ export function CheckoutClient({
   trip: CheckoutTrip;
   /** Name and email from the signed-in account, resolved on the server. */
   initialGuest: GuestDetails;
-  editHref: string;
+  /** Property limits, so the inline guest/date editors cannot exceed them. */
+  maxGuests: number;
+  minNights: number;
   /** Razorpay: create an Order server-side (amount is priced there, not here) */
   createOrder: CreateOrder;
   /** Razorpay: verify the signature and persist the booking */
@@ -155,7 +158,7 @@ export function CheckoutClient({
     <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] gap-10 lg:gap-16 items-start">
       {/* left: the form */}
       <div className="flex flex-col gap-10 order-2 lg:order-1">
-        <TripSummary trip={trip} editHref={editHref} />
+        <TripSummary trip={trip} maxGuests={maxGuests} minNights={minNights} />
         <hr className="border-outline-variant/30" />
 
         <GuestDetailsForm value={guest} onChange={setGuest} showErrors={showErrors} />

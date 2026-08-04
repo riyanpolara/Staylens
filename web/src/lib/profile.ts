@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
+import { DEFAULT_AVATAR, hasRealAvatar } from "@/lib/avatar";
 
 /**
  * The signed-in guest's profile, their real activity, and how complete it is.
@@ -105,7 +106,9 @@ const DEFAULT_PRIVACY: ProfilePrivacy = {
 };
 
 /** Neutral silhouette. A generated avatar would be inventing a likeness. */
-export const DEFAULT_AVATAR = "/images/default-avatar.svg";
+// Defined in lib/avatar.ts so Client Components can reach it too (this module
+// is server-only). Re-exported because callers already import it from here.
+export { DEFAULT_AVATAR, hasRealAvatar, initialOf } from "@/lib/avatar";
 
 function asStringArray(v: unknown): string[] {
   return Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : [];
@@ -368,7 +371,7 @@ export function getProfileCompletion(profile: Profile): ProfileCompletion {
   const fields: [string, boolean][] = [
     ["Name", profile.fullName.trim().length > 0],
     ["Email", profile.email.trim().length > 0],
-    ["Profile picture", profile.avatarUrl !== DEFAULT_AVATAR],
+    ["Profile picture", hasRealAvatar(profile.avatarUrl)],
     ["Phone", profile.phone.trim().length > 0],
     ["Location", profile.location.trim().length > 0],
     ["About me", profile.about.trim().length > 0],

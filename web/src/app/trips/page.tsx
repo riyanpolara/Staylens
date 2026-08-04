@@ -213,6 +213,7 @@ export default async function TripsPage({
       <ProfileTopNav
         avatarUrl={profile?.avatarUrl ?? ""}
         name={profile?.fullName ?? ""}
+        email={profile?.email ?? ""}
       />
       <main id="main-content" className="max-w-[960px] mx-auto px-4 md:px-16 py-16">
         <h1 className="font-display text-3xl font-semibold text-on-surface mb-2">

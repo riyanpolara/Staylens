@@ -31,7 +31,7 @@ import { signOutAction } from "@/app/(auth)/actions";
 export function UserMenu({ light = false }: { light?: boolean }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const { user, initial, avatarUrl, isAdmin } = useAuth();
+  const { user, initial, displayName, avatarUrl, isAdmin } = useAuth();
   const authed = !!user;
   const ref = useRef<HTMLDivElement>(null);
 
@@ -73,12 +73,12 @@ export function UserMenu({ light = false }: { light?: boolean }) {
       </a>
 
       {authed ? (
-        <button
-          type="button"
-          onClick={() => setOpen((o) => !o)}
-          aria-haspopup="menu"
-          aria-expanded={open}
-          aria-label="Your account"
+        // Straight to the profile, not the dropdown. The hamburger beside it
+        // still opens the menu, so nothing becomes unreachable — and an avatar
+        // that goes to your profile is what the shape leads people to expect.
+        <Link
+          href="/profile/edit"
+          aria-label={displayName ? `${displayName} — your profile` : "Your profile"}
           className="w-10 h-10 rounded-full overflow-hidden bg-primary-fixed text-on-primary-fixed-variant font-bold flex items-center justify-center hover:scale-105 transition-transform focus-visible:outline-2 focus-visible:outline-offset-2"
         >
           {avatarUrl ? (
@@ -93,7 +93,7 @@ export function UserMenu({ light = false }: { light?: boolean }) {
           ) : (
             initial
           )}
-        </button>
+        </Link>
       ) : (
         <button
           type="button"

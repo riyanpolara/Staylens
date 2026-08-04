@@ -7,6 +7,7 @@ import { tagClassFor } from "@/lib/admin/types";
 import { MetricCard } from "@/components/admin/ui";
 import { PropertyModerationBar } from "@/components/admin/properties/property-moderation-bar";
 import { PropertiesError } from "@/components/admin/properties/properties-states";
+import { cleanListingText } from "@/lib/listing-text";
 
 export const metadata = { title: "Property" };
 
@@ -130,12 +131,19 @@ export default async function AdminPropertyPage({
               sizes="(max-width: 900px) 100vw, 50vw"
             />
           )}
-          {property.summary && <p className="card-body">{property.summary}</p>}
-          {property.description && <p className="card-body">{property.description}</p>}
+          {/* Cleaned at the point of display, not in the query: the edit form
+              on this same object must keep the raw source, or saving would
+              silently rewrite the row with our reformatting. */}
+          {property.summary && (
+            <p className="card-body">{cleanListingText(property.summary)}</p>
+          )}
+          {property.description && (
+            <p className="card-body">{cleanListingText(property.description)}</p>
+          )}
           {property.house_rules && (
             <>
               <p className="card-kicker">House rules</p>
-              <p className="card-body">{property.house_rules}</p>
+              <p className="card-body">{cleanListingText(property.house_rules)}</p>
             </>
           )}
           {property.listing_url && (

@@ -34,6 +34,7 @@ export default async function ConversationPage({
       <ProfileTopNav
         avatarUrl={profile?.avatarUrl ?? ""}
         name={profile?.fullName ?? ""}
+        email={profile?.email ?? ""}
       />
       <main id="main-content" className="max-w-[760px] mx-auto px-4 md:px-16 py-8 md:py-12">
         <Link

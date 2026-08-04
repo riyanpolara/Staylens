@@ -1,6 +1,6 @@
 import "server-only";
 import { getServerEnv } from "@/lib/env";
-import type { ExploreStay, StaySearchResult } from "@/lib/queries";
+import type { ExploreStay, MatchScore, StaySearchResult } from "@/lib/queries";
 import type { StaySearchParams } from "@/lib/stay-filters";
 
 /**
@@ -141,6 +141,17 @@ type HybridProperty = {
   superhost: boolean;
   beds: number | null;
   bathrooms: number | null;
+  scores?: {
+    semantic: number;
+    text: number;
+    rating: number;
+    reviews: number;
+    superhost: number;
+    amenity: number;
+    popularity: number;
+    final: number;
+  };
+  explanation?: string[];
 };
 
 type HybridResponse = {
@@ -193,6 +204,35 @@ function toHybridBody(params: StaySearchParams) {
   };
 }
 
+/**
+ * The AI Match, or null.
+ *
+ * Null unless the engine actually scored a semantic signal. A filter-only
+ * browse still produces a `final` — the engine drops `semantic` and
+ * renormalizes — but that number answers "how good is this listing", not "how
+ * well does it match what you asked for", and showing it as a Match would be a
+ * percentage with nothing behind it.
+ */
+function toMatch(p: HybridProperty): MatchScore | null {
+  const s = p.scores;
+  if (!s || !(s.semantic > 0)) return null;
+  const score = Math.round(s.final * 100);
+  if (!Number.isFinite(score) || score <= 0) return null;
+  return {
+    score: Math.min(100, score),
+    signals: {
+      semantic: s.semantic,
+      text: s.text,
+      rating: s.rating,
+      reviews: s.reviews,
+      superhost: s.superhost,
+      amenity: s.amenity,
+      popularity: s.popularity,
+    },
+    explanation: p.explanation ?? [],
+  };
+}
+
 function toExploreStay(p: HybridProperty): ExploreStay {
   const rating = p.rating ?? 0;
   return {
@@ -209,6 +249,7 @@ function toExploreStay(p: HybridProperty): ExploreStay {
     longitude: p.longitude,
     beds: p.beds,
     bathrooms: p.bathrooms,
+    match: toMatch(p),
   };
 }
 

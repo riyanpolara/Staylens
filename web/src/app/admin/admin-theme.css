@@ -312,9 +312,21 @@
 }
 .admin-scope .admin-popover-scrim { background: transparent; z-index: 45; }
 
+/* Now a link back to the public site. Inherits the surrounding colour and
+   drops the underline so it looks exactly as it did as a <div>, with a hover
+   and focus state so it reads as clickable. */
 .admin-scope .admin-brand {
   display: flex; align-items: center; gap: var(--space-2);
   padding: var(--space-2); min-height: 40px;
+  color: var(--color-text); text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s ease;
+}
+.admin-scope .admin-brand:hover {
+  background: color-mix(in srgb, var(--color-text) 6%, transparent);
+}
+.admin-scope .admin-brand:focus-visible {
+  outline: 2px solid var(--color-accent); outline-offset: -2px;
 }
 .admin-scope .admin-brand-name {
   font-family: var(--font-heading); font-size: 19px; white-space: nowrap;
@@ -368,6 +380,16 @@
   width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
   background: var(--color-accent-300); color: var(--color-accent-900); font-weight: 700; font-size: 13px;
 }
+/* It is a link to the profile now, so it gets link affordances. The circle is
+   the clip boundary for an uploaded picture; the letter shows without one.
+   Focus is handled by the scope-wide :focus-visible rule above. */
+.admin-scope a.admin-avatar {
+  overflow: hidden; text-decoration: none; flex-shrink: 0;
+  transition: transform 140ms ease;
+}
+.admin-scope a.admin-avatar:hover { transform: scale(1.06); }
+.admin-scope a.admin-avatar:active { transform: scale(0.96); }
+.admin-scope .admin-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
 .admin-scope .admin-content { padding: var(--space-6) var(--space-4) var(--space-8); }
 @media (min-width: 900px) { .admin-scope .admin-content { padding: var(--space-6); } }

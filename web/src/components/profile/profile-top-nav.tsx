@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Menu, TreePine } from "lucide-react";
 import { NotificationBell } from "@/components/notifications/notification-bell";
+import { ProfileAvatarButton } from "@/components/profile/profile-avatar-button";
 import { getUnreadNotificationCount } from "@/lib/notifications";
 
 const LINKS = [
@@ -23,9 +23,12 @@ const LINKS = [
 export async function ProfileTopNav({
   avatarUrl,
   name,
+  email,
 }: {
   avatarUrl: string;
   name: string;
+  /** Only used for the initial when the account has no name yet. */
+  email?: string;
 }) {
   const unread = await getUnreadNotificationCount();
 
@@ -54,16 +57,7 @@ export async function ProfileTopNav({
             </a>
           ))}
           <NotificationBell count={unread} />
-          <div className="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden">
-            <Image
-              src={avatarUrl}
-              alt={name}
-              width={40}
-              height={40}
-              unoptimized
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <ProfileAvatarButton avatarUrl={avatarUrl} name={name} email={email} />
         </div>
 
         <button
