@@ -8,6 +8,7 @@ import {
 } from "@/lib/stay-filters";
 import type { Tables } from "@/lib/database.types";
 import { cleanListingText, cleanListingTextOrNull } from "@/lib/listing-text";
+import { storedRatingBands } from "@/lib/rating";
 
 export type City = Tables<"cities"> & { properties: { count: number }[] };
 export type PropertyCard = Pick<
@@ -334,8 +335,15 @@ export type ExploreStay = {
   location: string;
   /** nightly price in USD, rounded */
   price: number;
-  /** 0–5 scale, two decimals (DB stores 0–100) */
-  rating: number;
+  /**
+   * 0–5 scale (DB stores 0–100), or null when the listing has no score yet.
+   *
+   * Nullable on purpose. 366 of the 6,480 properties are unrated, and the old
+   * `?? 0` turned "not rated" into a flat 0.0 — the single most damaging thing
+   * a listing page can claim about a property. Callers render `formatRating`,
+   * which says "New".
+   */
+  rating: number | null;
   reviews: number;
   images: { url: string; alt: string }[];
   isSuperhost: boolean;
@@ -381,7 +389,11 @@ function toExploreStay(row: {
   const area =
     clean(row.government_area) ?? clean(row.suburb) ?? row.cities?.city_name ?? "";
   const country = row.cities?.country ?? "";
-  const rating = Math.round(((row.review_scores_rating ?? 0) / 20) * 100) / 100;
+  // Null stays null: an unrated listing is not a zero-rated one.
+  const rating =
+    row.review_scores_rating === null || row.review_scores_rating === undefined
+      ? null
+      : Math.round((row.review_scores_rating / 20) * 100) / 100;
   return {
     id: row.id,
     name: row.name,
@@ -393,13 +405,155 @@ function toExploreStay(row: {
       .sort((a, b) => a.sort_order - b.sort_order)
       .map((img) => ({ url: img.url, alt: row.name })),
     isSuperhost: row.hosts?.is_superhost ?? false,
-    isRareFind: rating >= 4.95,
+    isRareFind: rating !== null && rating >= 4.95,
     latitude: row.latitude ?? null,
     longitude: row.longitude ?? null,
     beds: row.beds ?? null,
     bathrooms: row.bathrooms ?? null,
   };
 }
+
+/**
+ * How many reviews a band's rating must rest on.
+ *
+ * A rating from a single review is thin evidence, so the crowded top bands
+ * demand five. But the whole catalogue holds just 14 listings below 3.0 and
+ * every one has fewer than five reviews — applying the strict floor there
+ * leaves the 2★ and 1★ chips permanently empty, which is how they behaved
+ * before. Taking what exists is the only alternative to inventing listings.
+ */
+const MIN_REVIEWS_BY_CHIP: Record<string, number> = {
+  "5": 5,
+  "4": 5,
+  "3": 5,
+  "2": 1,
+  "1": 1,
+};
+
+/**
+ * How many candidates to pull per slot, so dead photos can be skipped.
+ *
+ * Three. Measured: 2 of 15 lead photos were 404ing, so one spare per slot would
+ * usually do — three leaves room for a band where several have rotted, without
+ * checking the whole catalogue.
+ */
+const IMAGE_CANDIDATE_MULTIPLE = 3;
+
+/** Chips in the order the shelf presents them: best band first. */
+const CHIPS_BEST_FIRST = ["5", "4", "3", "2", "1"] as const;
+
+/**
+ * Whether a listing's lead photo actually loads.
+ *
+ * The imported photos are Airbnb CDN URLs and they expire. Two of the fifteen
+ * cards on this shelf were already 404ing, which is what put a broken-image
+ * icon and a line of alt text where a photo should be. Nothing in the database
+ * records that — the row is present and looks fine — so the only way to know is
+ * to ask.
+ *
+ * A ranged GET rather than HEAD: some CDNs answer HEAD with 405 while serving
+ * the image perfectly well, which would discard good listings. Sixty-four bytes
+ * is enough to learn the status code.
+ *
+ * Any failure counts as dead, including the timeout. This runs behind an hourly
+ * cache, so the cost is one sweep per hour, not one per visitor — and a slow
+ * CDN must never be able to hang a page render.
+ */
+async function imageLoads(url: string, timeoutMs = 4000): Promise<boolean> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, {
+      headers: { Range: "bytes=0-63" },
+      cache: "no-store",
+      signal: controller.signal,
+    });
+    return res.status === 200 || res.status === 206;
+  } catch {
+    return false;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/**
+ * The first `want` stays whose lead photo is live, checked in parallel.
+ *
+ * Candidates stay in recommendation order, so this only ever removes — it never
+ * promotes a weaker listing above a stronger one that happens to load faster.
+ */
+async function withLiveImages(
+  candidates: ExploreStay[],
+  want: number,
+): Promise<ExploreStay[]> {
+  const alive = await Promise.all(
+    candidates.map(async (stay) => {
+      const url = stay.images[0]?.url;
+      return url ? await imageLoads(url) : false;
+    }),
+  );
+  return candidates.filter((_, i) => alive[i]).slice(0, want);
+}
+
+async function fetchRecommendedStays(perBand: number): Promise<ExploreStay[]> {
+  const supabase = createStaticClient();
+
+  // One small indexed query per band, in parallel. Ordering *within* a band is
+  // by review volume: among equally-rated stays, the one 800 guests agreed on
+  // is the better recommendation.
+  // Integer bounds derived from `formatRating` itself, so a band can never
+  // include a listing whose badge would place it in a different chip. The
+  // column is a smallint, so fractional bounds are not an option anyway.
+  const storedBands = storedRatingBands();
+
+  const bands = await Promise.all(
+    CHIPS_BEST_FIRST.map(async (chip) => {
+      const band = storedBands[chip];
+      if (!band) return [];
+      // Over-fetch so a dead photo costs the shelf a card rather than a slot:
+      // the next-best listing in the same band takes its place.
+      const { data, error } = await supabase
+        .from("properties")
+        .select(STAY_SELECT)
+        .eq("is_active", true)
+        .not("price", "is", null)
+        .gte("review_scores_rating", band.lo)
+        .lte("review_scores_rating", band.hi)
+        .gte("number_of_reviews", MIN_REVIEWS_BY_CHIP[chip] ?? 1)
+        .order("number_of_reviews", { ascending: false })
+        .limit(perBand * IMAGE_CANDIDATE_MULTIPLE);
+      if (error) throw error;
+      return withLiveImages((data ?? []).map(toExploreStay), perBand);
+    }),
+  );
+
+  // Concatenated best-band-first, so the carousel still opens on the strongest
+  // recommendations. Empty bands simply contribute nothing — this catalogue has
+  // no credibly-rated listing below 3.0, and inventing one is not an option.
+  return bands.flat();
+}
+
+/**
+ * Stays for the "AI-recommended retreats" carousel.
+ *
+ * Deliberately NOT "the top N by rating". That query returns 5.00 for the first
+ * 127 rows — 932 properties are a perfect 100/100 — which is why every card on
+ * the homepage read the same score, and why a rating filter over it would have
+ * been decoration: every chip would return the identical set.
+ *
+ * So the set is drawn across rating bands instead. The recommendation signal is
+ * unchanged (rating first, then review volume) and the cards are still ordered
+ * best-first; what changes is that the shelf now spans the range that actually
+ * exists in the data, which is what gives the filter something to filter.
+ *
+ * Cached like `getCities`: the catalogue turns over far more slowly than the
+ * page is requested, and this is six queries rather than one.
+ */
+export const getRecommendedStays = unstable_cache(
+  fetchRecommendedStays,
+  ["recommended-stays-by-band"],
+  { revalidate: 3600, tags: ["properties"] },
+);
 
 /**
  * Top-rated, heavily-reviewed stays for the "Curated Collections" bento.

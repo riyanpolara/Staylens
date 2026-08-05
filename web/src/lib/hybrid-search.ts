@@ -234,7 +234,8 @@ function toMatch(p: HybridProperty): MatchScore | null {
 }
 
 function toExploreStay(p: HybridProperty): ExploreStay {
-  const rating = p.rating ?? 0;
+  // `?? 0` here would have reported an unrated listing as 0.0 out of 5.
+  const rating = typeof p.rating === "number" ? p.rating : null;
   return {
     id: p.id,
     name: p.name,
@@ -244,7 +245,7 @@ function toExploreStay(p: HybridProperty): ExploreStay {
     reviews: p.reviews,
     images: p.image ? [{ url: p.image, alt: p.name }] : [],
     isSuperhost: p.superhost,
-    isRareFind: rating >= 4.95,
+    isRareFind: rating !== null && rating >= 4.95,
     latitude: p.latitude,
     longitude: p.longitude,
     beds: p.beds,

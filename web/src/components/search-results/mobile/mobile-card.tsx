@@ -5,6 +5,7 @@ import { Star } from "lucide-react";
 import { ImageCarousel } from "@/components/explore/image-carousel";
 import { nightsLabel } from "@/lib/pricing";
 import { formatPrice } from "@/lib/currency";
+import { formatRating, ratingLabel } from "@/lib/rating";
 import type { ExploreStay } from "@/lib/queries";
 
 /**
@@ -36,7 +37,7 @@ export function MobileCard({
           stayTotal
             ? `${formatPrice(stayTotal)} ${nightsLabel(nights)}`
             : `${formatPrice(stay.price)} per night`
-        }, rated ${stay.rating.toFixed(2)} (opens in a new tab)`}
+        }, ${ratingLabel(stay.rating)} (opens in a new tab)`}
         className="block rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-tinted">
@@ -56,7 +57,7 @@ export function MobileCard({
             </h3>
             <span className="flex items-center gap-1 shrink-0 text-sm text-on-surface">
               <Star aria-hidden className="size-4 text-primary fill-primary" />
-              {stay.rating.toFixed(2)}
+              {formatRating(stay.rating)}
             </span>
           </div>
           {/* On touch there is no hover and no `title`, so the badge's reason
