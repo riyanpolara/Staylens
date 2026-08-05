@@ -18,7 +18,8 @@ export type WishlistStay = {
   country: string | null;
   image: string | null;
   price: number;
-  rating: number;
+  /** null when the listing has no score yet — never 0. */
+  rating: number | null;
   reviewsCount: number;
   savedAt: string;
 };
@@ -96,7 +97,7 @@ export async function getWishlist(): Promise<WishlistStay[]> {
       // Stored 0-100; the cards expect 0-5, same conversion as lib/queries.
       rating:
         r.properties!.review_scores_rating === null
-          ? 0
+          ? null
           : Math.round((r.properties!.review_scores_rating / 20) * 10) / 10,
       reviewsCount: r.properties!.number_of_reviews ?? 0,
       savedAt: r.created_at,

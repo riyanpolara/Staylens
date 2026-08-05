@@ -61,7 +61,7 @@ export default async function WishlistPage() {
                 reviews: s.reviewsCount,
                 images: s.image ? [{ url: s.image, alt: s.name }] : [],
                 isSuperhost: false,
-                isRareFind: s.rating >= 4.95,
+                isRareFind: s.rating !== null && s.rating >= 4.95,
                 latitude: null,
                 longitude: null,
               };

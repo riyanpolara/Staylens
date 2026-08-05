@@ -6,6 +6,7 @@ import { WishlistButton } from "@/components/wishlist/wishlist-button";
 import { AiMatchBadge } from "@/components/search/ai-match-badge";
 import { nightsLabel } from "@/lib/pricing";
 import { formatPrice } from "@/lib/currency";
+import { formatRating, ratingLabel } from "@/lib/rating";
 import type { ExploreStay } from "@/lib/queries";
 
 type PropertyCardProps = {
@@ -56,7 +57,7 @@ export function PropertyCard({
           stayTotal
             ? `${formatPrice(stayTotal)} ${nightsLabel(nights!)}`
             : `${formatPrice(stay.price)} per night`
-        }, rated ${stay.rating.toFixed(2)} from ${stay.reviews} reviews (opens in a new tab)`}
+        }, ${ratingLabel(stay.rating)} from ${stay.reviews} reviews (opens in a new tab)`}
         className="block rounded-[20px] focus-visible:outline-2 focus-visible:outline-offset-4"
       >
         <div
@@ -74,7 +75,7 @@ export function PropertyCard({
               {/* rating chip — bottom-left, per the results design */}
               <div className="absolute bottom-3 left-3 z-10 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1.5">
                 <Star aria-hidden className="size-3.5 text-primary fill-primary" />
-                <span className="text-xs font-bold">{stay.rating.toFixed(2)}</span>
+                <span className="text-xs font-bold">{formatRating(stay.rating)}</span>
               </div>
               {/* AI Match — renders nothing when the engine had no query to
                   score against, so a browse never shows an invented figure. */}
@@ -100,7 +101,7 @@ export function PropertyCard({
               {/* rating chip — top-right, exactly as the explore design */}
               <div className="absolute top-4 right-4 z-10 bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
                 <Star aria-hidden className="size-3.5 text-tertiary fill-tertiary" />
-                <span className="text-xs font-bold">{stay.rating.toFixed(2)}</span>
+                <span className="text-xs font-bold">{formatRating(stay.rating)}</span>
               </div>
             </>
           )}

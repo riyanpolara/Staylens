@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { SiteHeader } from "@/components/search/site-header";
 import { FALLBACK_SUGGESTIONS, type DestinationSuggestion } from "@/components/search/search-types";
-import { getExploreStays, getSearchSuggestionList } from "@/lib/queries";
+import { getRecommendedStays, getSearchSuggestionList } from "@/lib/queries";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { HeroCarousel } from "@/components/landing/hero-carousel";
 import { CollectionsGrid } from "@/components/landing/collections-grid";
@@ -47,11 +47,16 @@ async function getSearchSuggestions(): Promise<DestinationSuggestion[]> {
   }
 }
 
-/** Live "AI-recommended" stays — top-rated, heavily reviewed (fallback: none). */
+/**
+ * Live "AI-recommended" stays, drawn across rating bands (fallback: none).
+ *
+ * Three per band. Ordering by rating alone returned 5.00 for the first 127
+ * rows, which is why every card on this shelf used to show the same score.
+ */
 async function LiveRecommended() {
-  let stays: Awaited<ReturnType<typeof getExploreStays>> = [];
+  let stays: Awaited<ReturnType<typeof getRecommendedStays>> = [];
   try {
-    stays = await getExploreStays(8);
+    stays = await getRecommendedStays(3);
   } catch (err) {
     console.error("[landing] recommended stays failed:", err);
   }
